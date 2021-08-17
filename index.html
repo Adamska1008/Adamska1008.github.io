@@ -84,6 +84,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-主页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a></li>
+        <li class="menu-item menu-item-标签"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
         <li class="menu-item menu-item-分类"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
         <li class="menu-item menu-item-归档"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
   </ul>
@@ -141,8 +142,9 @@
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">10</span>
-        <span class="site-state-item-name">标签</span>
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -212,7 +214,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-08-17 19:31:04 / 修改时间：19:43:18" itemprop="dateCreated datePublished" datetime="2021-08-17T19:31:04+08:00">2021-08-17</time>
+      <time title="创建时间：2021-08-17 19:31:04 / 修改时间：19:52:44" itemprop="dateCreated datePublished" datetime="2021-08-17T19:31:04+08:00">2021-08-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -240,22 +242,14 @@
     <div class="post-body" itemprop="articleBody">
           <p>题目本身不难，但是要求不少，所以代码也比较长，需要注意不少细节。</p>
 <h3 id="魔板"><a href="#魔板" class="headerlink" title="魔板"></a>魔板</h3><p>Rubik 先生在发明了风靡全球的魔方之后，又发明了它的二维版本——魔板。</p>
-<p>这是一张有 $8$ 个大小相同的格子的魔板：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 2 3 4</span><br><span class="line">8 7 6 5</span><br></pre></td></tr></table></figure>
-<p>我们知道魔板的每一个方格都有一种颜色。</p>
+<p>这是一张有 $8$ 个大小相同的格子的魔板：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 2 3 4</span><br><span class="line">8 7 6 5</span><br></pre></td></tr></table></figure><br>我们知道魔板的每一个方格都有一种颜色。</p>
 <p>这 $8$ 种颜色用前 $8$ 个正整数来表示。</p>
 <p>可以用颜色的序列来表示一种魔板状态，规定从魔板的左上角开始，沿顺时针方向依次取出整数，构成一个颜色序列。</p>
 <p>对于上图的魔板状态，我们用序列 $(1,2,3,4,5,6,7,8)$ 来表示，这是基本状态。</p>
 <p>这里提供三种基本操作，分别用大写字母 A，B，C 来表示（可以通过这些操作改变魔板的状态）：</p>
 <p>A：交换上下两行；<br>B：将最右边的一列插入到最左边；<br>C：魔板中央对的4个数作顺时针旋转。</p>
 <p>下面是对基本状态进行操作的示范：</p>
-<p>A：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">8 7 6 5</span><br><span class="line">1 2 3 4</span><br></pre></td></tr></table></figure>
-<p>B：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4 1 2 3</span><br><span class="line">5 8 7 6</span><br></pre></td></tr></table></figure>
-<p>C：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 7 2 4</span><br><span class="line">8 6 3 5</span><br></pre></td></tr></table></figure>
-<p>对于每种可能的状态，这三种基本操作都可以使用。</p>
+<p>A：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">8 7 6 5</span><br><span class="line">1 2 3 4</span><br></pre></td></tr></table></figure><br>B：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4 1 2 3</span><br><span class="line">5 8 7 6</span><br></pre></td></tr></table></figure><br>C：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 7 2 4</span><br><span class="line">8 6 3 5</span><br></pre></td></tr></table></figure><br>对于每种可能的状态，这三种基本操作都可以使用。</p>
 <p>你要编程计算用最少的基本操作完成基本状态到特殊状态的转换，输出基本操作序列。</p>
 <p>注意：数据保证一定有解。</p>
 <h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>输入仅一行，包括 $8$ 个整数，用空格分开，表示目标状态。</p>
@@ -322,7 +316,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-17 19:30:25" itemprop="dateModified" datetime="2021-08-17T19:30:25+08:00">2021-08-17</time>
+        <time title="修改时间：2021-08-17 19:52:40" itemprop="dateModified" datetime="2021-08-17T19:52:40+08:00">2021-08-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -407,10 +401,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-08-16 15:05:19 / 修改时间：20:08:21" itemprop="dateCreated datePublished" datetime="2021-08-16T15:05:19+08:00">2021-08-16</time>
+      <time title="创建时间：2021-08-16 15:05:19" itemprop="dateCreated datePublished" datetime="2021-08-16T15:05:19+08:00">2021-08-16</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-17 19:52:36" itemprop="dateModified" datetime="2021-08-17T19:52:36+08:00">2021-08-17</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -447,9 +447,8 @@
 <h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$1≤n,m≤10^5$</p>
 <h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">8 3</span><br><span class="line">aabbaabb</span><br><span class="line">1 3 5 7</span><br><span class="line">1 3 6 8</span><br><span class="line">1 2 1 2</span><br></pre></td></tr></table></figure>
 <h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Yes</span><br><span class="line">No</span><br><span class="line">Yes</span><br></pre></td></tr></table></figure>
+<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>模板题，不多bb。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> ull = <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100010</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> P = <span class="number">131</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="keyword">char</span> str[N];</span><br><span class="line">ull h[N], p[N];</span><br><span class="line"></span><br><span class="line"><span class="function">ull <span class="title">HASH</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> h[r] - h[l - <span class="number">1</span>] * p[r - l + <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%s&quot;</span>, &amp;n, &amp;m, str + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    p[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        p[i] = p[i - <span class="number">1</span>] * P;</span><br><span class="line">        h[i] = h[i - <span class="number">1</span>] * P + str[i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (m--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> l1, r1, l2, r2;</span><br><span class="line">        cin &gt;&gt; l1 &gt;&gt; r1 &gt;&gt; l2 &gt;&gt; r2;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">HASH</span>(l1, r1) == <span class="built_in">HASH</span>(l2, r2))</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;Yes&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;No&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
 
-<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>模板题，不多bb。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> ull = <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100010</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> P = <span class="number">131</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="keyword">char</span> str[N];</span><br><span class="line">ull h[N], p[N];</span><br><span class="line"></span><br><span class="line"><span class="function">ull <span class="title">HASH</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> h[r] - h[l - <span class="number">1</span>] * p[r - l + <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d%s&quot;</span>, &amp;n, &amp;m, str + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    p[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        p[i] = p[i - <span class="number">1</span>] * P;</span><br><span class="line">        h[i] = h[i - <span class="number">1</span>] * P + str[i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (m--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> l1, r1, l2, r2;</span><br><span class="line">        cin &gt;&gt; l1 &gt;&gt; r1 &gt;&gt; l2 &gt;&gt; r2;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">HASH</span>(l1, r1) == <span class="built_in">HASH</span>(l2, r2))</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;Yes&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;No&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -498,10 +497,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-08-15 22:57:22 / 修改时间：23:31:09" itemprop="dateCreated datePublished" datetime="2021-08-15T22:57:22+08:00">2021-08-15</time>
+      <time title="创建时间：2021-08-15 22:57:22" itemprop="dateCreated datePublished" datetime="2021-08-15T22:57:22+08:00">2021-08-15</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-17 19:52:42" itemprop="dateModified" datetime="2021-08-17T19:52:42+08:00">2021-08-17</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -598,10 +603,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-08-15 16:01:00 / 修改时间：23:31:06" itemprop="dateCreated datePublished" datetime="2021-08-15T16:01:00+08:00">2021-08-15</time>
+      <time title="创建时间：2021-08-15 16:01:00" itemprop="dateCreated datePublished" datetime="2021-08-15T16:01:00+08:00">2021-08-15</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-17 19:52:46" itemprop="dateModified" datetime="2021-08-17T19:52:46+08:00">2021-08-17</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -694,7 +705,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-15 23:31:06" itemprop="dateModified" datetime="2021-08-15T23:31:06+08:00">2021-08-15</time>
+        <time title="修改时间：2021-08-17 19:52:48" itemprop="dateModified" datetime="2021-08-17T19:52:48+08:00">2021-08-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -803,7 +814,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-15 23:31:08" itemprop="dateModified" datetime="2021-08-15T23:31:08+08:00">2021-08-15</time>
+        <time title="修改时间：2021-08-17 19:52:45" itemprop="dateModified" datetime="2021-08-17T19:52:45+08:00">2021-08-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -894,10 +905,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-08-14 13:50:15 / 修改时间：22:18:47" itemprop="dateCreated datePublished" datetime="2021-08-14T13:50:15+08:00">2021-08-14</time>
+      <time title="创建时间：2021-08-14 13:50:15" itemprop="dateCreated datePublished" datetime="2021-08-14T13:50:15+08:00">2021-08-14</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-15 23:31:04" itemprop="dateModified" datetime="2021-08-15T23:31:04+08:00">2021-08-15</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -979,7 +996,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-15 23:31:10" itemprop="dateModified" datetime="2021-08-15T23:31:10+08:00">2021-08-15</time>
+        <time title="修改时间：2021-08-17 19:52:36" itemprop="dateModified" datetime="2021-08-17T19:52:36+08:00">2021-08-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
