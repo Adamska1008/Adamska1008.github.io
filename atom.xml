@@ -6,7 +6,7 @@
   <link href="https://adamska1008.github.io/atom.xml" rel="self"/>
   
   <link href="https://adamska1008.github.io/"/>
-  <updated>2021-08-18T08:28:40.507Z</updated>
+  <updated>2021-08-19T08:56:30.863Z</updated>
   <id>https://adamska1008.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>A-star解决八数码问题</title>
+    <link href="https://adamska1008.github.io/2021/08/19/A-star%E8%A7%A3%E5%86%B3%E5%85%AB%E6%95%B0%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+    <id>https://adamska1008.github.io/2021/08/19/A-star%E8%A7%A3%E5%86%B3%E5%85%AB%E6%95%B0%E7%A0%81%E9%97%AE%E9%A2%98/</id>
+    <published>2021-08-19T08:53:12.000Z</published>
+    <updated>2021-08-19T08:56:30.863Z</updated>
+    
+    <content type="html"><![CDATA[<p>A*算法经典例题。</p><h3 id="八数码"><a href="#八数码" class="headerlink" title="八数码"></a>八数码</h3><p>在一个 $3×3$ 的网格中，$1∼8$ 这 $8$ 个数字和一个 <code>X</code> 恰好不重不漏地分布在这 $3×3$ 的网格中。</p><p>例如：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 2 3</span><br><span class="line">X 4 6</span><br><span class="line">7 5 8</span><br></pre></td></tr></table></figure><br>在游戏过程中，可以把 <code>X</code> 与其上、下、左、右四个方向之一的数字交换（如果存在）。</p><p>我们的目的是通过交换，使得网格变为如下排列（称为正确排列）：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 2 3</span><br><span class="line">4 5 6</span><br><span class="line">7 8 X</span><br></pre></td></tr></table></figure><br>例如，示例中图形就可以通过让 <code>X</code> 先后与右、下、右三个方向的数字交换成功得到正确排列。</p><p>交换过程如下：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 2 3   1 2 3   1 2 3   1 2 3</span><br><span class="line">X 4 6   4 X 6   4 5 6   4 5 6</span><br><span class="line">7 5 8   7 5 8   7 X 8   7 8 X</span><br></pre></td></tr></table></figure><br>把 <code>X</code> 与上下左右方向数字交换的行动记录为 <code>u</code>、<code>d</code>、<code>l</code>、<code>r</code>。</p><p>现在，给你一个初始网格，请你通过最少的移动次数，得到正确排列。</p><h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>输入占一行，将 $3×3$ 的初始网格描绘出来。</p><p>例如，如果初始网格如下所示：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 2 3 </span><br><span class="line">x 4 6 </span><br><span class="line">7 5 8 </span><br></pre></td></tr></table></figure><br>则输入为：<code>1 2 3 x 4 6 7 5 8</code></p><h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>输出占一行，包含一个字符串，表示得到正确排列的完整行动记录。</p><p>如果答案不唯一，输出任意一种合法方案即可。</p><p>如果不存在解决方案，则输出 unsolvable。</p><h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2  3  4  1  5  x  7  6  8 </span><br></pre></td></tr></table></figure><h4 id="输出样例"><a href="#输出样例" class="headerlink" title="输出样例"></a>输出样例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ullddrurdllurdruldr</span><br></pre></td></tr></table></figure><h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;A*算法经典例题。&lt;/p&gt;
+&lt;h3 id=&quot;八数码&quot;&gt;&lt;a href=&quot;#八数码&quot; class=&quot;headerlink&quot; title=&quot;八数码&quot;&gt;&lt;/a&gt;八数码&lt;/h3&gt;&lt;p&gt;在一个 $3×3$ 的网格中，$1∼8$ 这 $8$ 个数字和一个 &lt;code&gt;X&lt;/code&gt; </summary>
+      
+    
+    
+    
+    <category term="算法竞赛" scheme="https://adamska1008.github.io/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/"/>
+    
+    <category term="题解" scheme="https://adamska1008.github.io/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="dp" scheme="https://adamska1008.github.io/tags/dp/"/>
+    
+  </entry>
   
   <entry>
     <title>题解-电路维修</title>
