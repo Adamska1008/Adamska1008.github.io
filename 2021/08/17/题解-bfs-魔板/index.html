@@ -22,26 +22,26 @@
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="题目本身不难，但是要求不少，所以代码也比较长，需要注意不少细节。 魔板Rubik 先生在发明了风靡全球的魔方之后，又发明了它的二维版本——魔板。 这是一张有 $8$ 个大小相同的格子的魔板： 121 2 3 48 7 6 5 我们知道魔板的每一个方格都有一种颜色。 这 $8$ 种颜色用前 $8$ 个正整数来表示。 可以用颜色的序列来表示一种魔板状态，规定从魔板的左上角开始，沿顺时针方向依次取出整数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="题解-魔板">
-<meta property="og:url" content="https://adamska1008.github.io/2021/08/17/%E9%A2%98%E8%A7%A3-%E9%AD%94%E6%9D%BF/index.html">
+<meta property="og:title" content="题解-bfs-魔板">
+<meta property="og:url" content="https://adamska1008.github.io/2021/08/17/%E9%A2%98%E8%A7%A3-bfs-%E9%AD%94%E6%9D%BF/index.html">
 <meta property="og:site_name" content="博客">
 <meta property="og:description" content="题目本身不难，但是要求不少，所以代码也比较长，需要注意不少细节。 魔板Rubik 先生在发明了风靡全球的魔方之后，又发明了它的二维版本——魔板。 这是一张有 $8$ 个大小相同的格子的魔板： 121 2 3 48 7 6 5 我们知道魔板的每一个方格都有一种颜色。 这 $8$ 种颜色用前 $8$ 个正整数来表示。 可以用颜色的序列来表示一种魔板状态，规定从魔板的左上角开始，沿顺时针方向依次取出整数">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-17T11:31:04.000Z">
-<meta property="article:modified_time" content="2021-08-19T09:08:42.458Z">
+<meta property="article:modified_time" content="2021-08-31T12:09:06.346Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="bfs">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://adamska1008.github.io/2021/08/17/%E9%A2%98%E8%A7%A3-%E9%AD%94%E6%9D%BF/">
+<link rel="canonical" href="https://adamska1008.github.io/2021/08/17/%E9%A2%98%E8%A7%A3-bfs-%E9%AD%94%E6%9D%BF/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/08/17/%E9%A2%98%E8%A7%A3-%E9%AD%94%E6%9D%BF/","path":"2021/08/17/题解-魔板/","title":"题解-魔板"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/08/17/%E9%A2%98%E8%A7%A3-bfs-%E9%AD%94%E6%9D%BF/","path":"2021/08/17/题解-bfs-魔板/","title":"题解-bfs-魔板"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>题解-魔板 | 博客</title>
+<title>题解-bfs-魔板 | 博客</title>
   
 
 
@@ -140,7 +140,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -198,7 +198,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/17/%E9%A2%98%E8%A7%A3-%E9%AD%94%E6%9D%BF/">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/17/%E9%A2%98%E8%A7%A3-bfs-%E9%AD%94%E6%9D%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.qpix.com/2021/08/11/AYu4.th.jpg">
@@ -211,7 +211,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          题解-魔板
+          题解-bfs-魔板
         </h1>
 
         <div class="post-meta-container">
@@ -229,7 +229,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-19 17:08:42" itemprop="dateModified" datetime="2021-08-19T17:08:42+08:00">2021-08-19</time>
+        <time title="修改时间：2021-08-31 20:09:06" itemprop="dateModified" datetime="2021-08-31T20:09:06+08:00">2021-08-31</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -298,13 +298,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/08/16/%E9%A2%98%E8%A7%A3-%E7%9F%A9%E9%98%B5%E8%B7%9D%E7%A6%BB/" rel="prev" title="题解-矩阵距离">
-                  <i class="fa fa-chevron-left"></i> 题解-矩阵距离
+                <a href="/2021/08/16/%E9%A2%98%E8%A7%A3-%E5%A4%9A%E6%BA%90bfs-%E7%9F%A9%E9%98%B5%E8%B7%9D%E7%A6%BB/" rel="prev" title="题解-多源bfs-矩阵距离">
+                  <i class="fa fa-chevron-left"></i> 题解-多源bfs-矩阵距离
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/08/18/%E9%A2%98%E8%A7%A3-%E7%94%B5%E8%B7%AF%E7%BB%B4%E4%BF%AE/" rel="next" title="题解-电路维修">
-                  题解-电路维修 <i class="fa fa-chevron-right"></i>
+                <a href="/2021/08/18/%E9%A2%98%E8%A7%A3-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97bfs-%E7%94%B5%E8%B7%AF%E7%BB%B4%E4%BF%AE/" rel="next" title="题解-双端队列bfs-电路维修">
+                  题解-双端队列bfs-电路维修 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
