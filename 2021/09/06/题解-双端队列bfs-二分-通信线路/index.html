@@ -20,15 +20,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="太难了。 通信线路在郊区有 $N$ 座通信基站，$P$ 条 双向 电缆，第 $i$ 条电缆连接基站 $A_i$ 和 $B_i$。 特别地，$1$ 号基站是通信公司的总站，$N$ 号基站位于一座农场中。 现在，农场主希望对通信线路进行升级，其中升级第 $i$ 条电缆需要花费 $L_i$。 电话公司正在举行优惠活动。 农产主可以指定一条从 $1$ 号基站到 $N$ 号基站的路径，并指定路径上不超过 $">
+<meta name="description" content="挺难的。 通信线路在郊区有 $N$ 座通信基站，$P$ 条 双向 电缆，第 $i$ 条电缆连接基站 $A_i$ 和 $B_i$。 特别地，$1$ 号基站是通信公司的总站，$N$ 号基站位于一座农场中。 现在，农场主希望对通信线路进行升级，其中升级第 $i$ 条电缆需要花费 $L_i$。 电话公司正在举行优惠活动。 农产主可以指定一条从 $1$ 号基站到 $N$ 号基站的路径，并指定路径上不超过 $">
 <meta property="og:type" content="article">
 <meta property="og:title" content="题解-双端队列bfs+二分-通信线路">
 <meta property="og:url" content="https://adamska1008.github.io/2021/09/06/%E9%A2%98%E8%A7%A3-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97bfs-%E4%BA%8C%E5%88%86-%E9%80%9A%E4%BF%A1%E7%BA%BF%E8%B7%AF/index.html">
 <meta property="og:site_name" content="博客">
-<meta property="og:description" content="太难了。 通信线路在郊区有 $N$ 座通信基站，$P$ 条 双向 电缆，第 $i$ 条电缆连接基站 $A_i$ 和 $B_i$。 特别地，$1$ 号基站是通信公司的总站，$N$ 号基站位于一座农场中。 现在，农场主希望对通信线路进行升级，其中升级第 $i$ 条电缆需要花费 $L_i$。 电话公司正在举行优惠活动。 农产主可以指定一条从 $1$ 号基站到 $N$ 号基站的路径，并指定路径上不超过 $">
+<meta property="og:description" content="挺难的。 通信线路在郊区有 $N$ 座通信基站，$P$ 条 双向 电缆，第 $i$ 条电缆连接基站 $A_i$ 和 $B_i$。 特别地，$1$ 号基站是通信公司的总站，$N$ 号基站位于一座农场中。 现在，农场主希望对通信线路进行升级，其中升级第 $i$ 条电缆需要花费 $L_i$。 电话公司正在举行优惠活动。 农产主可以指定一条从 $1$ 号基站到 $N$ 号基站的路径，并指定路径上不超过 $">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-06T11:59:23.000Z">
-<meta property="article:modified_time" content="2021-09-07T01:11:08.297Z">
+<meta property="article:modified_time" content="2021-09-07T01:12:01.467Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="bfs">
 <meta property="article:tag" content="二分">
@@ -231,7 +231,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-09-07 09:11:08" itemprop="dateModified" datetime="2021-09-07T09:11:08+08:00">2021-09-07</time>
+        <time title="修改时间：2021-09-07 09:12:01" itemprop="dateModified" datetime="2021-09-07T09:12:01+08:00">2021-09-07</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -257,7 +257,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>太难了。</p>
+        <p>挺难的。</p>
 <h3 id="通信线路"><a href="#通信线路" class="headerlink" title="通信线路"></a>通信线路</h3><p>在郊区有 $N$ 座通信基站，$P$ 条 <strong>双向</strong> 电缆，第 $i$ 条电缆连接基站 $A_i$ 和 $B_i$。</p>
 <p>特别地，$1$ 号基站是通信公司的总站，$N$ 号基站位于一座农场中。</p>
 <p>现在，农场主希望对通信线路进行升级，其中升级第 $i$ 条电缆需要花费 $L_i$。</p>
