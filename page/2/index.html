@@ -136,7 +136,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -147,7 +147,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -184,6 +184,94 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/31/%E9%A2%98%E8%A7%A3-%E7%8A%B6%E6%80%81%E6%9C%BAdp-%E8%82%A1%E7%A5%A8%E4%B9%B0%E5%8D%96II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.qpix.com/2021/08/11/AYu4.th.jpg">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="全不能栈工程师 & 算法竞赛铁匠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/31/%E9%A2%98%E8%A7%A3-%E7%8A%B6%E6%80%81%E6%9C%BAdp-%E8%82%A1%E7%A5%A8%E4%B9%B0%E5%8D%96II/" class="post-title-link" itemprop="url">题解-状态机dp-股票买卖II</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-08-31 18:20:58 / 修改时间：20:11:24" itemprop="dateCreated datePublished" datetime="2021-08-31T18:20:58+08:00">2021-08-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法竞赛</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>同样是一道经典的状态机dp。</p>
+<h3 id="股票买卖II"><a href="#股票买卖II" class="headerlink" title="股票买卖II"></a>股票买卖II</h3><p>给定一个长度为 $N$ 的数组，数组中的第 $i$ 个数字表示一个给定股票在第 $i$ 天的价格。</p>
+<p>设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:</p>
+<p>你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。<br>卖出股票后，你无法在第二天买入股票 (即冷冻期为 $1$ 天)。<br>输入格式<br>第一行包含整数 $N$，表示数组长度。</p>
+<p>第二行包含 $N$ 个不超过 $10000$ 的正整数，表示完整的数组。</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>输出一个整数，表示最大利润。</p>
+<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$1≤N≤105$</p>
+<h4 id="输入样例"><a href="#输入样例" class="headerlink" title="输入样例"></a>输入样例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">5</span><br><span class="line">1 2 3 0 2</span><br></pre></td></tr></table></figure>
+<h3 id="输出样例"><a href="#输出样例" class="headerlink" title="输出样例"></a>输出样例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3</span><br></pre></td></tr></table></figure>
+<h4 id="样例解释"><a href="#样例解释" class="headerlink" title="样例解释"></a>样例解释</h4><p>对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]，第一笔交易可得利润 2 - 1 = 1，第二笔交易可得利润 2 - 0 = 2，共得利润 1 + 2 = 3。</p>
+<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>题解以后写……贴一下代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100010</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">int</span> f[N][<span class="number">3</span>];</span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        cin &gt;&gt; a[i];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(f, <span class="number">-0x3f</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(f));</span><br><span class="line">    f[<span class="number">0</span>][<span class="number">2</span>] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        f[i][<span class="number">0</span>] = <span class="built_in">max</span>(f[i - <span class="number">1</span>][<span class="number">0</span>], f[i - <span class="number">1</span>][<span class="number">2</span>] - a[i]);</span><br><span class="line">        f[i][<span class="number">1</span>] = f[i - <span class="number">1</span>][<span class="number">0</span>] + a[i];</span><br><span class="line">        f[i][<span class="number">2</span>] = <span class="built_in">max</span>(f[i - <span class="number">1</span>][<span class="number">1</span>], f[i <span class="number">-1</span>][<span class="number">2</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">max</span>(f[n][<span class="number">1</span>], f[n][<span class="number">2</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1060,121 +1148,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/18/%E9%A2%98%E8%A7%A3-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97bfs-%E7%94%B5%E8%B7%AF%E7%BB%B4%E4%BF%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.qpix.com/2021/08/11/AYu4.th.jpg">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="全不能栈工程师 & 算法竞赛铁匠">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/18/%E9%A2%98%E8%A7%A3-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97bfs-%E7%94%B5%E8%B7%AF%E7%BB%B4%E4%BF%AE/" class="post-title-link" itemprop="url">题解-双端队列bfs-电路维修</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-18 16:08:16" itemprop="dateCreated datePublished" datetime="2021-08-18T16:08:16+08:00">2021-08-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-31 20:11:11" itemprop="dateModified" datetime="2021-08-31T20:11:11+08:00">2021-08-31</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法竞赛</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>双端队列bfs经典题。格点+斜线的模板也很重要。</p>
-<h3 id="电路维修"><a href="#电路维修" class="headerlink" title="电路维修"></a>电路维修</h3><p>达达是来自异世界的魔女，她在漫无目的地四处漂流的时候，遇到了善良的少女翰翰，从而被收留在地球上。</p>
-<p>翰翰的家里有一辆飞行车。</p>
-<p>有一天飞行车的电路板突然出现了故障，导致无法启动。</p>
-<p>电路板的整体结构是一个 $R$ 行 $C$ 列的网格 $（R,C≤500）$，如下图所示。</p>
-<p><img src="https://www.acwing.com/media/article/image/2019/01/16/19_be6ff7a219-%E7%94%B5%E8%B7%AF.png" alt="电路板.png"></p>
-<p>每个格点都是电线的接点，每个格子都包含一个电子元件。</p>
-<p>电子元件的主要部分是一个可旋转的、连接一条对角线上的两个接点的短电缆。</p>
-<p>在旋转之后，它就可以连接另一条对角线的两个接点。</p>
-<p>电路板左上角的接点接入直流电源，右下角的接点接入飞行车的发动装置。</p>
-<p>达达发现因为某些元件的方向不小心发生了改变，电路板可能处于断路的状态。</p>
-<p>她准备通过计算，旋转最少数量的元件，使电源与发动装置通过若干条短缆相连。</p>
-<p>不过，电路的规模实在是太大了，达达并不擅长编程，希望你能够帮她解决这个问题。</p>
-<p><strong>注意</strong>：只能走斜向的线段，水平和竖直线段不能走。</p>
-<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>输入文件包含多组测试数据。</p>
-<p>第一行包含一个整数 $T$，表示测试数据的数目。</p>
-<p>对于每组测试数据，第一行包含正整数 $R$ 和 $C$，表示电路板的行数和列数。</p>
-<p>之后 $R$ 行，每行 $C$ 个字符，字符是<code>&quot;/&quot;</code>和<code>&quot;\&quot;</code>中的一个，表示标准件的方向。</p>
-<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>对于每组测试数据，在单独的一行输出一个正整数，表示所需的缩小旋转次数。</p>
-<p>如果无论怎样都不能使得电源和发动机之间连通，输出 <code>NO SOLUTION</code>。</p>
-<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$1≤R,C≤500,$<br>$1≤T≤5$</p>
-<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">3 5</span><br><span class="line">\\/\\</span><br><span class="line">\\///</span><br><span class="line">/\\\\</span><br></pre></td></tr></table></figure>
-<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure>
-<h4 id="样例解释"><a href="#样例解释" class="headerlink" title="样例解释"></a>样例解释</h4><p>样例的输入对应于题目描述中的情况。</p>
-<p>只需要按照下面的方式旋转标准件，就可以使得电源和发动机之间连通。<br><img src="https://www.acwing.com/media/article/image/2019/01/16/19_a0e8e80a19-%E7%94%B5%E8%B7%AF2.png" alt="电路板2.png"></p>
-<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>这个题还是很有意思的。核心思路是，把需要旋转的边看作边权为 $1$，不需旋转的边看作边权为 $0$，求一下最短路。</p>
-<p>需要考虑的是，有没有可能旋转一个边两次呢？这是一个连通的电路，旋转两次的话电路是通不了电的。可以保证最多只旋转一次，这是因为我们只能达到横纵坐标和为偶数的点（想想为什么）。</p>
-<p>然后，由于 $500 \times 500 = 250000$，朴素迪杰斯特拉是一定不行的，（堆优化也许可以hhhh）。 对于 $01$ 边权的最短路，有双端队列bfs算法，若边权为 $0$， 插到队列前，若边权为 $1$ ，插到队列后。可以证明所求满足最短路，这里不赘述证明方法。</p>
-<p>由于本题既需要考虑点，又需要考虑方格中的边，所以代码细节上需要注意。</p>
-<p>$O(n)$复杂度，可以AC。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> PII = tuple&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">510</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> dist[N][N];</span><br><span class="line"><span class="keyword">char</span> grid[N][N];</span><br><span class="line"><span class="keyword">bool</span> vis[N][N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span> (t--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">memset</span>(dist, <span class="number">0x3f</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(dist));</span><br><span class="line">        <span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(vis));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> n, m;</span><br><span class="line">        cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; m; j++)</span><br><span class="line">                cin &gt;&gt; grid[i][j];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> ((n + m) &amp; <span class="number">1</span>)</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;NO SOLUTION&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">char</span> edges[] = <span class="string">&quot;\\/\\/&quot;</span>;</span><br><span class="line">        <span class="keyword">int</span> dx[] = &#123;<span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span> dy[] = &#123;<span class="number">1</span>, <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> ex[] = &#123;<span class="number">0</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">0</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span> ey[] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">-1</span>, <span class="number">-1</span>&#125;;</span><br><span class="line"></span><br><span class="line">        deque&lt;PII&gt; q;</span><br><span class="line">        q.<span class="built_in">push_back</span>(&#123;<span class="number">0</span>, <span class="number">0</span>&#125;);</span><br><span class="line">        dist[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (!q.<span class="built_in">empty</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> x, y;</span><br><span class="line">            <span class="built_in">tie</span>(x, y) = q.<span class="built_in">front</span>();</span><br><span class="line">            q.<span class="built_in">pop_front</span>();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (x == n &amp;&amp; y == m)</span><br><span class="line">            &#123;</span><br><span class="line">                cout &lt;&lt; dist[x][y] &lt;&lt; endl;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (vis[x][y])</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            vis[x][y] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> a = x + dx[i], b = y + dy[i];</span><br><span class="line">                <span class="keyword">if</span> (a &lt; <span class="number">0</span> || a &gt; n || b &lt; <span class="number">0</span> || b &gt; m || vis[a][b])</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">int</span> ea = x + ex[i], eb = y + ey[i];</span><br><span class="line"></span><br><span class="line">                <span class="keyword">bool</span> flag = !(grid[ea][eb] == edges[i]);</span><br><span class="line">                <span class="keyword">int</span> tmp = dist[x][y] + <span class="built_in"><span class="keyword">int</span></span>(flag);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (tmp &lt;= dist[a][b])</span><br><span class="line">                &#123;</span><br><span class="line">                    dist[a][b] = tmp;</span><br><span class="line">                    <span class="keyword">if</span> (flag)</span><br><span class="line">                        q.<span class="built_in">push_back</span>(&#123;a, b&#125;);</span><br><span class="line">                    <span class="keyword">else</span></span><br><span class="line">                        q.<span class="built_in">push_front</span>(&#123;a, b&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
