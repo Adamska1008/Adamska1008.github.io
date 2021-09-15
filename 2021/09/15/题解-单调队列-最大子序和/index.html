@@ -20,28 +20,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="本系列仅简单介绍链接的概念与基本使用，不包括链接的实现机制。  动态链接假设一个操作系统上运行着100个程序，每个程序都需要使用printf。如果使用静态链接库，则printf的代码就会被复制100次，这显然造成了资源浪费。 共享库(shared library)解决了这一问题。它可以加载到任意内存地址，并和一个程序链接起来，这就是动态链接。在Linux中为.so文件，在Windows中为.dll">
+<meta name="description" content="最大子序和输入一个长度为 $n$ 的整数序列，从中找出一段长度不超过 $m$ 的连续子序列，使得子序列中所有数的和最大。 注意： 子序列的长度至少是 $1$。 输入格式第一行输入两个整数 $n,m$。 第二行输入 $n$ 个数，代表长度为 $n$ 的整数序列。 同一行数之间用空格隔开。 输出格式输出一个整数，代表该序列的最大子序和。 数据范围$1≤n,m≤300000$ 输入样例：126 41 -">
 <meta property="og:type" content="article">
-<meta property="og:title" content="静态链接与动态链接（中）">
-<meta property="og:url" content="https://adamska1008.github.io/2021/08/11/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%EF%BC%88%E4%B8%AD%EF%BC%89/index.html">
+<meta property="og:title" content="题解-单调队列-最大子序和">
+<meta property="og:url" content="https://adamska1008.github.io/2021/09/15/%E9%A2%98%E8%A7%A3-%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/index.html">
 <meta property="og:site_name" content="博客">
-<meta property="og:description" content="本系列仅简单介绍链接的概念与基本使用，不包括链接的实现机制。  动态链接假设一个操作系统上运行着100个程序，每个程序都需要使用printf。如果使用静态链接库，则printf的代码就会被复制100次，这显然造成了资源浪费。 共享库(shared library)解决了这一问题。它可以加载到任意内存地址，并和一个程序链接起来，这就是动态链接。在Linux中为.so文件，在Windows中为.dll">
+<meta property="og:description" content="最大子序和输入一个长度为 $n$ 的整数序列，从中找出一段长度不超过 $m$ 的连续子序列，使得子序列中所有数的和最大。 注意： 子序列的长度至少是 $1$。 输入格式第一行输入两个整数 $n,m$。 第二行输入 $n$ 个数，代表长度为 $n$ 的整数序列。 同一行数之间用空格隔开。 输出格式输出一个整数，代表该序列的最大子序和。 数据范围$1≤n,m≤300000$ 输入样例：126 41 -">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-08-11T15:59:53.000Z">
-<meta property="article:modified_time" content="2021-08-13T16:05:52.509Z">
+<meta property="article:published_time" content="2021-09-15T05:48:40.000Z">
+<meta property="article:modified_time" content="2021-09-15T07:05:17.270Z">
 <meta property="article:author" content="Adamska">
-<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="前缀和">
+<meta property="article:tag" content="单调队列">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://adamska1008.github.io/2021/08/11/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%EF%BC%88%E4%B8%AD%EF%BC%89/">
+<link rel="canonical" href="https://adamska1008.github.io/2021/09/15/%E9%A2%98%E8%A7%A3-%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/08/11/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%EF%BC%88%E4%B8%AD%EF%BC%89/","path":"2021/08/11/静态链接与动态链接（中）/","title":"静态链接与动态链接（中）"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/09/15/%E9%A2%98%E8%A7%A3-%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/","path":"2021/09/15/题解-单调队列-最大子序和/","title":"题解-单调队列-最大子序和"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>静态链接与动态链接（中） | 博客</title>
+<title>题解-单调队列-最大子序和 | 博客</title>
   
 
 
@@ -124,7 +125,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="nav-number">1.</span> <span class="nav-text">动态链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E4%BB%8E%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E4%B8%AD%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%93%BE%E6%8E%A5%E5%85%B1%E4%BA%AB%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">C语言从应用程序中加载和链接共享库</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C"><span class="nav-number">1.</span> <span class="nav-text">最大子序和</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">输入格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">输出格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%8C%83%E5%9B%B4"><span class="nav-number">1.3.</span> <span class="nav-text">数据范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A0%B7%E4%BE%8B%EF%BC%9A"><span class="nav-number">1.4.</span> <span class="nav-text">输入样例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%A0%B7%E4%BE%8B%EF%BC%9A"><span class="nav-number">1.5.</span> <span class="nav-text">输出样例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E8%A7%A3"><span class="nav-number">1.6.</span> <span class="nav-text">题解</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -198,7 +199,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/11/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%EF%BC%88%E4%B8%AD%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/09/15/%E9%A2%98%E8%A7%A3-%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.qpix.com/2021/08/11/AYu4.th.jpg">
@@ -211,7 +212,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          静态链接与动态链接（中）
+          题解-单调队列-最大子序和
         </h1>
 
         <div class="post-meta-container">
@@ -221,27 +222,21 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2021-08-11 23:59:53" itemprop="dateCreated datePublished" datetime="2021-08-11T23:59:53+08:00">2021-08-11</time>
+      <time title="创建时间：2021-09-15 13:48:40 / 修改时间：15:05:17" itemprop="dateCreated datePublished" datetime="2021-09-15T13:48:40+08:00">2021-09-15</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-14 00:05:52" itemprop="dateModified" datetime="2021-08-14T00:05:52+08:00">2021-08-14</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法竞赛</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%93%BE%E6%8E%A5/" itemprop="url" rel="index"><span itemprop="name">链接</span></a>
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
         </span>
     </span>
 
@@ -255,18 +250,19 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>本系列仅简单介绍链接的概念与基本使用，不包括链接的实现机制。 </p>
-<h3 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h3><p>假设一个操作系统上运行着100个程序，每个程序都需要使用printf。如果使用静态链接库，则printf的代码就会被复制100次，这显然造成了资源浪费。</p>
-<p>共享库(shared library)解决了这一问题。它可以加载到任意内存地址，并和一个程序链接起来，这就是动态链接。在Linux中为.so文件，在Windows中为.dll文件。所有引用共享库的程序共享一个so文件中的代码和数据。</p>
-<p>依旧使用上篇中提到的add.c和mult.c作为案例。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -shared -fpic -o libvec.so add.c mult.c</span><br><span class="line"><span class="comment">#调用-fpic保证位置无关，是生成共享库的参数</span></span><br><span class="line">gcc -o prog main.c ./libvec.so</span><br></pre></td></tr></table></figure>
-
-<h3 id="C语言从应用程序中加载和链接共享库"><a href="#C语言从应用程序中加载和链接共享库" class="headerlink" title="C语言从应用程序中加载和链接共享库"></a>C语言从应用程序中加载和链接共享库</h3><p>要想链接共享库，既可以编译时加入编译参数，也可以在程序执行的过程中动态地加载共享库。</p>
-<p>Linux系统为动态链接器提供了一个简单的接口，在<code>&lt;dlfcn.h&gt;</code>库下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">dlopen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* filename, <span class="keyword">int</span> flag)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">dlsym</span><span class="params">(<span class="keyword">void</span> *handle, <span class="keyword">char</span> *symbol)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dlclose</span><span class="params">(<span class="keyword">void</span> *handle)</span></span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">2</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> b[<span class="number">2</span>] = &#123;<span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> c[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">void</span> *handle;</span><br><span class="line">    <span class="built_in"><span class="keyword">void</span></span> (*add)(<span class="keyword">int</span>*, <span class="keyword">int</span>*, <span class="keyword">int</span>*, <span class="keyword">int</span>);</span><br><span class="line">    <span class="comment">//为演示方便，忽视可能的error。</span></span><br><span class="line">    handle = <span class="built_in">dlopen</span>(<span class="string">&quot;./libvec.so&quot;</span>, RTLD_LAZY);</span><br><span class="line">    add = <span class="built_in">dlsym</span>(handle, <span class="string">&quot;add&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">add</span>(a, b, c, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;c = [%d %d]\n&quot;</span>, z[<span class="number">0</span>], z[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">dlclose</span>(handle);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -rdynamic -o prog main.c -ldl</span><br><span class="line"><span class="comment"># -rdynamic 参数用于动态链接器解析main.c中的符号</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># output</span></span><br><span class="line">c = [4 6]</span><br></pre></td></tr></table></figure>
+        <h3 id="最大子序和"><a href="#最大子序和" class="headerlink" title="最大子序和"></a>最大子序和</h3><p>输入一个长度为 $n$ 的整数序列，从中找出一段长度不超过 $m$ 的连续子序列，使得子序列中所有数的和最大。</p>
+<p><strong>注意</strong>： 子序列的长度至少是 $1$。</p>
+<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>第一行输入两个整数 $n,m$。</p>
+<p>第二行输入 $n$ 个数，代表长度为 $n$ 的整数序列。</p>
+<p>同一行数之间用空格隔开。</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>输出一个整数，代表该序列的最大子序和。</p>
+<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$1≤n,m≤300000$</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">6 4</span><br><span class="line">1 -3 5 1 -2 3</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7</span><br></pre></td></tr></table></figure>
+<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>$O(n^2)$ 的最大子序和有两种写法，一个是dp，一个是前缀和，一般认为dp比前缀和好，因为前缀和可能爆int甚至long long，但是前缀和可以使用单调队列优化为 $O(n)$。</p>
+<p>以样例为例，前缀和为<code>1 -2 3 4 2 5</code>。对于前缀和，我们实际上只关心一段序列中最大值与最小值之差的最大值（必须保证最小值在最大值之前）。我们看到最小值为 -2, 最大值为 5 ,且 -2 在 5 之前，那么最大子序列一定是 7 （忽略长度限制）。</p>
+<p>这显然就是一个单调队列，队首为一段区间内的最小值的序号，队尾为最大值的序号。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">3000010</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line"><span class="keyword">int</span> pre[N];</span><br><span class="line">deque&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cin &gt;&gt; a[i];</span><br><span class="line">        pre[i] = pre[i - <span class="number">1</span>] + a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    q.<span class="built_in">push_back</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (q.<span class="built_in">size</span>() &amp;&amp; i - q.<span class="built_in">front</span>() &gt; m)</span><br><span class="line">            q.<span class="built_in">pop_front</span>();</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, pre[i] - pre[q.<span class="built_in">front</span>()]);</span><br><span class="line">        <span class="keyword">while</span>(q.<span class="built_in">size</span>() &amp;&amp; pre[q.<span class="built_in">back</span>()] &gt;= pre[i])</span><br><span class="line">            q.<span class="built_in">pop_back</span>();</span><br><span class="line">        q.<span class="built_in">push_back</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -275,21 +271,19 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" rel="tag"># 前缀和</a>
+              <a href="/tags/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/" rel="tag"># 单调队列</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/08/11/%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%EF%BC%88%E4%B8%8A%EF%BC%89/" rel="prev" title="静态链接与动态链接（上）">
-                  <i class="fa fa-chevron-left"></i> 静态链接与动态链接（上）
+                <a href="/2021/09/15/%E9%A2%98%E8%A7%A3-dp-%E7%8E%AF%E5%BD%A2%E7%9F%B3%E5%AD%90%E5%90%88%E5%B9%B6/" rel="prev" title="题解-dp-环形石子合并">
+                  <i class="fa fa-chevron-left"></i> 题解-dp-环形石子合并
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/08/14/%E6%A8%A1%E6%9D%BF-%E6%97%A5%E6%9C%9F%E9%97%AE%E9%A2%98/" rel="next" title="模板-日期问题">
-                  模板-日期问题 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
