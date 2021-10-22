@@ -193,6 +193,98 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/10/20/Linux-C%E4%B8%AD%E5%9F%BA%E4%BA%8E%E5%8F%A5%E6%9F%84%E7%9A%84%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.qpix.com/2021/08/11/AYu4.th.jpg">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="全不能栈工程师 & 算法竞赛铁匠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/20/Linux-C%E4%B8%AD%E5%9F%BA%E4%BA%8E%E5%8F%A5%E6%9F%84%E7%9A%84%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">Linux C中基于句柄的文件操作</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-20 23:58:13" itemprop="dateCreated datePublished" datetime="2021-10-20T23:58:13+08:00">2021-10-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-10-22 23:57:40" itemprop="dateModified" datetime="2021-10-22T23:57:40+08:00">2021-10-22</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>fcntl.h 与 unistd.h 定义了一系列基于句柄的文件操作函数以及常量。其读写文件基于句柄，与stdio.h中基于file的文件读写有很大的不同。考虑到Linux一切皆文件的特性，fcntl.h有着更好的泛用性，且更接近底层。</p>
+<h4 id="句柄"><a href="#句柄" class="headerlink" title="句柄"></a>句柄</h4><p>句柄（Handle）是一个用于标识文件的标识符，其在C中为int类型。句柄在Linux中，不仅可以标识狭义的文件，还可以标识输入输出流或套接字。</p>
+<p>标准输入流的句柄为0，标准输出流的句柄为1，标准错误流的句柄为2。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用句柄向标准输出流输出</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> buf[] = <span class="string">&quot;Hello world!\n&quot;</span>;</span><br><span class="line">    <span class="comment">// 1 即为标准输出流</span></span><br><span class="line">    <span class="comment">// write是用于向句柄输出的函数，其三个参数分别为：句柄，字节缓存，以及输出数量</span></span><br><span class="line">    write(<span class="number">1</span>, buf, <span class="keyword">sizeof</span>(buf));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#输出</span></span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+<p>要创建一个句柄，可以使用open打开文件，或者socket构建套接字。新的句柄从3开始计数，不同进程有着不同的句柄计数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// open接受两个参数，分别为：</span></span><br><span class="line">    <span class="comment">// 1.文件路径 2.打开文件的模式，O_CREAT表示文件不存在时创建文件</span></span><br><span class="line">    <span class="comment">// O_WRONLY表示仅写入，O_TRUNC表示写入前先清空文件</span></span><br><span class="line">    <span class="keyword">int</span> fd = open(<span class="string">&quot;text.txt&quot;</span>, O_CREAT | O_WRONLY | O_TRUNC);</span><br><span class="line">    write(fd, <span class="string">&quot;Hello World!\n&quot;</span>, <span class="number">12</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#输出</span></span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用socket构建句柄</span></span><br><span class="line"><span class="comment">// socket 参数的含义将在之后的文章中介绍</span></span><br><span class="line"><span class="keyword">int</span> fd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);</span><br></pre></td></tr></table></figure>
+
+<p>同样的，可以使用read()函数进行读取操作</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">30</span>];</span><br><span class="line">    <span class="comment">// read()接受三个参数，其含义同write</span></span><br><span class="line">    read(<span class="number">0</span>, buf, <span class="number">11</span>);</span><br><span class="line">    write(<span class="number">1</span>, buf, <span class="number">11</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#输入</span></span><br><span class="line">Hello world</span><br><span class="line"><span class="comment">#输出</span></span><br><span class="line">Hello world</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/10/19/%E5%9C%A8VSCode%E4%B8%AD%E9%85%8D%E7%BD%AEC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1019,98 +1111,6 @@
 <p>如何进行状态转移呢？我们举一些例子。假如前一行状态为 <code>0001</code>，而本行的土壤状况为<code>1000</code>，那我们实际可种植的只有第二第三块。实际上就是把前两者按位或一下，得到<code>1001</code>，如果方案 s 在1的位置上都是0，那么便可以进行一个转移。如何判断呢？我们只需要按位与一下，判断是否为0。比如状态<code>0100</code>，按位与之后是<code>0000</code>，合法，状态<code>1000</code>，按位与之后是<code>1000</code>，不合法。</p>
 <p>对于第 i 行的所有可能状态，枚举所有上一行的状态，能转移就更新，不能转移就跳过，时间复杂度是 $O(n 2 ^{n+1})$。做了第一段所述的优化之后，还能更快一点，实际复杂度是 $12 \times 377 \times 377=1,705,548$ 这样子，是可以过的。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> ll = <span class="keyword">long</span> <span class="keyword">long</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">14</span>, M = <span class="number">1</span> &lt;&lt; N, MOD = <span class="number">1e8</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line">ll f[N][M]; <span class="comment">// f[i][j]的含义是，第i行的状态是j，状态j中1没种，0种了</span></span><br><span class="line">ll g[N]; <span class="comment">// g[i]表示第i行土地的状态，0为肥沃，1为贫瘠</span></span><br><span class="line">vector&lt;ll&gt; state; <span class="comment">// state储存合法的种植状态</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(ll s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> pre = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (s)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">bool</span> cur = s &amp; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (cur &amp;&amp; pre)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        pre = cur;</span><br><span class="line">        s &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(f, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(f));</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1</span> &lt;&lt; m; i++)</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">check</span>(i)) <span class="comment">// 如果合法，保存起来</span></span><br><span class="line">            state.<span class="built_in">push_back</span>(i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; m; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            ll tmp;</span><br><span class="line">            cin &gt;&gt; tmp;</span><br><span class="line">            tmp ^= <span class="number">1</span>; <span class="comment">// 与1异或一下，就可以取反</span></span><br><span class="line">            g[i] |= (tmp &lt;&lt; j);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> x : state) <span class="comment">// 预处理一下第一行</span></span><br><span class="line">        <span class="keyword">if</span> ((g[<span class="number">1</span>] &amp; x) == <span class="number">0</span>)</span><br><span class="line">            f[<span class="number">1</span>][x] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> si : state) <span class="comment">// 这一行的状态</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span> sj : state) <span class="comment">// 上一行的状态</span></span><br><span class="line">            &#123;</span><br><span class="line">                ll sl = sj | g[i];</span><br><span class="line">                <span class="keyword">if</span> ((sl &amp; si) == <span class="number">0</span>)</span><br><span class="line">                    f[i][si] = (f[i][si] + f[i - <span class="number">1</span>][sj]) %  MOD;</span><br><span class="line">            &#125;</span><br><span class="line">    ll ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1</span> &lt;&lt; m; i++)</span><br><span class="line">        ans = (ans + f[n][i]) % MOD;</span><br><span class="line">    cout &lt;&lt; ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/09/11/%E9%A2%98%E8%A7%A3-tarjan-%E5%AD%A6%E6%A0%A1%E7%BD%91%E7%BB%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.qpix.com/2021/08/11/AYu4.th.jpg">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="全不能栈工程师 & 算法竞赛铁匠">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/11/%E9%A2%98%E8%A7%A3-tarjan-%E5%AD%A6%E6%A0%A1%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">题解-tarjan-学校网络</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-09-11 17:52:11 / 修改时间：17:59:23" itemprop="dateCreated datePublished" datetime="2021-09-11T17:52:11+08:00">2021-09-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法竞赛</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="学校网络"><a href="#学校网络" class="headerlink" title="学校网络"></a>学校网络</h3><p>一些学校连接在一个计算机网络上，学校之间存在软件支援协议，每个学校都有它应支援的学校名单（学校 $A$ 支援学校 $B$，并不表示学校 $B$ 一定要支援学校 $A$）。</p>
-<p>当某校获得一个新软件时，无论是直接获得还是通过网络获得，该校都应立即将这个软件通过网络传送给它应支援的学校。</p>
-<p>因此，一个新软件若想让所有学校都能使用，只需将其提供给一些学校即可。</p>
-<p>现在请问最少需要将一个新软件直接提供给多少个学校，才能使软件能够通过网络被传送到所有学校？</p>
-<p>最少需要添加几条新的支援关系，使得将一个新软件提供给任何一个学校，其他所有学校就都可以通过网络获得该软件？</p>
-<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>第 $1$ 行包含整数 $N$，表示学校数量。</p>
-<p>第 $2..N+1$ 行，每行包含一个或多个整数，第 $i+1$ 行表示学校 $i$ 应该支援的学校名单，每行最后都有一个 $0$ 表示名单结束（只有一个 $0$ 即表示该学校没有需要支援的学校）。</p>
-<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>输出两个问题的结果，每个结果占一行。</p>
-<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$2≤N≤100$<br>输入样例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">5</span><br><span class="line">2 4 3 0</span><br><span class="line">4 5 0</span><br><span class="line">0</span><br><span class="line">0</span><br><span class="line">1 0</span><br></pre></td></tr></table></figure>
-<p>输出样例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
-<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>题目不是很难。</p>
-<p>一共有两问，第一问其实就是求一下入度为 $0$ 的强连通分量的个数，第二问呢，我们可以先构造一个近似解。如果一个图中，入度为 $0$ 的强连通分量有 $p$ 个，出度为 $0$ 的强连通分量有 $q$ 个，那么我们只需要把后 $q$ 个连到前 $p$ 个上就行了，这个连边的数量就是 $max(p,\ q)$。可以证明这个近似解就是解，但是证明比较烦。</p>
-<p>需要特判一个情况，如果这个图本身就是强连通的，那么第二问就不需要加边。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">110</span>, M = N * N;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">int</span> h[N], ne[M], e[M], idx = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> dfn[N], low[N], timestamp = <span class="number">0</span>;</span><br><span class="line">stack&lt;<span class="keyword">int</span>&gt; stk;</span><br><span class="line"><span class="keyword">bool</span> in_stk[N];</span><br><span class="line"><span class="keyword">int</span> id[N], scc_cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> dout[N], din[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    e[idx] = b, ne[idx] = h[a], h[a] = idx++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">tarjan</span><span class="params">(<span class="keyword">int</span> u)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    dfn[u] = low[u] = ++timestamp;</span><br><span class="line">    stk.<span class="built_in">push</span>(u), in_stk[u] = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = h[u]; i != <span class="number">-1</span>; i = ne[i])</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> v = e[i];</span><br><span class="line">        <span class="keyword">if</span> (dfn[v] == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">tarjan</span>(v);</span><br><span class="line">            low[u] = <span class="built_in">min</span>(low[u], low[v]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (in_stk[v])</span><br><span class="line">            low[u] = <span class="built_in">min</span>(low[u], dfn[v]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (dfn[u] == low[u])</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> v;</span><br><span class="line">        scc_cnt++;</span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">        &#123;</span><br><span class="line">            v = stk.<span class="built_in">top</span>();</span><br><span class="line">            stk.<span class="built_in">pop</span>();</span><br><span class="line">            in_stk[v] = <span class="literal">false</span>;</span><br><span class="line">            id[v] = scc_cnt;</span><br><span class="line">        &#125; <span class="keyword">while</span> (v != u);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(h, <span class="number">-1</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(h));</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp;</span><br><span class="line">        <span class="keyword">while</span> (cin &gt;&gt; tmp)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (tmp == <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="built_in">add</span>(i, tmp);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (dfn[i] == <span class="number">0</span>)</span><br><span class="line">            <span class="built_in">tarjan</span>(i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = h[i]; j != <span class="number">-1</span>; j = ne[j])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> u = i, v = e[j];</span><br><span class="line">            <span class="keyword">if</span> (id[u] != id[v])</span><br><span class="line">            &#123;</span><br><span class="line">                dout[id[u]]++;</span><br><span class="line">                din[id[v]]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">int</span> p = <span class="number">0</span>, q = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= scc_cnt; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (din[i] == <span class="number">0</span>)</span><br><span class="line">            p++;</span><br><span class="line">        <span class="keyword">if</span> (dout[i] == <span class="number">0</span>)</span><br><span class="line">            q++;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; p &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">if</span> (scc_cnt == <span class="number">1</span>)</span><br><span class="line">        cout &lt;&lt; <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        cout &lt;&lt; <span class="built_in">max</span>(p, q);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 

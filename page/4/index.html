@@ -193,6 +193,105 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/15/%E9%A2%98%E8%A7%A3-%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85-%E6%95%B4%E6%95%B0%E5%88%92%E5%88%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.qpix.com/2021/08/11/AYu4.th.jpg">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="全不能栈工程师 & 算法竞赛铁匠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/15/%E9%A2%98%E8%A7%A3-%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85-%E6%95%B4%E6%95%B0%E5%88%92%E5%88%86/" class="post-title-link" itemprop="url">题解-完全背包-整数划分</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-15 16:01:00" itemprop="dateCreated datePublished" datetime="2021-08-15T16:01:00+08:00">2021-08-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-31 20:11:51" itemprop="dateModified" datetime="2021-08-31T20:11:51+08:00">2021-08-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法竞赛</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>模板题，所以题解会写的比较简洁，默认已经会了完全背包。</p>
+<h3 id="整数划分"><a href="#整数划分" class="headerlink" title="整数划分"></a>整数划分</h3><p>一个正整数 $n$ 可以表示成若干个正整数之和，形如：$n=n_1+n_2+…+n_k$，其中 $n_1≥n_2≥…≥n_k$，$k≥1$ 。</p>
+<p>我们将这样的一种表示称为正整数 $n$ 的一种划分。</p>
+<p>现在给定一个正整数 $n$，请你求出 $n$ 共有多少种不同的划分方法。</p>
+<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>共一行，包含一个整数 $n$。</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>共一行，包含一个整数，表示总划分数量。</p>
+<p>由于答案可能很大，输出结果请对 $10^9+7$ 取模。</p>
+<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$1≤n≤1000$</p>
+<h4 id="输入样例"><a href="#输入样例" class="headerlink" title="输入样例"></a>输入样例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例"><a href="#输出样例" class="headerlink" title="输出样例"></a>输出样例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7</span><br></pre></td></tr></table></figure>
+<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>着重讲一下为什么这个是完全背包，至于完全背包的写法就不赘述了。</p>
+<p>注意题目中要求划分出的 $a$ 数组必须是有序的，<code>4 = 1 + 1 + 2</code> 和<code>4 = 2 + 1 + 1</code> 是等价的。这就意味着，划分可以等价的认为是，从 数字 $[1, n]$ 中挑出任意个数相加组成数字 $n$，每个数字的挑出数量不限制，那么，毫无疑问就是完全背包了。</p>
+<p>$O(n^2logn)$写法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> ll = <span class="keyword">long</span> <span class="keyword">long</span>;</span><br><span class="line"><span class="keyword">const</span> ll MOD = <span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line"><span class="keyword">const</span> ll N = <span class="number">1010</span>;</span><br><span class="line"></span><br><span class="line">ll f[N][N]; <span class="comment">// f[i][j]表示使用前i个数字组成数字j</span></span><br><span class="line">ll n;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line">        f[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; j - i * k &gt;= <span class="number">0</span>; k++) </span><br><span class="line">                f[i][j] = (f[i][j] + f[i - <span class="number">1</span>][j - i * k]) % MOD;</span><br><span class="line">    cout &lt;&lt; f[n][n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>$O(n^2)$写法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> ll = <span class="keyword">long</span> <span class="keyword">long</span>;</span><br><span class="line"><span class="keyword">const</span> ll MOD = <span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line"><span class="keyword">const</span> ll N = <span class="number">1010</span>;</span><br><span class="line"></span><br><span class="line">ll f[N][N]; <span class="comment">// f[i][j]表示使用前i个数字组成数字j</span></span><br><span class="line">ll n;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line">        f[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            f[i][j] = f[i - <span class="number">1</span>][j];</span><br><span class="line">            <span class="keyword">if</span> (j - i &gt;= <span class="number">0</span>)</span><br><span class="line">                f[i][j] = (f[i][j] + f[i][j - i]) % MOD;</span><br><span class="line">        &#125;</span><br><span class="line">    cout &lt;&lt; f[n][n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/14/%E9%A2%98%E8%A7%A3-dp-%E6%9C%80%E7%9F%AD%E7%BC%96%E8%BE%91%E8%B7%9D%E7%A6%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -782,93 +881,6 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># output</span></span><br><span class="line">c = [4 6]</span><br></pre></td></tr></table></figure>
 <p>为什么当我们<code>#include &lt;stdio.h&gt;</code>后，编译时不需要添加静态库呢？因为标准库会隐式地进行链接。</p>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/11/LinuxC%E4%B8%AD%E5%9F%BA%E4%BA%8E%E5%8F%A5%E6%9F%84%E7%9A%84%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.qpix.com/2021/08/11/AYu4.th.jpg">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="全不能栈工程师 & 算法竞赛铁匠">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/11/LinuxC%E4%B8%AD%E5%9F%BA%E4%BA%8E%E5%8F%A5%E6%9F%84%E7%9A%84%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">LinuxC中基于句柄的文件操作</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-11 23:58:13" itemprop="dateCreated datePublished" datetime="2021-08-11T23:58:13+08:00">2021-08-11</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-22 23:46:36" itemprop="dateModified" datetime="2021-10-22T23:46:36+08:00">2021-10-22</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>fcntl.h 与 unistd.h 定义了一系列基于句柄的文件操作函数以及常量。其读写文件基于句柄，与stdio.h中基于file的文件读写有很大的不同。考虑到Linux一切皆文件的特性，fcntl.h有着更好的泛用性，且更接近底层。</p>
-<h4 id="句柄"><a href="#句柄" class="headerlink" title="句柄"></a>句柄</h4><p>句柄（Handle）是一个用于标识文件的标识符，其在C中为int类型。句柄在Linux中，不仅可以标识狭义的文件，还可以标识输入输出流或套接字。</p>
-<p>标准输入流的句柄为0，标准输出流的句柄为1，标准错误流的句柄为2。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用句柄向标准输出流输出</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> buf[] = <span class="string">&quot;Hello world!\n&quot;</span>;</span><br><span class="line">    <span class="comment">// 1 即为标准输出流</span></span><br><span class="line">    <span class="comment">// write是用于向句柄输出的函数，其三个参数分别为：句柄，字节缓存，以及输出数量</span></span><br><span class="line">    write(<span class="number">1</span>, buf, <span class="keyword">sizeof</span>(buf));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#输出</span></span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
-<p>要创建一个句柄，可以使用open打开文件，或者socket构建套接字。新的句柄从3开始计数，不同进程有着不同的句柄。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// open接受两个参数，分别为：</span></span><br><span class="line">    <span class="comment">// 1.文件路径 2.打开文件的模式，O_CREAT表示文件不存在时创建文件</span></span><br><span class="line">    <span class="comment">// O_WRONLY表示仅写入，O_TRUNC表示写入前先清空文件</span></span><br><span class="line">    <span class="keyword">int</span> fd = open(<span class="string">&quot;text.txt&quot;</span>, O_CREAT | O_WRONLY | O_TRUNC);</span><br><span class="line">    write(fd, <span class="string">&quot;Hello World!\n&quot;</span>, <span class="number">12</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#输出</span></span><br><span class="line">3</span><br></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用socket构建句柄</span></span><br><span class="line"><span class="comment">// socket 参数的含义将在之后的文章中介绍</span></span><br><span class="line"><span class="keyword">int</span> fd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);</span><br></pre></td></tr></table></figure>
       
     </div>
 
