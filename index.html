@@ -136,7 +136,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -184,6 +184,120 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/10/26/%E9%A2%98%E8%A7%A3-dp-%E8%B4%A7%E5%B8%81%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://raw.githubusercontent.com/Adamska1008/image-host/master/%E5%A4%B4%E5%83%8F.jpg?token=ARZQ3O34QKCLRMF2IU4TQW3BOP7MQ">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="全不能栈工程师 & 算法竞赛铁匠">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/26/%E9%A2%98%E8%A7%A3-dp-%E8%B4%A7%E5%B8%81%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">题解-dp-货币系统</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-10-26 14:55:56 / 修改时间：15:52:02" itemprop="dateCreated datePublished" datetime="2021-10-26T14:55:56+08:00">2021-10-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法竞赛</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="货币系统"><a href="#货币系统" class="headerlink" title="货币系统"></a>货币系统</h3><p>在网友的国度中共有 $n$ 种不同面额的货币，第 $i$ 种货币的面额为 $a[i]$，你可以假设每一种货币都有无穷多张。</p>
+<p>为了方便，我们把货币种数为 $n$、面额数组为 $a[1..n]$ 的货币系统记作 $(n,a)$。 </p>
+<p>在一个完善的货币系统中，每一个非负整数的金额 $x$ 都应该可以被表示出，即对每一个非负整数 $x$，都存在 $n$ 个非负整数 $t[i]$ 满足 $\sum_{i=1}^n a[i]×t[i] = x$。</p>
+<p>然而，在网友的国度中，货币系统可能是不完善的，即可能存在金额 $x$ 不能被该货币系统表示出。</p>
+<p>例如在货币系统 $n=3, a=[2,5,9]$ 中，金额 $1,3$ 就无法被表示出来。 </p>
+<p>两个货币系统 $(n,a)$ 和 $(m,b)$ 是等价的，当且仅当对于任意非负整数 $x$，它要么均可以被两个货币系统表出，要么不能被其中任何一个表出。 </p>
+<p>现在网友们打算简化一下货币系统。</p>
+<p>他们希望找到一个货币系统 $(m,b)$，满足 $(m,b)$ 与原来的货币系统 $(n,a)$ 等价，且 $m$ 尽可能的小。</p>
+<p>他们希望你来协助完成这个艰巨的任务：找到最小的 $m$。</p>
+<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>输入文件的第一行包含一个整数 $T$，表示数据的组数。</p>
+<p>接下来按照如下格式分别给出 $T$ 组数据。 </p>
+<p>每组数据的第一行包含一个正整数 $n$。</p>
+<p>接下来一行包含 $n$ 个由空格隔开的正整数 $a[i]$。</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>输出文件共有 $T$ 行，对于每组数据，输出一行一个正整数，表示所有与 $(n,a)$ 等价的货币系统 $(m,b)$ 中，最小的 $m$。</p>
+<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$1≤n≤100,$<br>$1≤a[i]≤25000,$<br>$1≤T≤20$</p>
+<h4 id="输入样例"><a href="#输入样例" class="headerlink" title="输入样例"></a>输入样例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2 </span><br><span class="line">4 </span><br><span class="line">3 19 10 6 </span><br><span class="line">5 </span><br><span class="line">11 29 13 19 17 </span><br></pre></td></tr></table></figure>
+<h4 id="输出样例"><a href="#输出样例" class="headerlink" title="输出样例"></a>输出样例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>这个题的要求类似于求向量中的极大无关组。</p>
+<p>我们先考虑从原货币序列中去除一些多余的货币。哪些货币是不需要的呢？以<code>3 19 10 6</code>为例，由于<code>19 = 3 + 6 + 10</code>，所有需要用 $19$ 来表示的面额都可以用其他三种货币表示。又由于<code>6 = 3 + 3</code>，所有需要 $6$ 表示的面额都可以用 $3$ 表示，所以 $19$ 和 $6$ 都是多余的。</p>
+<p>那么，除掉这两个数后，能表示的面额是不是还和原本的一样呢？记原货币系统中所有能表示的面额为集合 $S_1$， <code>3 10</code>系统能表示的所有面额为集合 $S_2$，上面我们已经证明了 $ S_1 \subseteq S_2 $，而由于<code>3 10</code>本身即在<code>3 10 6 19</code>中，故其表示的范围不可能超过原集和，即 $S_2 \subseteq S_1$ ，于是得证 $S_1=S_2$ 。</p>
+<p>那么，我们就构造出了一个新的面额序列，保证比原序列短，而且与原序列等价。答案不可能大于这个新序列的长度。实际上，答案正是这个序列的长度。证明较复杂，基本依靠直觉。</p>
+<p>怎么求这个新序列的长度呢？使用DP即可。我们把这个问题转化为：给定一个集合，这个集合中的某个元素如果用这个集合中的元素来表达，有多少种表达方式。如果只有一种，即自身，那么这个元素就是不能除去的，如果有超过一种，那么就可以用其他数字来表示这个数字，这个数字就舍去。</p>
+<p>定义数组 $v$。状态 $f(i,j)$ 表示，用前 $i$ 个元素来表达数字 $j$，有多少种表达方式，其中 $j \leq max(v_i)$，这是因为我们只关心数组中的数字能不能被多次表达。</p>
+<p>如何进行状态转移？对于 $f(i, j)$，即使用前 $i$ 个数表示数字 $j$，我们用取多少个 $v<em>i$ 来划分 $f(i, j)$ 的方案集合。如果不取 $v_i$，那么方案数便是 $f(i - 1, j)$，如果取一个 $v_i$，方案数便是$f(i - 1, j - v_i)$……以此类推，一直到 $f(i - 1, j - k</em>{max}  * v<em>i)$ 为止，$k</em>{max}$ 为使表达式大于零的 $k$ 的最大值。</p>
+<p>于是我们得到：</p>
+<script type="math/tex; mode=display">
+f(i, j) = \sum_0^{k_{max}} f(i - 1, j - k * v_i)</script><p>这样DP，时间复杂度是 $O(nm^2)$，其中 $n<em>{max}=100, \ m</em>{max}=25000$，显然会超时，我们必须优化一维。</p>
+<p>在上式中，在左侧用 $j - v_i$ 替代 $j$，得到</p>
+<script type="math/tex; mode=display">
+f(i, j - v_i) = \sum_0^{k_{max}} f(i - 1, j - v_i - k * v_i) =\sum_1^{k_{max}} f(i - 1, j - k * v_i)</script><p>代回原式，得到</p>
+<script type="math/tex; mode=display">
+f(i, j) = \left\{
+    \begin{aligned} 
+    f(i - 1, j) + f(i, j - v_i),\ j-v_i \geq 0 \\
+    f(i - 1, j) ,\ j - v_i < 0 \\
+    \end{aligned}
+    \right.</script><p>于是DP被优化为 $O(nm)$，不会超时。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> ll = <span class="keyword">long</span> <span class="keyword">long</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">110</span>, M = <span class="number">25010</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="keyword">int</span> v[N];</span><br><span class="line"><span class="keyword">int</span> f[N][M];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span> (t--)</span><br><span class="line">    &#123;</span><br><span class="line">        m = <span class="number">0</span>;</span><br><span class="line">        cin &gt;&gt; n;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">            cin &gt;&gt; v[i], m = <span class="built_in">max</span>(v[i], m);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line">            f[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= m; j++)</span><br><span class="line">                <span class="keyword">if</span> (j - v[i] &gt;= <span class="number">0</span>)</span><br><span class="line">                    f[i][j] = f[i - <span class="number">1</span>][j] + f[i][j - v[i]];</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    f[i][j] = f[i - <span class="number">1</span>][j];</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">            <span class="keyword">if</span> (f[n][v[i]] == <span class="number">1</span>)</span><br><span class="line">                cnt++;</span><br><span class="line">        cout &lt;&lt; cnt &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1055,100 +1169,6 @@
 <p>以样例为例，前缀和为<code>1 -2 3 4 2 5</code>。对于前缀和，我们实际上只关心一段序列中最大值与最小值之差的最大值（必须保证最小值在最大值之前）。我们看到最小值为 -2, 最大值为 5 ,且 -2 在 5 之前，那么最大子序列一定是 7 （忽略长度限制）。</p>
 <p>这显然就是一个单调队列，队首为一段区间内的最小值的序号，队尾为最大值的序号。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">3000010</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line"><span class="keyword">int</span> pre[N];</span><br><span class="line">deque&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cin &gt;&gt; a[i];</span><br><span class="line">        pre[i] = pre[i - <span class="number">1</span>] + a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    q.<span class="built_in">push_back</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (q.<span class="built_in">size</span>() &amp;&amp; i - q.<span class="built_in">front</span>() &gt; m)</span><br><span class="line">            q.<span class="built_in">pop_front</span>();</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, pre[i] - pre[q.<span class="built_in">front</span>()]);</span><br><span class="line">        <span class="keyword">while</span>(q.<span class="built_in">size</span>() &amp;&amp; pre[q.<span class="built_in">back</span>()] &gt;= pre[i])</span><br><span class="line">            q.<span class="built_in">pop_back</span>();</span><br><span class="line">        q.<span class="built_in">push_back</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/09/15/%E9%A2%98%E8%A7%A3-dp-%E7%8E%AF%E5%BD%A2%E7%9F%B3%E5%AD%90%E5%90%88%E5%B9%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://raw.githubusercontent.com/Adamska1008/image-host/master/%E5%A4%B4%E5%83%8F.jpg?token=ARZQ3O34QKCLRMF2IU4TQW3BOP7MQ">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="全不能栈工程师 & 算法竞赛铁匠">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/15/%E9%A2%98%E8%A7%A3-dp-%E7%8E%AF%E5%BD%A2%E7%9F%B3%E5%AD%90%E5%90%88%E5%B9%B6/" class="post-title-link" itemprop="url">题解-dp-环形石子合并</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-09-15 13:39:16 / 修改时间：13:46:00" itemprop="dateCreated datePublished" datetime="2021-09-15T13:39:16+08:00">2021-09-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法竞赛</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="环形石子合并"><a href="#环形石子合并" class="headerlink" title="环形石子合并"></a>环形石子合并</h3><p>将 $n$ 堆石子绕圆形操场排放，现要将石子有序地合并成一堆。</p>
-<p>规定每次只能选相邻的两堆合并成新的一堆，并将新的一堆的石子数记做该次合并的得分。</p>
-<p>请编写一个程序，读入堆数 $n$ 及每堆的石子数，并进行如下计算：</p>
-<ul>
-<li>选择一种合并石子的方案，使得做 n−1 次合并得分总和最大。</li>
-<li>选择一种合并石子的方案，使得做 n−1 次合并得分总和最小。</li>
-</ul>
-<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>第一行包含整数 $n$，表示共有 $n$ 堆石子。</p>
-<p>第二行包含 $n$ 个整数，分别表示每堆石子的数量。</p>
-<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>输出共两行：</p>
-<p>第一行为合并得分总和最小值，</p>
-<p>第二行为合并得分总和最大值。</p>
-<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$1≤n≤200$</p>
-<h4 id="输入样例"><a href="#输入样例" class="headerlink" title="输入样例"></a>输入样例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4</span><br><span class="line">4 5 9 4</span><br></pre></td></tr></table></figure>
-<h4 id="输出样例"><a href="#输出样例" class="headerlink" title="输出样例"></a>输出样例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">43</span><br><span class="line">54</span><br></pre></td></tr></table></figure>
-<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>还是区间dp，需要拆环成链。我们直接开一个2 * N的数组，把原数据复制一下接到后面，这样，f[i][i + n - 1]就相当于是从 i 开始合并到 i - 1,其中绕了一个环。</p>
-<p>dp过程，就是枚举两端+中间，找f[i][j]从什么转移过来最大（小），第一维枚举长度，因为长度大的状态必定依赖长度小的状态来更新。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">210</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">int</span> a[<span class="number">2</span> * N];</span><br><span class="line"><span class="keyword">int</span> p[<span class="number">2</span> * N];</span><br><span class="line"><span class="keyword">int</span> fa[<span class="number">2</span> * N][<span class="number">2</span> * N];</span><br><span class="line"><span class="keyword">int</span> fi[<span class="number">2</span> * N][<span class="number">2</span> * N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cin &gt;&gt; a[i];</span><br><span class="line">        a[i + n] = a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">2</span> * n; i++)</span><br><span class="line">        p[i] = p[i - <span class="number">1</span>] + a[i];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt;= n - <span class="number">1</span>; k++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i + k &lt;= <span class="number">2</span> * n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> j = i + k;</span><br><span class="line">            fa[i][j] = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> q = i; q + <span class="number">1</span> &lt;= j; q++)</span><br><span class="line">                fa[i][j] = <span class="built_in">max</span>(fa[i][j], fa[i][q] + fa[q + <span class="number">1</span>][j] + p[j] - p[i - <span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="built_in">memset</span>(fi, <span class="number">0x3f3f3f3f</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(fi));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">2</span> * n; i++)</span><br><span class="line">        fi[i][i] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt;= <span class="number">2</span> * n - <span class="number">1</span>; k++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i + k &lt;= <span class="number">2</span> * n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> j = i + k;</span><br><span class="line">            fi[i][j] = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> q = i; q + <span class="number">1</span> &lt;= j; q++)</span><br><span class="line">                fi[i][j] = <span class="built_in">min</span>(fi[i][j], fi[i][q] + fi[q + <span class="number">1</span>][j] + p[j] - p[i - <span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">int</span> ans1 = <span class="number">0</span>, ans2 = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n + <span class="number">1</span>; i++)</span><br><span class="line">        ans1 = <span class="built_in">max</span>(ans1, fa[i][n + i - <span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n + <span class="number">1</span>; i++)</span><br><span class="line">        ans2 = <span class="built_in">min</span>(ans2, fi[i][n + i - <span class="number">1</span>]);</span><br><span class="line">    cout &lt;&lt; ans2 &lt;&lt; endl</span><br><span class="line">         &lt;&lt; ans1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
