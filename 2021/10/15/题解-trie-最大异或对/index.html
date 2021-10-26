@@ -19,12 +19,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="最大异或对 在给定的 NNN 个整数 A1，A2……ANA_1，A_2……A_NA1​，A2​……AN​ 中选出两个进行 xorxorxor（异或）运算，得到的结果最大是多少？  输入格式 第一行输入一个整数 NNN。 第二行输入 NNN 个整数 A1∼ANA_1 \sim A_NA1​∼AN​。  输出格式 输出一个整数表示答案。  数据范围 1≤N≤105,1≤N≤10_5,1≤N≤105​">
 <meta property="og:type" content="article">
 <meta property="og:title" content="题解-trie-最大异或对">
-<meta property="og:url" content="http://example.com/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="https://adamska1008.github.io/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/index.html">
+<meta property="og:site_name" content="Blog">
 <meta property="og:description" content="最大异或对 在给定的 NNN 个整数 A1，A2……ANA_1，A_2……A_NA1​，A2​……AN​ 中选出两个进行 xorxorxor（异或）运算，得到的结果最大是多少？  输入格式 第一行输入一个整数 NNN。 第二行输入 NNN 个整数 A1∼ANA_1 \sim A_NA1​∼AN​。  输出格式 输出一个整数表示答案。  数据范围 1≤N≤105,1≤N≤10_5,1≤N≤105​">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-15T05:18:49.000Z">
@@ -35,14 +35,14 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/">
+<link rel="canonical" href="https://adamska1008.github.io/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/","path":"2021/10/15/题解-trie-最大异或对/","title":"题解-trie-最大异或对"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/","path":"2021/10/15/题解-trie-最大异或对/","title":"题解-trie-最大异或对"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>题解-trie-最大异或对 | Hexo</title>
+<title>题解-trie-最大异或对 | Blog</title>
   
 
 
@@ -75,7 +75,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">Blog</h1>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -91,6 +91,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
   </ul>
 </nav>
@@ -140,15 +142,20 @@
         </a>
       </div>
       <div class="site-state-item site-state-categories">
+          <a href="/categories/">
         <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">分类</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
+          <a href="/tags">
         <span class="site-state-item-count">28</span>
-        <span class="site-state-item-name">标签</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
 
 
 
@@ -183,7 +190,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -192,7 +199,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Blog">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -260,6 +267,23 @@
     
 
     <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Adamska
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://adamska1008.github.io/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/" title="题解-trie-最大异或对">https://adamska1008.github.io/2021/10/15/题解-trie-最大异或对/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
           <div class="post-tags">
               <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag"># 字符串</a>
               <a href="/tags/trie/" rel="tag"># trie</a>
@@ -303,7 +327,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Adamska</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
     </div>
