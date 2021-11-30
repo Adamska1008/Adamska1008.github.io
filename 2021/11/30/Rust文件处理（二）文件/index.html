@@ -20,29 +20,28 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="如代码 123456789101112131415161718192021222324252627&#x2F;&#x2F; 当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称为鸭子。&#x2F;&#x2F; 对于iterator，实现如下方法：operator!&#x3D;(), operator*(), operator++()&#x2F;&#x2F; 对于容器，实现如下方法：begin(), end()class Iter&amp;#123;">
+<meta name="description" content="fs基本文件操作 fs库实现了一些基本的文件操作。文件的创建与打开被封装在File类下，而对于目录的一系列操作，文件读写以及删除则以fs下的函数为入口。常用函数如下：  文件内容复制 fs::copy(from, to) 创建新目录 fs::create(path) 读，写，删 fs::read_*(path), fs::write(path), fs::remove_*(path) 文件重命名">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在C++中实现for range">
-<meta property="og:url" content="https://adamska1008.github.io/2021/08/14/%E5%9C%A8C-%E4%B8%AD%E5%AE%9E%E7%8E%B0for-range/index.html">
+<meta property="og:title" content="Rust文件处理（二） 文件">
+<meta property="og:url" content="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="如代码 123456789101112131415161718192021222324252627&#x2F;&#x2F; 当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称为鸭子。&#x2F;&#x2F; 对于iterator，实现如下方法：operator!&#x3D;(), operator*(), operator++()&#x2F;&#x2F; 对于容器，实现如下方法：begin(), end()class Iter&amp;#123;">
+<meta property="og:description" content="fs基本文件操作 fs库实现了一些基本的文件操作。文件的创建与打开被封装在File类下，而对于目录的一系列操作，文件读写以及删除则以fs下的函数为入口。常用函数如下：  文件内容复制 fs::copy(from, to) 创建新目录 fs::create(path) 读，写，删 fs::read_*(path), fs::write(path), fs::remove_*(path) 文件重命名">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-08-14T05:50:15.000Z">
-<meta property="article:modified_time" content="2021-08-18T08:34:54.708Z">
+<meta property="article:published_time" content="2021-11-30T08:42:22.000Z">
+<meta property="article:modified_time" content="2021-11-30T11:43:57.677Z">
 <meta property="article:author" content="Adamska">
-<meta property="article:tag" content="C++">
-<meta property="article:tag" content="造轮子">
+<meta property="article:tag" content="rust">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://adamska1008.github.io/2021/08/14/%E5%9C%A8C-%E4%B8%AD%E5%AE%9E%E7%8E%B0for-range/">
+<link rel="canonical" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/08/14/%E5%9C%A8C-%E4%B8%AD%E5%AE%9E%E7%8E%B0for-range/","path":"2021/08/14/在C-中实现for-range/","title":"在C++中实现for range"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/","path":"2021/11/30/Rust文件处理（二）文件/","title":"Rust文件处理（二） 文件"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>在C++中实现for range | Blog</title>
+<title>Rust文件处理（二） 文件 | Blog</title>
   
 
 
@@ -111,7 +110,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -124,6 +123,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#fs%E5%9F%BA%E6%9C%AC%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text"> fs基本文件操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#file"><span class="nav-number">2.</span> <span class="nav-text"> File</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#openoptions"><span class="nav-number">3.</span> <span class="nav-text"> OpenOptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#metadata"><span class="nav-number">4.</span> <span class="nav-text"> MetaData</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#readdir-direntry%E4%B8%8Edirbuilder"><span class="nav-number">5.</span> <span class="nav-text"> ReadDir, DirEntry与DirBuilder</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -189,7 +189,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/14/%E5%9C%A8C-%E4%B8%AD%E5%AE%9E%E7%8E%B0for-range/">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,7 +202,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          在C++中实现for range
+          Rust文件处理（二） 文件
         </h1>
 
         <div class="post-meta-container">
@@ -212,24 +212,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2021-08-14 13:50:15" itemprop="dateCreated datePublished" datetime="2021-08-14T13:50:15+08:00">2021-08-14</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-18 16:34:54" itemprop="dateModified" datetime="2021-08-18T16:34:54+08:00">2021-08-18</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%82%E9%A1%B9/" itemprop="url" rel="index"><span itemprop="name">杂项</span></a>
-        </span>
+      <time title="创建时间：2021-11-30 16:42:22 / 修改时间：19:43:57" itemprop="dateCreated datePublished" datetime="2021-11-30T16:42:22+08:00">2021-11-30</time>
     </span>
 
   
@@ -242,11 +227,38 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>如代码</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称为鸭子。</span></span><br><span class="line"><span class="comment">// 对于iterator，实现如下方法：operator!=(), operator*(), operator++()</span></span><br><span class="line"><span class="comment">// 对于容器，实现如下方法：begin(), end()</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Iter</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Iter</span><span class="params">(<span class="keyword">int</span> a)</span> : _value(a) &#123;</span>&#125;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>!=(<span class="keyword">const</span> Iter i) &#123; <span class="keyword">return</span> <span class="keyword">this</span>-&gt;<span class="built_in">GetValue</span>() != i.<span class="built_in">GetValue</span>(); &#125;</span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">operator</span>*() <span class="keyword">const</span> &#123; <span class="keyword">return</span> <span class="keyword">this</span>-&gt;<span class="built_in">GetValue</span>(); &#125;</span><br><span class="line">    <span class="keyword">const</span> Iter &amp;<span class="keyword">operator</span>++() &#123; <span class="keyword">return</span> ++_value, *<span class="keyword">this</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">GetValue</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _value; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">range</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">range</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> : _begin(a), _end(b) &#123;</span>&#125;</span><br><span class="line">    <span class="function">Iter <span class="title">begin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">Iter</span>(_begin); &#125;</span><br><span class="line">    <span class="function">Iter <span class="title">end</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">Iter</span>(_end); &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _begin;</span><br><span class="line">    <span class="keyword">int</span> _end;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>效果</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> x : <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">10</span>))</span><br><span class="line">    cout &lt;&lt; x &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#output</span></span><br><span class="line">0 1 2 3 4 5 6 7 8 9 </span><br></pre></td></tr></table></figure>
+        <h3 id="fs基本文件操作"><a class="markdownIt-Anchor" href="#fs基本文件操作"></a> fs基本文件操作</h3>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/index.html">fs</a>库实现了一些基本的文件操作。文件的创建与打开被封装在File类下，而对于目录的一系列操作，文件读写以及删除则以fs下的函数为入口。常用函数如下：</p>
+<ul>
+<li>文件内容复制 <code>fs::copy(from, to)</code></li>
+<li>创建新目录 <code>fs::create(path)</code></li>
+<li>读，写，删 <code>fs::read_*(path), fs::write(path), fs::remove_*(path)</code></li>
+<li>文件重命名 <code>fs::rename(path, path)</code></li>
+<li>设置权限 <code>fs::set_permissions(path, perm)</code></li>
+</ul>
+<h3 id="file"><a class="markdownIt-Anchor" href="#file"></a> File</h3>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.File.html">File</a>为文件的简单抽象，聚合了文件的一系列基本操作，如创建文件与打开文件。一些复杂的操作需配合其他结构体来完成。</p>
+<h3 id="openoptions"><a class="markdownIt-Anchor" href="#openoptions"></a> OpenOptions</h3>
+<p>若直接使用<code>File::open()</code>打开文件，默认权限为只读。当文件不存在时产生Error。<code>File::create()</code>类似，但若文件不存在时会创建文件</p>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.OpenOptions.html">OpenOptions</a>通过链式调用方法控制打开文件的权限。使用方法如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> path = Path::new();</span><br><span class="line">\\ ...</span><br><span class="line">\\ set path</span><br><span class="line">\\ ...</span><br><span class="line"><span class="keyword">let</span> f = OpenOptions::new()</span><br><span class="line">    .read(<span class="literal">true</span>)     <span class="comment">// 允许读</span></span><br><span class="line">    .create(<span class="literal">true</span>)   <span class="comment">// 未找到文件时创建文件</span></span><br><span class="line">    .write(<span class="literal">true</span>)    <span class="comment">// 允许写</span></span><br><span class="line">    .open(path);    <span class="comment">//也可以直接传入&amp;str来打开文件</span></span><br></pre></td></tr></table></figure>
+<p>除了读写权限，我们还可以控制是否直接在文件末尾添加内容，是否在读取时清空文件内容等操作，详见文档。</p>
+<p>我们也可以直接使用File::withOptions()方法创建OpenOption，这与OpenOptions::new()方法是等价的。</p>
+<h3 id="metadata"><a class="markdownIt-Anchor" href="#metadata"></a> MetaData</h3>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">MetaData</a>是文件的元数据。所谓元数据，包括以下内容：</p>
+<ul>
+<li>文件类型：是文件还是目录</li>
+<li>是否受到链接</li>
+<li>长度</li>
+<li>权限（读写）</li>
+<li>修改时间（创建，打开，写入等）</li>
+</ul>
+<p>这些信息都可以通过MetaData查询。不过程序员无法修改MetaData，MetaDate只能由操作系统自身修改。</p>
+<p>我们可以通过调用File实例的metadata()方法来获得这个文件的元数据，并进行查询。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> metadata = file.metadata()?;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.accessed());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.created());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.len());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.is_file());</span><br></pre></td></tr></table></figure>
+<h3 id="readdir-direntry与dirbuilder"><a class="markdownIt-Anchor" href="#readdir-direntry与dirbuilder"></a> ReadDir, DirEntry与DirBuilder</h3>
+<p>fs库为目录提供了一系列操作。我们通过<code>fs::read_dir(path)</code>方法获取一个<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.ReadDir.html">ReadDir</a>对象，该对象本质上是一个迭代器，迭代类型为<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.DirEntry.html">DirEntry</a>。</p>
+
     </div>
 
     
@@ -263,7 +275,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://adamska1008.github.io/2021/08/14/%E5%9C%A8C-%E4%B8%AD%E5%AE%9E%E7%8E%B0for-range/" title="在C++中实现for range">https://adamska1008.github.io/2021/08/14/在C-中实现for-range/</a>
+      <a href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/" title="Rust文件处理（二） 文件">https://adamska1008.github.io/2021/11/30/Rust文件处理（二）文件/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -272,22 +284,18 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/C/" rel="tag"># C++</a>
-              <a href="/tags/%E9%80%A0%E8%BD%AE%E5%AD%90/" rel="tag"># 造轮子</a>
+              <a href="/tags/rust/" rel="tag"># rust</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/08/14/%E6%A8%A1%E6%9D%BF-%E6%97%A5%E6%9C%9F%E9%97%AE%E9%A2%98/" rel="prev" title="模板-日期问题">
-                  <i class="fa fa-chevron-left"></i> 模板-日期问题
+                <a href="/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%E8%B7%AF%E5%BE%84/" rel="prev" title="Rust文件处理（一） 路径">
+                  <i class="fa fa-chevron-left"></i> Rust文件处理（一） 路径
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/08/14/%E9%A2%98%E8%A7%A3-%E8%B4%AA%E5%BF%83+%E4%BA%8C%E5%88%86-%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97/" rel="next" title="题解-贪心+二分-最长上升子序列">
-                  题解-贪心+二分-最长上升子序列 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+<meta name="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Blog">
 <meta property="og:url" content="https://adamska1008.github.io/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+<meta property="og:description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Adamska">
 <meta name="twitter:card" content="summary">
@@ -126,19 +126,19 @@
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Adamska</p>
-  <div class="site-description" itemprop="description">最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust</div>
+  <div class="site-description" itemprop="description">最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">46</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -184,12 +184,205 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">Rust文件处理（二） 文件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-11-30 16:42:22 / 修改时间：19:43:57" itemprop="dateCreated datePublished" datetime="2021-11-30T16:42:22+08:00">2021-11-30</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="fs基本文件操作"><a class="markdownIt-Anchor" href="#fs基本文件操作"></a> fs基本文件操作</h3>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/index.html">fs</a>库实现了一些基本的文件操作。文件的创建与打开被封装在File类下，而对于目录的一系列操作，文件读写以及删除则以fs下的函数为入口。常用函数如下：</p>
+<ul>
+<li>文件内容复制 <code>fs::copy(from, to)</code></li>
+<li>创建新目录 <code>fs::create(path)</code></li>
+<li>读，写，删 <code>fs::read_*(path), fs::write(path), fs::remove_*(path)</code></li>
+<li>文件重命名 <code>fs::rename(path, path)</code></li>
+<li>设置权限 <code>fs::set_permissions(path, perm)</code></li>
+</ul>
+<h3 id="file"><a class="markdownIt-Anchor" href="#file"></a> File</h3>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.File.html">File</a>为文件的简单抽象，聚合了文件的一系列基本操作，如创建文件与打开文件。一些复杂的操作需配合其他结构体来完成。</p>
+<h3 id="openoptions"><a class="markdownIt-Anchor" href="#openoptions"></a> OpenOptions</h3>
+<p>若直接使用<code>File::open()</code>打开文件，默认权限为只读。当文件不存在时产生Error。<code>File::create()</code>类似，但若文件不存在时会创建文件</p>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.OpenOptions.html">OpenOptions</a>通过链式调用方法控制打开文件的权限。使用方法如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> path = Path::new();</span><br><span class="line">\\ ...</span><br><span class="line">\\ set path</span><br><span class="line">\\ ...</span><br><span class="line"><span class="keyword">let</span> f = OpenOptions::new()</span><br><span class="line">    .read(<span class="literal">true</span>)     <span class="comment">// 允许读</span></span><br><span class="line">    .create(<span class="literal">true</span>)   <span class="comment">// 未找到文件时创建文件</span></span><br><span class="line">    .write(<span class="literal">true</span>)    <span class="comment">// 允许写</span></span><br><span class="line">    .open(path);    <span class="comment">//也可以直接传入&amp;str来打开文件</span></span><br></pre></td></tr></table></figure>
+<p>除了读写权限，我们还可以控制是否直接在文件末尾添加内容，是否在读取时清空文件内容等操作，详见文档。</p>
+<p>我们也可以直接使用File::withOptions()方法创建OpenOption，这与OpenOptions::new()方法是等价的。</p>
+<h3 id="metadata"><a class="markdownIt-Anchor" href="#metadata"></a> MetaData</h3>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">MetaData</a>是文件的元数据。所谓元数据，包括以下内容：</p>
+<ul>
+<li>文件类型：是文件还是目录</li>
+<li>是否受到链接</li>
+<li>长度</li>
+<li>权限（读写）</li>
+<li>修改时间（创建，打开，写入等）</li>
+</ul>
+<p>这些信息都可以通过MetaData查询。不过程序员无法修改MetaData，MetaDate只能由操作系统自身修改。</p>
+<p>我们可以通过调用File实例的metadata()方法来获得这个文件的元数据，并进行查询。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> metadata = file.metadata()?;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.accessed());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.created());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.len());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.is_file());</span><br></pre></td></tr></table></figure>
+<h3 id="readdir-direntry与dirbuilder"><a class="markdownIt-Anchor" href="#readdir-direntry与dirbuilder"></a> ReadDir, DirEntry与DirBuilder</h3>
+<p>fs库为目录提供了一系列操作。我们通过<code>fs::read_dir(path)</code>方法获取一个<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.ReadDir.html">ReadDir</a>对象，该对象本质上是一个迭代器，迭代类型为<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.DirEntry.html">DirEntry</a>。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%E8%B7%AF%E5%BE%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%E8%B7%AF%E5%BE%84/" class="post-title-link" itemprop="url">Rust文件处理（一） 路径</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-11-30 14:46:45 / 修改时间：18:58:21" itemprop="dateCreated datePublished" datetime="2021-11-30T14:46:45+08:00">2021-11-30</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="osstring-与-osstr"><a class="markdownIt-Anchor" href="#osstring-与-osstr"></a> OsString 与 OsStr</h3>
+<p>OsString 为操作系统编码相关的字符串。不同操作系统中字符串有细微差别，如Windows偏向UTF-16编码且不作安全性检查，而Linux则以UTF-8为主。Rust中字符串编码为UTF-8，要编写具有跨平台能力的软件需要考虑平台特性。与操作系统通信时，应当使用OsString获取字符串内容而不是String。这一情况主要用于获取文件路径。</p>
+<p>OsStr与OsString的区别相当于str与String的区别。OsStr不持有数据，仅为OsString的切片。</p>
+<p>一般我们不会主动编写OsStr，但可能需要处理标准库返回的OsStr。对此可以使用相应方法，如OsStr中的<code>pub fn to_str(&amp;self) -&gt; Option&lt;&amp;str&gt;</code>转化为String或&amp;str进行下一步处理。在转化过程中，方法会判断该OsStr是否可以合法转化为UTF-8，不合法时返回<code>Option::None</code>。一切从OsStr或OsString到str或String的方法都会有此判断。</p>
+<h3 id="path-component与pathbuf"><a class="markdownIt-Anchor" href="#path-component与pathbuf"></a> Path, Component与PathBuf</h3>
+<p>我们可以直接使用字符串保存的路径打开文件，但我们总会遇到一些需要处理路径的时候，比如说提取文件名，后缀名或目录。这个时候我们需要提前封装路径并提供一些方法来简化编程。Rust标准库中提供了Path与PathBuf封装路径。</p>
+<p>本质上来说，Path是对OsStr的封装。<code>pub fn as_os_str(&amp;self) -&gt; &amp;OsStr</code>方法可以安全地返回&amp;OsStr。但是我们一般不会直接使用&amp;OsStr，故Path也提供了到&amp;str的转换方法<code>pub fn to_str(&amp;self) -&gt; Option&lt;&amp;str&gt;</code>。要想通过&amp;str生成path，则只需使用<code>Path::new()</code>方法即可。</p>
+<p>关于Path的详细内容可以查看<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/path/struct.Path.html">Path文档</a>。Path的常用方法有以下几个：</p>
+<ul>
+<li><code>pub fn components(&amp;self) -&gt; Components&lt;'_&gt;</code>：产生一个可以逐级访问每层目录的迭代器。</li>
+<li><code>pub fn extension(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件后缀名</li>
+<li><code>pub fn file_name(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件名（包含后缀名）。</li>
+<li><code>pub fn file_prefix(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件前缀</li>
+<li><code>pub fn file_stem(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件名（不包含后缀名）</li>
+<li><code>pub fn is_dir(&amp;self) -&gt; bool</code>：判断路径指向的是否为目录。</li>
+<li><code>pub fn is_file(&amp;self) -&gt; bool</code>：判断路径指向的是否为文件。</li>
+<li><code>pub fn is_relative(&amp;self) -&gt; bool</code>：判断路径是否为相对路径。</li>
+</ul>
+<p>等等，大部分是比较常见且常用的功能。</p>
+<p>需要简单提一下的是components方法，该方法返回一个Component的迭代器。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> p = Path::new(<span class="string">&quot;/bar/../foo/hello/world.txt&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> component <span class="keyword">in</span> p.components() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, component);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># output</span></span><br><span class="line">RootDir</span><br><span class="line">Normal(<span class="string">&quot;bar&quot;</span>)</span><br><span class="line">ParentDir</span><br><span class="line">Normal(<span class="string">&quot;foo&quot;</span>)</span><br><span class="line">Normal(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">Normal(<span class="string">&quot;world.txt&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>Component是path包下的一个枚举类，用来给路径分隔符之间的字符串分类。Component有以下几个枚举量：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">enum</span> <span class="title">Component</span></span>&lt;<span class="symbol">&#x27;a</span>&gt; &#123;</span><br><span class="line">    Prefix(PrefixComponent&lt;<span class="symbol">&#x27;a</span>&gt;),</span><br><span class="line">    RootDir,</span><br><span class="line">    CurDir,</span><br><span class="line">    ParentDir,</span><br><span class="line">    Normal(&amp;<span class="symbol">&#x27;a</span> OsStr),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体使用方法详见<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/path/enum.Component.html">Component文档</a>。</p>
+<p>接下来介绍PathBuf。PathBuf包含了Path的一切方法。而PathBuf同时还可以动态的改变路径。这是因为Path内部为&amp;str，不占有数据，而PathBuf内部为String，故对路径可读可写。</p>
+<p>PathBuf常用方法如下：</p>
+<ul>
+<li><code>pub fn pop(&amp;mut self) -&gt; bool</code></li>
+<li><code>pub fn push&lt;P: AsRef&lt;Path&gt;&gt;(&amp;mut self, path: P)</code></li>
+<li><code>pub fn set_file_name&lt;S: AsRef&lt;OsStr&gt;&gt;(&amp;mut self, file_name: S)</code></li>
+<li><code>pub fn set_extension&lt;S: AsRef&lt;OsStr&gt;&gt;(&amp;mut self, extension: S) -&gt; bool</code></li>
+</ul>
+<p>具体方法使用参考<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/path/struct.PathBuf.html">PathBuf文档</a>。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/24/%E4%BD%BF%E7%94%A8clap%E5%A4%84%E7%90%86Rust%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8F%82%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -207,19 +400,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-11-24 22:40:45 / 修改时间：23:09:30" itemprop="dateCreated datePublished" datetime="2021-11-24T22:40:45+08:00">2021-11-24</time>
+      <time title="创建时间：2021-11-24 22:40:45" itemprop="dateCreated datePublished" datetime="2021-11-24T22:40:45+08:00">2021-11-24</time>
     </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
         </span>
-    </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-11-30 14:47:02" itemprop="dateModified" datetime="2021-11-30T14:47:02+08:00">2021-11-30</time>
+      </span>
 
   
 </div>
@@ -273,85 +463,12 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/12/rust%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Aownership-move-borrow-lifetime/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/12/rust%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Aownership-move-borrow-lifetime/" class="post-title-link" itemprop="url">rust笔记（一）：ownership, move, borrow, lifetime</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-11-12 21:20:18 / 修改时间：21:20:48" itemprop="dateCreated datePublished" datetime="2021-11-12T21:20:18+08:00">2021-11-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/01/%E9%A2%98%E8%A7%A3-%E7%BA%BF%E6%AE%B5%E6%A0%91-%E4%BD%A0%E8%83%BD%E5%9B%9E%E7%AD%94%E8%BF%99%E4%BA%9B%E9%97%AE%E9%A2%98%E5%90%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -464,7 +581,7 @@ u.sum=l.sum+r.sum\\
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -554,7 +671,7 @@ u.sum=l.sum+r.sum\\
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -663,7 +780,7 @@ u.sum=l.sum+r.sum\\
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -775,7 +892,7 @@ u.sum=l.sum+r.sum\\
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -901,7 +1018,7 @@ u.sum=l.sum+r.sum\\
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1027,7 +1144,7 @@ a_{i_1,j_1}&amp;&amp; i_1 = i_2
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1112,133 +1229,6 @@ a_{i_1,j_1}&amp;&amp; i_1 = i_2
 <p>read()的BUF_SIZE即为可从缓冲区读取数据的上限，虽然我们设置BUF_SIZE为1024，但并不一定能读取到1024字节的数据，因为这只是读取数据的上限。</p>
 <p>调用一次read()时，读取到缓冲区为空或读取的数据量达到上限为止。</p>
 <p>即使pipeline两端中一方关闭pipeline，缓冲区也不会消失，而是直到两端都关闭时才消失。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/10/19/%E5%9C%A8VSCode%E4%B8%AD%E9%85%8D%E7%BD%AEC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="最近在学的内容：算法竞赛，nodejs(vue.js+express+mongodb)，golang(gin)，rust">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/19/%E5%9C%A8VSCode%E4%B8%AD%E9%85%8D%E7%BD%AEC/" class="post-title-link" itemprop="url">在VSCode中配置C++</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-19 15:14:44" itemprop="dateCreated datePublished" datetime="2021-10-19T15:14:44+08:00">2021-10-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-20 19:01:58" itemprop="dateModified" datetime="2021-10-20T19:01:58+08:00">2021-10-20</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%82%E9%A1%B9/" itemprop="url" rel="index"><span itemprop="name">杂项</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>官方文档：<a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/cpp">https://code.visualstudio.com/docs/cpp</a></p>
-<hr />
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir projects</span><br><span class="line">cd projects</span><br><span class="line">mkdir helloworld</span><br><span class="line">cd helloworld</span><br><span class="line">code .</span><br></pre></td></tr></table></figure>
-<p>使用<code>code .</code>命令在VSCode中打开文件夹，并将其作为工作目录。</p>
-<h2 id="tasksjson"><a class="markdownIt-Anchor" href="#tasksjson"></a> tasks.json</h2>
-<h4 id="生成tasksjson"><a class="markdownIt-Anchor" href="#生成tasksjson"></a> 生成tasks.json</h4>
-<p>按下<code>ctrl+shift+p</code>进入下拉栏，选中<code>C/C++ 生成调试和活动文件</code>，将在<code>.vscode</code>文件夹中生成默认的<code>tasks.json</code>文件，文件内容大致如下</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;tasks&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;cppbuild&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;label&quot;</span>: <span class="string">&quot;C/C++: g++.exe 生成活动文件&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;command&quot;</span>: <span class="string">&quot;C:\\Program Files\\mingw64\\bin\\g++.exe&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;args&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;-fdiagnostics-color=always&quot;</span>,</span><br><span class="line">                <span class="string">&quot;-g&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;file&#125;&quot;</span>,</span><br><span class="line">                <span class="string">&quot;-o&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;fileDirname&#125;\\$&#123;fileBasenameNoExtension&#125;.exe&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;options&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;problemMatcher&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;$gcc&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;group&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;kind&quot;</span>: <span class="string">&quot;build&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;isDefault&quot;</span>: <span class="literal">true</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;detail&quot;</span>: <span class="string">&quot;调试器生成的任务。&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;2.0.0&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>&quot;command&quot;</code>值即需要运行的程序，此处为g++编译器，若需要修改编译器根目录，只需修改此处即可。</p>
-<p><code>&quot;args&quot;</code>为传递给编译器的参数，参数意义如下：</p>
-<ul>
-<li><code>-fdiagnostics-color=always</code>：总是对诊断信息着色</li>
-<li><code>-g</code>：生成调试信息</li>
-<li><code>$&#123;file&#125;</code>：打开的文件名</li>
-<li><code>-o</code>：确定生成可执行文件的位置与文件名（默认为a.out）</li>
-<li><code>$&#123;fileDirname&#125;\\$&#123;fileBasenameNoExtension&#125;.exe</code>：在文件目录下生成与源文件名相同的可执行文件</li>
-</ul>
-<p><code>&quot;isDefault&quot;: true</code>意为执行build任务之后将运行任务。</p>
-<p>若需要编译根目录下所有文件，使用<code>$&#123;workspaceFolder&#125;\\*.cpp</code>替换<code>$&#123;file&#125;</code></p>
-<p>修改<code>args</code>值即可控制编译器参数，如加入<code>-std=c++17</code>即可修改标准，加入<code>&quot;-o2&quot;</code>即可开启编译器优化，加入<code>-I</code> <code>$&#123;workspaceFolder&#125;\\include</code>即可包含<code>include</code>目录下的所有头文件。</p>
-<h4 id="执行build任务"><a class="markdownIt-Anchor" href="#执行build任务"></a> 执行build任务</h4>
-<p>进入下拉栏，输入<code>build</code>，选中<code>任务：运行生成任务</code>，也可自行配置快捷键。</p>
-<p>完成build任务之后，即可在终端中运行可执行文件。</p>
-<h2 id="launchjson"><a class="markdownIt-Anchor" href="#launchjson"></a> launch.json</h2>
-<h4 id="生成launchjson"><a class="markdownIt-Anchor" href="#生成launchjson"></a> 生成launch.json</h4>
-<p>在主菜单中，选中<code>运行-&gt;添加配置-&gt;C++(GDB/LLDB)</code>，将生成如下文件</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;0.2.0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;(gdb) 启动&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;cppdbg&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;request&quot;</span>: <span class="string">&quot;launch&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;program&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;\\$&#123;fileBasenameNoExtension&#125;.exe&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;args&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;stopAtEntry&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;environment&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;externalConsole&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;MIMode&quot;</span>: <span class="string">&quot;gdb&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;miDebuggerPath&quot;</span>: <span class="string">&quot;/path/to/gdb&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;setupCommands&quot;</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;为 gdb 启用整齐打印&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;-enable-pretty-printing&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;ignoreFailures&quot;</span>: <span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;preLaunchTask&quot;</span>: <span class="string">&quot;C/C++: g++.exe 生成活动文件&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>将<code>program</code>值修改为与task.json中的输出一致，将<code>miDebuggerPath</code>值修改为调试器所在的目录，一般与编译器目录一致。</p>
-<p><code>stopAtEntry</code>默认为<code>false</code>，若修改为<code>true</code>，则调试时将在<code>main</code>函数开头暂停。</p>
-<p><code>preLaunchTask</code>为在指定需要在调试执行的Task，将其值设置为tasks.json中的label，以在开始调试前进行编译。</p>
-<h4 id="调试"><a class="markdownIt-Anchor" href="#调试"></a> 调试</h4>
-<p>launch.json编写完毕后，按下<code>F5</code>进行调试。</p>
-<h2 id="c_cpp_propertiesjson"><a class="markdownIt-Anchor" href="#c_cpp_propertiesjson"></a> c_cpp_properties.json</h2>
-<p>使用c_cpp_properties.json来进行项目中C++插件的设置。首先必须明确的是：此项设置仅修改intellisense，不会对实际的编译运行产生任何影响。需要配置编译命令，在tasks.json和launch.json中进行修改。</p>
-<p>在控制面板中，输入<code>C/C++</code>，选择<code>C/C++：编辑配置</code>即可对插件进行项目层面上的配置，其改动将存放在c_cpp_properties.json内部。</p>
-<p>默认生成的c_cpp_properties.json如下</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Win32&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;includePath&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;$&#123;default&#125;&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;windowsSdkVersion&quot;</span>: <span class="string">&quot;10.0.19041.0&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们对其进行简单的改动。</p>
-<ul>
-<li>添加键值对<code>&quot;cppStandard&quot;: &quot;c++17&quot;,</code></li>
-<li>添加键值对<code>&quot;cStandard&quot;: &quot;c17&quot;,</code></li>
-<li>添加键值对<code>&quot;compilerPath&quot;: &quot;C:\\Program Files\\mingw64\\bin\\g++.exe&quot;,</code></li>
-<li>为&quot;includePath&quot;添加新元素：<code>&quot;$&#123;workspaceFolder&#125;/**&quot;,</code></li>
-<li>修改<code>name</code>值为<code>GCC</code></li>
-</ul>
-<p>得到新的c_cpp_properties.json</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;GCC&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;includePath&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;$&#123;default&#125;&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;workspaceFolder&#125;/**&quot;</span>,</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;windowsSdkVersion&quot;</span>: <span class="string">&quot;10.0.19041.0&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;cppStandard&quot;</span>: <span class="string">&quot;c++17&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;cStandard&quot;</span>: <span class="string">&quot;c17&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;compilerPath&quot;</span>: <span class="string">&quot;C:\\Program Files\\mingw64\\bin\\g++.exe&quot;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样，修改了使用的c<ins>的标准（不需要在tasks.json中增加参数）,扩展了头文件存放的目录，确定了编译器路径（同时方便寻找头文件，若电脑中有不止一个c</ins>编译器，则极为实用）</p>
 
       
     </div>
