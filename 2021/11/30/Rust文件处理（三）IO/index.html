@@ -20,25 +20,28 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Blog">
-<meta property="og:url" content="https://adamska1008.github.io/tags/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/index.html">
+<meta name="description" content="Read和Write Read和Write是trait，满足这两个trait的结构体需要分别实现read与write等一系列方法。 fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;方法传入一个类型为&amp;mut[u8]的缓冲区，从这个缓冲区中读取数据，并返回读取数据的长度。write用法基本类似。 基础的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust文件处理（三） IO">
+<meta property="og:url" content="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89IO/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
+<meta property="og:description" content="Read和Write Read和Write是trait，满足这两个trait的结构体需要分别实现read与write等一系列方法。 fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;方法传入一个类型为&amp;mut[u8]的缓冲区，从这个缓冲区中读取数据，并返回读取数据的长度。write用法基本类似。 基础的">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-30T12:19:02.000Z">
+<meta property="article:modified_time" content="2021-11-30T12:44:36.502Z">
 <meta property="article:author" content="Adamska">
+<meta property="article:tag" content="rust">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://adamska1008.github.io/tags/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">
+<link rel="canonical" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89IO/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/树状数组/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89IO/","path":"2021/11/30/Rust文件处理（三）IO/","title":"Rust文件处理（三） IO"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签: 树状数组 | Blog</title>
+<title>Rust文件处理（三） IO | Blog</title>
   
 
 
@@ -107,7 +110,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -120,6 +123,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#read%E5%92%8Cwrite"><span class="nav-number">1.</span> <span class="nav-text"> Read和Write</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#seek%E4%B8%8Ebufread"><span class="nav-number">1.1.</span> <span class="nav-text"> Seek与BufRead</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bufreader%E4%B8%8Ebufwriter"><span class="nav-number">1.2.</span> <span class="nav-text"> BufReader与BufWriter</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -174,50 +178,113 @@
 </noscript>
 
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h2 class="collection-header">树状数组
-          <small>标签</small>
-        </h2>
-      </div>
 
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89IO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="最近在学的内容：算法竞赛，react，nodejs(express+mongodb)，golang(gin)，rust">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Rust文件处理（三） IO
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
+
+      <time title="创建时间：2021-11-30 20:19:02 / 修改时间：20:44:36" itemprop="dateCreated datePublished" datetime="2021-11-30T20:19:02+08:00">2021-11-30</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="read和write"><a class="markdownIt-Anchor" href="#read和write"></a> Read和Write</h2>
+<p>Read和Write是trait，满足这两个trait的结构体需要分别实现read与write等一系列方法。</p>
+<p><code>fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;</code>方法传入一个类型为&amp;mut[u8]的缓冲区，从这个缓冲区中读取数据，并返回读取数据的长度。write用法基本类似。</p>
+<p>基础的read与write是非常底层的，倘若在读取或写入时出现了阻塞，则会立即终止函数调用，故我们无法立即判断读取或写入结束时IO处于何种状态，只能借助返回的usize判断。同时，频繁使用read与write会降低速度，因为read与write常常需要直接访问内核态。</p>
+<p>由于直接使用read与write的缺点，我们极少直接使用read与write，而是使用封装好的BufReader或BufWriter。</p>
+<h3 id="seek与bufread"><a class="markdownIt-Anchor" href="#seek与bufread"></a> Seek与BufRead</h3>
+<p>首先我们需要介绍Seek与BufRead。它们是非常重要的两个traits。通过Seek，我们可以控制实现了Seek trait的Reader或Writer的读写位置。</p>
+<p>使用Seek方法需要搭配SeekFrom枚举类。通过SeekFrom类，我们可以</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="bufreader与bufwriter"><a class="markdownIt-Anchor" href="#bufreader与bufwriter"></a> BufReader与BufWriter</h3>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-09-17T16:25:36+08:00"
-              content="2021-09-17">
-          09-17
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/09/17/%E9%A2%98%E8%A7%A3-%E5%B7%AE%E5%88%86-%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B4%E6%95%B0%E9%97%AE%E9%A2%98/" itemprop="url">
-            <span itemprop="name">题解-差分+树状数组-一个简单的整数问题</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          
 
-      
-    </header>
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Adamska
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89IO/" title="Rust文件处理（三） IO">https://adamska1008.github.io/2021/11/30/Rust文件处理（三）IO/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/rust/" rel="tag"># rust</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/30/Rust%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/" rel="prev" title="Rust文件处理（二） 文件">
+                  <i class="fa fa-chevron-left"></i> Rust文件处理（二） 文件
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
   </article>
+</div>
 
-    </div>
-  </div>
-  
-  
-  
+
+
+
+
 
 </div>
   </main>
