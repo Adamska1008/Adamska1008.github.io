@@ -215,7 +215,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-01 00:17:20" itemprop="dateModified" datetime="2021-12-01T00:17:20+08:00">2021-12-01</time>
+        <time title="修改时间：2021-12-01 17:16:14" itemprop="dateModified" datetime="2021-12-01T17:16:14+08:00">2021-12-01</time>
       </span>
 
   
@@ -228,19 +228,38 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="read和write"><a class="markdownIt-Anchor" href="#read和write"></a> Read和Write</h2>
-<p>Read和Write是trait，满足这两个trait的结构体需要分别实现read与write等一系列方法。</p>
+          <h2 id="read与write"><a class="markdownIt-Anchor" href="#read与write"></a> Read与Write</h2>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/trait.Read.html">Read</a>和<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/trait.Write.html">Write</a>是trait，满足这两个trait的结构体需要分别实现read与write等一系列方法。</p>
 <p><code>fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;</code>方法传入一个类型为&amp;mut[u8]的缓冲区，从这个缓冲区中读取数据，并返回读取数据的长度。write用法基本类似。</p>
-<p>基础的read与write是非常底层的，倘若在读取或写入时出现了阻塞，则会立即终止函数调用，故我们无法立即判断读取或写入结束时IO处于何种状态，只能借助返回的usize判断。同时，频繁使用read与write会降低速度，因为read与write常常需要直接访问内核态。</p>
-<p>由于直接使用read与write的缺点，我们极少直接使用read与write，而是使用封装好的BufReader或BufWriter。</p>
-<h3 id="seek与bufread"><a class="markdownIt-Anchor" href="#seek与bufread"></a> Seek与BufRead</h3>
+<p>基础的read与write是底层的系统读写接口，这意味着直接使用read或write是很不方便的。倘若在读取或写入时出现了阻塞，则会立即终止函数调用，故我们无法立即判断读取或写入结束时IO处于何种状态，只能借助返回的usize判断。同时，read与write需要直接访问内核态，而在用户态与内核态之间频繁切换将大幅度降低程序性能。</p>
+<p>由于直接使用read与write的缺点，我们极少直接使用read与write，而是使用封装好的含缓冲区的读写。</p>
+<h2 id="seek"><a class="markdownIt-Anchor" href="#seek"></a> Seek</h2>
 <p>首先我们需要介绍Seek与BufRead。它们是非常重要的两个traits。通过Seek，我们可以控制实现了Seek trait的Reader或Writer的读写位置。</p>
 <p>对于内存中存放的数据，我们可以自由对其进行修改。然而，读取文件则不同。考虑到一些文件可能是十分巨大的，读取文件时并不会一次性把所有文件全部读取到内存中，这对内存的开销太大了。所以，读写文件时并不能很自由地任意修改文件的内容。</p>
 <p>一般的输入输出遵循流式传输的概念，即stream。File也可以看作一个流。这里不过多介绍流式传输。需要说明的是，传统的流式传输是单向的，而对于拥有缓冲区的流，我们可以在缓冲区中移动光标（cursor），从而达到读写文件的目的。</p>
 <p>所谓光标的概念类似于指针，也很类似于我们手动编辑文件时，在编辑器上一闪一闪的光标。这意味这我们可以自由控制缓冲区中的数据。Seek便是Rust用来实现这个功能的，它常常配合SeekFrom枚举类使用。</p>
-<p>在io库中也有一个Cursor类，不过它与这里的光标含义不同。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> f = File::</span><br></pre></td></tr></table></figure>
-<h3 id="bufreader与bufwriter"><a class="markdownIt-Anchor" href="#bufreader与bufwriter"></a> BufReader与BufWriter</h3>
+<p>值得一提的是，在io库中也有一个Cursor类，不过它与这里的光标含义不同。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> file = File::new();</span><br><span class="line">\\ ...</span><br><span class="line">\\ set file</span><br><span class="line">\\ ...</span><br><span class="line">file.seek(SeekFrom::Start(<span class="number">12</span>))</span><br></pre></td></tr></table></figure>
+<p>Seek Trait只保证了寻址功能。要想在寻址之后方地读取数据BufReader/BufWriter。</p>
+<h2 id="bufreader与bufwriter"><a class="markdownIt-Anchor" href="#bufreader与bufwriter"></a> BufReader与BufWriter</h2>
+<p>Rust中只有BufRead的trait而没有BufWrite，这是因为在rust中，含缓冲区的write与一般的write在方法上没有什么不同，只是在性能上利用缓冲区作了优化。而BufRead则包含了许多新功能，可以配合Seek使用。</p>
+<p>Trait BufRead需要实现两个方法：</p>
+<ul>
+<li><code>fn fill_buf(&amp;mut self) -&gt; Result&lt;&amp;[u8]&gt;</code>：返回缓冲区中的所有数据</li>
+<li><code>fn consume(&amp;mut self, amt: usize)</code> 清除缓冲区中amt字节的数据。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// set file</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> reader = BufReader::new(file);</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> buf = reader.fill_buf()?;</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> buf &#123;</span><br><span class="line">    <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, *item <span class="keyword">as</span> <span class="built_in">char</span>);</span><br><span class="line">&#125;</span><br><span class="line">reader.consume(<span class="number">10</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> buf = reader.fill_buf()?;</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> buf &#123;</span><br><span class="line">    <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, *item <span class="keyword">as</span> <span class="built_in">char</span>);</span><br><span class="line">&#125; <span class="comment">// 不会打印出前10字节的数据</span></span><br></pre></td></tr></table></figure>
+<p>BufRead也提供了许多有用的方法：</p>
+<ul>
+<li><code>has_data_left(&amp;mut self) -&gt; Result&lt;bool&gt;</code></li>
+<li><code>read_until(&amp;mut self, byte: u8, buf: &amp;mut Vec&lt;u8&gt;) -&gt; Result&lt;usize&gt;</code></li>
+<li><code>read_line(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt;</code></li>
+<li><code>fn split(self, byte: u8) -&gt; Split&lt;Self&gt;</code></li>
+<li><code>fn lines(self) -&gt; Lines&lt;Self&gt;</code></li>
+</ul>
+<p>大部分都是我们在其他语言中非常熟悉的常用方法。需要提一下的是split与lines这两个方法。lines提供一个迭代器，每一个迭代对象都是一行的字符串。而split即常规的split方法，返回一个分割好的Vec&lt;u8&gt;。</p>
+<h2 id="stdin与stdout"><a class="markdownIt-Anchor" href="#stdin与stdout"></a> Stdin与Stdout</h2>
+<p>rust中的Stdin与Stdout被封装在io库中。使用io::stdin()与io::stdout()获取标准输入输出流，其使用方法近似于File。</p>
 
       
     </div>
