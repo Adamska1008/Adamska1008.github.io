@@ -138,7 +138,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -425,8 +425,21 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-04 15:56:54" itemprop="dateModified" datetime="2021-12-04T15:56:54+08:00">2021-12-04</time>
+        <time title="修改时间：2021-12-14 00:38:19" itemprop="dateModified" datetime="2021-12-14T00:38:19+08:00">2021-12-14</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust标准库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/%E6%96%87%E4%BB%B6%E4%B8%8EIO/" itemprop="url" rel="index"><span itemprop="name">文件与IO</span></a>
+        </span>
+    </span>
 
   
 </div>
@@ -443,17 +456,9 @@
 <p><code>fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;</code>方法传入一个类型为&amp;mut[u8]的缓冲区，从这个缓冲区中读取数据，并返回读取数据的长度。write用法基本类似。</p>
 <p>基础的read与write是底层的系统读写接口，这意味着直接使用read或write是很不方便的。倘若在读取或写入时出现了阻塞，则会立即终止函数调用，故我们无法立即判断读取或写入结束时IO处于何种状态，只能借助返回的usize判断。同时，read与write需要直接访问内核态，而在用户态与内核态之间频繁切换将大幅度降低程序性能。</p>
 <p>由于直接使用read与write的缺点，我们极少直接使用read与write，而是使用封装好的含缓冲区的读写。</p>
-<h2 id="seek"><a class="markdownIt-Anchor" href="#seek"></a> Seek</h2>
-<p>首先我们需要介绍Seek与BufRead。它们是非常重要的两个traits。通过Seek，我们可以控制实现了Seek trait的Reader或Writer的读写位置。</p>
-<p>对于内存中存放的数据，我们可以自由对其进行修改。然而，读取文件则不同。考虑到一些文件可能是十分巨大的，读取文件时并不会一次性把所有文件全部读取到内存中，这对内存的开销太大了。所以，读写文件时并不能很自由地任意修改文件的内容。</p>
-<p>一般的输入输出遵循流式传输的概念，即stream。File也可以看作一个流。这里不过多介绍流式传输。需要说明的是，传统的流式传输是单向的，而对于拥有缓冲区的流，我们可以在缓冲区中移动光标（cursor），从而达到读写文件的目的。</p>
-<p>所谓光标的概念类似于指针，也很类似于我们手动编辑文件时，在编辑器上一闪一闪的光标。这意味这我们可以自由控制缓冲区中的数据。Seek便是Rust用来实现这个功能的，它常常配合SeekFrom枚举类使用。</p>
-<p>值得一提的是，在io库中也有一个Cursor类，不过它与这里的光标含义不同。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> file = File::new();</span><br><span class="line">\\ ...</span><br><span class="line">\\ set file</span><br><span class="line">\\ ...</span><br><span class="line">file.seek(SeekFrom::Start(<span class="number">12</span>))</span><br></pre></td></tr></table></figure>
-<p>Seek Trait只保证了寻址功能。要想在寻址之后方地读取数据BufReader/BufWriter。</p>
 <h2 id="bufreader与bufwriter"><a class="markdownIt-Anchor" href="#bufreader与bufwriter"></a> BufReader与BufWriter</h2>
-<p>Rust中只有BufRead的trait而没有BufWrite，这是因为在rust中，含缓冲区的write与一般的write在方法上没有什么不同，只是在性能上利用缓冲区作了优化。而BufRead则包含了许多新功能，可以配合Seek使用。</p>
-<p>Trait BufRead需要实现两个方法：</p>
+<p>Rust中只有<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/trait.BufRead.html">BufRead</a>的trait而没有BufWrite，这是因为在rust中，含缓冲区的write与一般的write在方法上没有什么不同，只是在性能上利用缓冲区作了优化。而BufRead则包含了许多新功能，可以配合Seek使用。<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/struct.BufReader.html">BufReader</a>实现了BufRead。</p>
+<p>实现Trait BufRead需要实现两个方法：</p>
 <ul>
 <li><code>fn fill_buf(&amp;mut self) -&gt; Result&lt;&amp;[u8]&gt;</code>：返回缓冲区中的所有数据</li>
 <li><code>fn consume(&amp;mut self, amt: usize)</code> 清除缓冲区中amt字节的数据。</li>
@@ -464,12 +469,42 @@
 <li><code>has_data_left(&amp;mut self) -&gt; Result&lt;bool&gt;</code></li>
 <li><code>read_until(&amp;mut self, byte: u8, buf: &amp;mut Vec&lt;u8&gt;) -&gt; Result&lt;usize&gt;</code></li>
 <li><code>read_line(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt;</code></li>
-<li><code>fn split(self, byte: u8) -&gt; Split&lt;Self&gt;</code></li>
 <li><code>fn lines(self) -&gt; Lines&lt;Self&gt;</code></li>
 </ul>
-<p>大部分都是我们在其他语言中非常熟悉的常用方法。需要提一下的是split与lines这两个方法。lines提供一个迭代器，每一个迭代对象都是一行的字符串。而split即常规的split方法，返回一个分割好的Vec&lt;u8&gt;。</p>
-<h2 id="stdin与stdout"><a class="markdownIt-Anchor" href="#stdin与stdout"></a> Stdin与Stdout</h2>
-<p>rust中的Stdin与Stdout被封装在io库中。使用io::stdin()与io::stdout()获取标准输入输出流，其使用方法近似于File。</p>
+<p>使用read_to_string()方法把文件中的所有内容都读取到了字符串中。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> reader = BufReader::new(fh);</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> s = <span class="string">&quot;&quot;</span>.to_string();</span><br><span class="line">reader.read_to_string(&amp;<span class="keyword">mut</span> s);</span><br></pre></td></tr></table></figure>
+<p>若你的文件内容需要以行分割，则可以使用lines()方法。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> reader.lines() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, line?); <span class="comment">// 此处的line是一个Result&lt;String&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，若只使用BufReader操作，我们只能够将一个文件看作一整个缓冲区进行整体操作，如果想要精确地改变某些位置的某些值，必须将文件全部读入内存中，之后再写回去，这显然不是我们希望的。我们希望的是直接对文件进行精确地操作，例如精确地只读取文件中第20个字节到40个字节的数据。这需要配合Seek与Take使用。</p>
+<h2 id="seek与take"><a class="markdownIt-Anchor" href="#seek与take"></a> Seek与Take</h2>
+<p>首先我们需要介绍<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/trait.Seek.html">Seek</a>。通过Seek，我们可以控制实现了Seek trait的Reader或Writer的读写位置。</p>
+<p>对于内存中存放的数据，我们可以自由对其进行修改。然而，读取文件则不同。考虑到一些文件可能是十分巨大的，一般来说，读取文件时并不会一次性把所有文件全部读取到内存中，这对内存的开销太大了。</p>
+<p>一般的输入输出遵循流式传输的概念，即stream。在这个情况下，我们一次只操作一部分流过程序的数据，故内存中的数据不会过于大，例如lines()方法，提供了以行为单位的流。这种IO方式虽然节约了内存，但是修改文件内容却很不方便。</p>
+<p>Seek则优化了读取流的方式。通过Seek，我们可以快速定位到流的某一个位置进行修改。它常常配合SeekFrom枚举类使用。</p>
+<p>SeekFrom枚举类中有三个枚举量，分别为：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">enum</span> <span class="title">SeekFrom</span></span> &#123;</span><br><span class="line">    Start(<span class="built_in">u64</span>),</span><br><span class="line">    End(<span class="built_in">i64</span>),</span><br><span class="line">    Current(<span class="built_in">i64</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>顾名思义，Start(offset)表示从流开始处计算偏移量，而Current与End分别表示从当前位置和结尾处开始计算。</p>
+<p>假设我们要把Seek光标定位到文件开头的第十二个字节处，我们可以这么写：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file.seek(SeekFrom::Start(<span class="number">12</span>))</span><br></pre></td></tr></table></figure>
+<p>这之后，如果再使用BufReader中的方法，则会跳过前十二个字节。</p>
+<p>假设有一个文件，内容为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello World!Hello World!Hello World!</span><br></pre></td></tr></table></figure>
+<p>我们编写如下程序：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">reader.seek(SeekFrom::Start(<span class="number">12</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> s = <span class="string">&quot;&quot;</span>.to_string();</span><br><span class="line">reader.read_to_string(&amp;<span class="keyword">mut</span> s)?;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, s);</span><br></pre></td></tr></table></figure>
+<p>将会得到输出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello World!Hello World!</span><br></pre></td></tr></table></figure>
+<p>如上，第一个<code>Hello World!</code>被跳过了（这恰好是十二个字节）。</p>
+<p>但是，光有Seek还不够。假如我在定位后，只想读取十二个字节的数据呢？朴素地，我们可以使用固定大小的buf。由于read_exact()会在buf满时停止，我们可以这样。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> buf = [<span class="number">0</span>; <span class="number">12</span>];</span><br><span class="line">reader.seek(SeekFrom::Start(<span class="number">12</span>));</span><br><span class="line">reader.read_exact(&amp;<span class="keyword">mut</span> buf);</span><br></pre></td></tr></table></figure>
+<p>但是，这非常麻烦，我们必须开一个固定大小的数组来保证只读一部分的的数据。而<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/struct.Take.html">Take</a>提供了一种定长读取文件的简单方法。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reader.seek(SeekFrom::Start(<span class="number">12</span>));</span><br><span class="line"><span class="keyword">let</span> handler = reader.take(<span class="number">12</span>);</span><br></pre></td></tr></table></figure>
+<p>我们可以把Take看作一个子缓冲区，使用reader.take(12)可以获取从reader的当前位置开始的12个字节的句柄。由于Take也实现了BufRead方法，所以从Take中获取数据基本上和BufReader一样。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> s = <span class="string">&quot;&quot;</span>.to_string();</span><br><span class="line">handler.read_to_string(&amp;<span class="keyword">mut</span> s);</span><br></pre></td></tr></table></figure>
+<p>需要注意的时，Take没有实现Seek，所以不能在Take中重定位光标。</p>
+<h2 id="stdin与stdout"><a class="markdownIt-Anchor" href="#stdin与stdout"></a> stdin与stdout</h2>
+<p>rust中的stdin与stdout被封装在io库中。使用io::stdin()与io::stdout()获取标准输入输出流，其使用方法近似于File。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> s = <span class="string">&quot;Hello World!&quot;</span>.to_string();</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> output = BufWriter::new(stdout());</span><br><span class="line">output.write(s.as_bytes());</span><br></pre></td></tr></table></figure>
+<p>我们输出了<code>Hello World!</code>而没有使用<code>println!()</code>宏</p>
 
       
     </div>
@@ -527,8 +562,21 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-04 15:56:56" itemprop="dateModified" datetime="2021-12-04T15:56:56+08:00">2021-12-04</time>
+        <time title="修改时间：2021-12-13 23:31:58" itemprop="dateModified" datetime="2021-12-13T23:31:58+08:00">2021-12-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust标准库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/%E6%96%87%E4%BB%B6%E4%B8%8EIO/" itemprop="url" rel="index"><span itemprop="name">文件与IO</span></a>
+        </span>
+    </span>
 
   
 </div>
@@ -634,8 +682,21 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-04 15:56:49" itemprop="dateModified" datetime="2021-12-04T15:56:49+08:00">2021-12-04</time>
+        <time title="修改时间：2021-12-13 23:32:03" itemprop="dateModified" datetime="2021-12-13T23:32:03+08:00">2021-12-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust标准库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/%E6%96%87%E4%BB%B6%E4%B8%8EIO/" itemprop="url" rel="index"><span itemprop="name">文件与IO</span></a>
+        </span>
+    </span>
 
   
 </div>
@@ -738,8 +799,17 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-11-30 14:47:02" itemprop="dateModified" datetime="2021-11-30T14:47:02+08:00">2021-11-30</time>
+        <time title="修改时间：2021-12-13 23:29:36" itemprop="dateModified" datetime="2021-12-13T23:29:36+08:00">2021-12-13</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E5%B8%B8%E7%94%A8%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust常用库</span></a>
+        </span>
+    </span>
 
   
 </div>
