@@ -209,7 +209,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-01-19 18:41:03 / 修改时间：19:02:02" itemprop="dateCreated datePublished" datetime="2022-01-19T18:41:03+08:00">2022-01-19</time>
+      <time title="创建时间：2022-01-19 18:41:03 / 修改时间：21:02:12" itemprop="dateCreated datePublished" datetime="2022-01-19T18:41:03+08:00">2022-01-19</time>
     </span>
 
   
@@ -226,17 +226,35 @@
 <p>在<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/msys2/distrib/x86_64/">清华大学开源软件站</a>中获取MSYS2安装包。这篇文章使用的是<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/msys2/distrib/x86_64/msys2-x86_64-20220118.exe">msys2-x86_64-20220118.exe</a>版本。</p>
 <h2 id="安装过程"><a class="markdownIt-Anchor" href="#安装过程"></a> 安装过程</h2>
 <p>运行安装包进行安装。可能出现安装至66%时安装停滞的现象，断网即可解决这一问题。</p>
+<h2 id="msys2简介"><a class="markdownIt-Anchor" href="#msys2简介"></a> MSYS2简介</h2>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Mingw-w64#MSYS2">MSYS2</a> (“minimal system 2”)是用于Microsoft Windows的软件发布与开发平台，基于Mingw-w64与Cygwin，把Unix环境中的代码移植到Windows。</p>
+<h2 id="配置msys2终端"><a class="markdownIt-Anchor" href="#配置msys2终端"></a> 配置MSYS2终端</h2>
+<p>Mintty是 MSYS2 中的默认终端，我们可以使用windows terminal更换终端。</p>
+<p>在windows terminal的下拉菜单栏中选择“设置”选项卡，选中最下角的&quot;Open JSON file&quot;，找到&quot;profiles&quot;键，并在其中添加如下内容</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假定安装在C:/msys64下，否则需要自行更改目录</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;guid&quot;</span>: <span class="string">&quot;&#123;71160544-14d8-4194-af25-d05feeac7233&#125;&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;MSYS / MSYS2&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;commandline&quot;</span>: <span class="string">&quot;C:/msys64/msys2_shell.cmd -defterm -here -no-start -msys&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;startingDirectory&quot;</span>: <span class="string">&quot;C:/msys64/home/%USERNAME%&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;icon&quot;</span>: <span class="string">&quot;C:/msys64/msys2.ico&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;fontFace&quot;</span>: <span class="string">&quot;Lucida Console&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;fontSize&quot;</span>: <span class="number">9</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>即可配置windows terminal为MSYS2的终端。</p>
 <h2 id="配置msys2镜像源清华大学"><a class="markdownIt-Anchor" href="#配置msys2镜像源清华大学"></a> 配置MSYS2镜像源(清华大学)</h2>
+<p>MSYS2使用<code>pacman</code>作为包管理器。使用MSYS2前，先修改镜像源。</p>
 <p>编辑 <code>/etc/pacman.d/mirrorlist.mingw32</code> ，在文件开头添加：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/i686</span><br></pre></td></tr></table></figure>
 <p>编辑 <code>/etc/pacman.d/mirrorlist.mingw64</code> ，在文件开头添加：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/x86_64</span><br></pre></td></tr></table></figure>
 <p>编辑 <code>/etc/pacman.d/mirrorlist.msys</code> ，在文件开头添加：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/$arch</span><br></pre></td></tr></table></figure>
-<p>注: 本Help参考自<a target="_blank" rel="noopener" href="https://lug.ustc.edu.cn/wiki/mirrors/help/msys2/">USTC镜像</a></p>
+<p>修改完毕后，在命令行界面中输入<code>pacman -Syu</code>进行更新。<br />
+注: 本Help参考自<a target="_blank" rel="noopener" href="https://lug.ustc.edu.cn/wiki/mirrors/help/msys2/">USTC镜像</a></p>
+<h2 id="msys2命令简介"><a class="markdownIt-Anchor" href="#msys2命令简介"></a> MSYS2命令简介</h2>
+<p>如果您想在存储库中查找特定包但不知道具体包名，您可以使用以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Ss &lt;name or part of the name of the package&gt;</span><br></pre></td></tr></table></figure>
+<p>该命令将为您列出所有可能的包。<br />
+例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Ss openjp</span><br></pre></td></tr></table></figure>
+<p>如果要安装软件包，请使用以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S &lt;name of the package&gt;</span><br></pre></td></tr></table></figure>
+<p>以下命令将删除一个包（不会删除它的依赖项或运行它产生的任何文件）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -R &lt;name of the package&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="获取mingw"><a class="markdownIt-Anchor" href="#获取mingw"></a> 获取MinGW</h2>
-<p>首先运行MSYS2 MSYS这一程序。在命令行界面中，输入<code>pacman -Syu</code>进行更新。</p>
-<p>接下来执行</p>
+<p>执行</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S --needed base-devel mingw-w64-x86_64-toolchain</span><br></pre></td></tr></table></figure>
 <p>以获取MinGW以及相关工具链。</p>
 <p>安装完毕之后，将<code>\mingw64\bin</code>添加至环境变量，此即为编译器以及相关工具所在目录，同时重命名该目录下的<code>mingw32-make.exe</code>为<code>make.exe</code>以便捷地使用make。</p>
