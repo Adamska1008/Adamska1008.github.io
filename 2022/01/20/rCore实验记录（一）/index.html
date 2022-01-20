@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="环境配置 参考rCore-Tutorial-Book-v3中的环境配置一节即可。  从Hello world开始 对于一段简单的代码 1234&#x2F;&#x2F;main.rsfn main() &amp;#123;    println!(&quot;Hello world!&quot;);&amp;#125; 使用strace工具可获取程序执行时所请求的系统调用以及其返回值。 1strace target&#x2F;debug&#x2F;os">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rCore实验记录（一）">
+<meta property="og:url" content="https://adamska1008.github.io/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="环境配置 参考rCore-Tutorial-Book-v3中的环境配置一节即可。  从Hello world开始 对于一段简单的代码 1234&#x2F;&#x2F;main.rsfn main() &amp;#123;    println!(&quot;Hello world!&quot;);&amp;#125; 使用strace工具可获取程序执行时所请求的系统调用以及其返回值。 1strace target&#x2F;debug&#x2F;os">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-20T03:32:48.000Z">
+<meta property="article:modified_time" content="2022-01-20T06:16:10.340Z">
+<meta property="article:author" content="Adamska">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://adamska1008.github.io/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/","path":"2022/01/20/rCore实验记录（一）/","title":"rCore实验记录（一）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>rCore实验记录（一） | Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text"> 环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B"><span class="nav-number">2.</span> <span class="nav-text"> 从Hello world开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E8%87%B3risc-v"><span class="nav-number">3.</span> <span class="nav-text"> 切换至RISC-V</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4%E6%A0%87%E5%87%86%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text"> 移除标准库</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Adamska</p>
+  <div class="site-description" itemprop="description">我永远爱jetbrains(有效期至2022.11.14)</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="我永远爱jetbrains(有效期至2022.11.14)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          rCore实验记录（一）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-01-20 11:32:48 / 修改时间：14:16:10" itemprop="dateCreated datePublished" datetime="2022-01-20T11:32:48+08:00">2022-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">rCore实验记录</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="环境配置"><a class="markdownIt-Anchor" href="#环境配置"></a> 环境配置</h2>
+<p>参考rCore-Tutorial-Book-v3中的<a target="_blank" rel="noopener" href="https://rcore-os.github.io/rCore-Tutorial-Book-v3/chapter0/5setup-devel-env.html">环境配置</a>一节即可。</p>
+<h2 id="从hello-world开始"><a class="markdownIt-Anchor" href="#从hello-world开始"></a> 从Hello world开始</h2>
+<p>对于一段简单的代码</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.rs</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello world!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用strace工具可获取程序执行时所请求的系统调用以及其返回值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strace target/debug/os</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">execve(<span class="string">&quot;target/debug/os&quot;</span>, [<span class="string">&quot;target/debug/os&quot;</span>], 0x7ffc57f64c80 /* 29 vars */) = 0</span><br><span class="line"></span><br><span class="line"><span class="comment">#...... 省略大量语句</span></span><br><span class="line"></span><br><span class="line">write(1, <span class="string">&quot;Hello, world!\n&quot;</span>, 14Hello, world!</span><br><span class="line">)         = 14</span><br><span class="line">sigaltstack(&#123;ss_sp=NULL, ss_flags=SS_DISABLE, ss_size=8192&#125;, NULL) = 0</span><br><span class="line">munmap(0x7f9abeed6000, 12288)           = 0</span><br><span class="line">exit_group(0)                           = ?</span><br><span class="line">+++ exited with 0 +++</span><br></pre></td></tr></table></figure>
+<p>与输入直接相关的系统调用为write函数，向标准输出流中输出了<code>&quot;Hello world\n&quot;</code>。通过观察这些代码可以直观感受到程序运行中的复杂系统调用。</p>
+<h2 id="切换至risc-v"><a class="markdownIt-Anchor" href="#切换至risc-v"></a> 切换至RISC-V</h2>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/RISC-V">RISC-V</a>（发音为“risk-five”）是一个基于精简指令集（RISC）原则的开源指令集架构（ISA），简易解释为开源软件运动相对应的一种“开源硬件”。</p>
+<p>为了便于编写代码和学习先进的RISC-V架构，我们使用交叉编译，以RISC-V为目标平台编写操作系统。</p>
+<p>我们可以在编译时使用<code>cargo build --target riscv64gc-unknown-none-elf</code>命令，或者在<code>os</code>下新建<code>.cargo</code>目录，并新建文件<code>config</code>，添加如下语句</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[build]</span></span><br><span class="line"><span class="attr">target</span> = <span class="string">&quot;riscv64gc-unknown-none-elf&quot;</span></span><br></pre></td></tr></table></figure>
+<p>便可以直接以RISC-V为目标平台编译程序。</p>
+<p>此时执行<code>cargo build</code>会出现报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">error[E0463]: can<span class="string">&#x27;t find crate for `std`</span></span><br><span class="line"><span class="string">  |</span></span><br><span class="line"><span class="string">  = note: the `riscv64gc-unknown-none-elf` target may not support the standard library</span></span><br><span class="line"><span class="string">  = note: `std` is required by `os` because it does not declare `#![no_std]`</span></span><br></pre></td></tr></table></figure>
+<p>这是由于目标平台不支持rust中的标准库，我们无法通过标准库便捷的进行编程。</p>
+<h2 id="移除标准库"><a class="markdownIt-Anchor" href="#移除标准库"></a> 移除标准库</h2>
+<p>要不依赖操作系统编写输出语句，需要禁用标准库，同时删除println!宏，因为这个宏是标准库的一部分。</p>
+<p>通过<code>no_std</code>属性禁用</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#![no_std]</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时执行<code>cargo build</code>将产生两个错误</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">error: language item required, but not found: `eh_personality`</span><br><span class="line"></span><br><span class="line">error: `#[panic_handler]` function required, but not found</span><br></pre></td></tr></table></figure>
+<p>让我们先来看第一个错误，提示缺乏language item <code>eh_personality</code>，在<a target="_blank" rel="noopener" href="https://os.phil-opp.com/zh-CN/freestanding-rust-binary/">Writing an OS in Rust</a>中写有</p>
+<blockquote>
+<p>eh_personality 语言项标记的函数，将被用于实现栈展开（stack unwinding）。在使用标准库的情况下，当 panic 发生时，Rust 将使用栈展开，来运行在栈上所有活跃的变量的析构函数（destructor）——这确保了所有使用的内存都被释放，允许调用程序的父进程（parent thread）捕获 panic，处理并继续运行。但是，栈展开是一个复杂的过程，如 Linux 的 libunwind 或 Windows 的结构化异常处理（structured exception handling, SEH），通常需要依赖于操作系统的库；所以我们不在自己编写的操作系统中使用它。</p>
+</blockquote>
+<p>于是我们需要禁用栈展开，编辑cargo.toml添加</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[profile.dev]</span></span><br><span class="line"><span class="attr">panic</span> = <span class="string">&quot;abort&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[profile.release]</span></span><br><span class="line"><span class="attr">panic</span> = <span class="string">&quot;abort&quot;</span></span><br></pre></td></tr></table></figure>
+<p>另一个错误是缺乏<code>#[panic_handler]</code>函数，于是需要自己定义一个panic处理函数。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> core::panic::PanicInfo;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 这个函数将在 panic 时被调用</span></span><br><span class="line"><span class="meta">#[panic_handler]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">panic</span></span>(_info: &amp;PanicInfo) -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时重新编译，又会产生一个新错误</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: requires `start` lang_item</span><br></pre></td></tr></table></figure>
+<p>提示我们缺少start语言项。我们可以直接加上<code>#[no_main]</code>属性，并自行编写一段入口点。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="keyword">fn</span> <span class="title">_start</span></span>() -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们使用 no_mangle 标记这个函数，来对它禁用名称重整（name mangling）——这确保 Rust 编译器输出一个名为 _start 的函数；否则，编译器可能最终生成名为 _ZN3blog_os4_start7hb173fedf945531caE 的函数，无法让链接器正确辨别。</p>
+</blockquote>
+<p>现在main.rs内容如下</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#![no_std]</span></span><br><span class="line"><span class="meta">#![no_main]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> core::panic::PanicInfo;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 这个函数将在 panic 时被调用</span></span><br><span class="line"><span class="meta">#[panic_handler]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">panic</span></span>(_info: &amp;PanicInfo) -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="keyword">fn</span> <span class="title">_start</span></span>() -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并可以正常编译。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Adamska
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://adamska1008.github.io/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/" title="rCore实验记录（一）">https://adamska1008.github.io/2022/01/20/rCore实验记录（一）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/19/%E4%BD%BF%E7%94%A8MSYS2%E7%AE%A1%E7%90%86C-C-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" rel="prev" title="使用MSYS2管理C/C++开发环境">
+                  <i class="fa fa-chevron-left"></i> 使用MSYS2管理C/C++开发环境
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adamska</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css" integrity="sha256-M6KFoDq9eUpmogkDgw6+3R3ZgUPSuFXnQyr8tskSfQs=" crossorigin="anonymous">
+
+
+
+</body>
+</html>
