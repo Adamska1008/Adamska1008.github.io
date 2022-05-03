@@ -20,14 +20,13 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="LEARN TO READ">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Blog">
 <meta property="og:url" content="https://adamska1008.github.io/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="LEARN TO READ">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Adamska">
+<meta property="article:tag" content="算法竞赛, Modern C++, JVM, Kotlin, GoLang, Rust">
 <meta name="twitter:card" content="summary">
 
 
@@ -126,24 +125,24 @@
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Adamska</p>
-  <div class="site-description" itemprop="description">LEARN TO READ</div>
+  <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -184,12 +183,12 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/03/08/software-recommend/">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/05/03/study-notes-OSTEP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -197,7 +196,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/08/software-recommend/" class="post-title-link" itemprop="url">软件推荐</a>
+          <a href="/2022/05/03/study-notes-OSTEP/" class="post-title-link" itemprop="url">OSTEP笔记（一）—— 虚拟化CPU</a>
         </h2>
 
         <div class="post-meta-container">
@@ -209,7 +208,16 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-03-08 15:38:30 / 修改时间：19:24:06" itemprop="dateCreated datePublished" datetime="2022-03-08T15:38:30+08:00">2022-03-08</time>
+      <time title="创建时间：2022-05-03 13:13:29 / 修改时间：14:11:06" itemprop="dateCreated datePublished" datetime="2022-05-03T13:13:29+08:00">2022-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OSTEP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OSTEP学习笔记</span></a>
+        </span>
     </span>
 
   
@@ -222,7 +230,221 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><em>记录一些我觉得还不错的免费软件</em></p>
+          <p><em>Three easy pieces: 虚拟化CPU，虚拟化内存，并发</em></p>
+<h1 id="虚拟化cpu"><a class="markdownIt-Anchor" href="#虚拟化cpu"></a> 虚拟化CPU</h1>
+<p><strong>关键词</strong>：</p>
+<ul>
+<li>上下文切换</li>
+<li>调度策略</li>
+</ul>
+<h3 id="进程"><a class="markdownIt-Anchor" href="#进程"></a> 进程</h3>
+<p><strong>定义</strong>：运行的程序。</p>
+<p><strong>进程的构成：机器状态</strong></p>
+<ul>
+<li>地址空间（可访问内存）</li>
+<li>寄存器信息
+<ul>
+<li>通用寄存器</li>
+<li>特殊寄存器：
+<ul>
+<li>程序计数器（Program Counter, PC），用于管理指令执行</li>
+<li>栈指针(stack pointer, %rsp in x86_64 asm) 与 帧指针(frame pointer, %rbp in x86_64 asm)用于管理参数栈，局部变量，返回地址。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>I/O信息</li>
+</ul>
+<p><strong>创建进程的基本过程</strong></p>
+<ol>
+<li>将代码与所有静态数据从存储器加载到地址空间上</li>
+<li>操作系统自行（或手动）为程序的运行时栈（run-time stack 或 stack）分配内存。</li>
+<li>可能为堆分配内存</li>
+<li>其他初始化任务，例如：创建标准输入、输出、错误流</li>
+</ol>
+<p><strong>进程状态</strong><br />
+至少包括</p>
+<ul>
+<li>运行</li>
+<li>就绪</li>
+<li>阻塞</li>
+</ul>
+<p>或更加复杂</p>
+<p><strong>数据结构-进程列表（process list）</strong><br />
+为了跟踪进程信息，需要使用一个数据结构来记录所有进程的信息。当一个进程停止时，将在这个数据结构中保存对应的机器状态，从而使得这个进程可以被恢复。这就是<strong>上下文切换</strong>。</p>
+<h3 id="linux-c-进程api"><a class="markdownIt-Anchor" href="#linux-c-进程api"></a> Linux C 进程API</h3>
+<p>too easy (or complex actually) so skip。</p>
+<h3 id="受限的直接执行limited-direct-execution"><a class="markdownIt-Anchor" href="#受限的直接执行limited-direct-execution"></a> 受限的直接执行（limited direct execution）</h3>
+<p><strong>虚拟化机制的需求</strong><br />
+让许多任务共享（有限个）物理CPU。<br />
+<strong>虚拟化机制的挑战</strong></p>
+<ol>
+<li>性能：如何在不增加系统开销的情况下实现虚拟化。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/05/02/basic-makefile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/02/basic-makefile/" class="post-title-link" itemprop="url">makefile基本使用技巧</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-02 15:25:04 / 修改时间：19:10:03" itemprop="dateCreated datePublished" datetime="2022-05-02T15:25:04+08:00">2022-05-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="简易单文件编译调试方法"><a class="markdownIt-Anchor" href="#简易单文件编译调试方法"></a> 简易单文件编译调试方法</h3>
+<p>首先，在没有编写任何makefile文件的情况下，直接<code>make $&#123;filename&#125;</code>，即可直接编译对应文件。以代码文件名作为程序名。对应语句为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cc  <span class="variable">$&#123;FILENAME&#125;</span>.c -o <span class="variable">$&#123;FILENAME&#125;</span></span><br></pre></td></tr></table></figure>
+<p>而若需要自定义参数（这个需求及其普遍），则可使用如下语句</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FILE = /* 文件名... */</span><br><span class="line">ARGS = /* 参数... */</span><br><span class="line"></span><br><span class="line"><span class="section">$&#123;FILE&#125;:</span></span><br><span class="line">    @gcc $&#123;FILE&#125;.c -o $&#123;FILE&#125; $&#123;ARGS&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">run_$&#123;FILE&#125;: $&#123;FILE&#125;</span></span><br><span class="line">    @./$&#123;FILE&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">clean_$&#123;FILE&#125;:</span></span><br><span class="line">    @rm $&#123;FILE&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设文件名为 hello.c</span></span><br><span class="line"><span class="comment"># 假设参数为：-std=c11 -O2 -g -Wall</span></span><br><span class="line"><span class="comment"># 编译:</span></span><br><span class="line">make hello</span><br><span class="line"><span class="comment"># 编译且运行:</span></span><br><span class="line">make run_hello</span><br><span class="line"><span class="comment"># 清除:</span></span><br><span class="line">make clean_hello</span><br></pre></td></tr></table></figure>
+<p>非常方便</p>
+<h3 id="基本规则"><a class="markdownIt-Anchor" href="#基本规则"></a> 基本规则</h3>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">target...: prerequisites...</span></span><br><span class="line">    command</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><code>target</code><br />
+一个object file（目标文件），或一个执行文件，或一个标签（label）。</p>
+</li>
+<li>
+<p><code>prerequisites</code><br />
+生成该target所依赖的文件或另外的target本身</p>
+</li>
+<li>
+<p><code>command</code><br />
+该target要执行的命令（任意的shell命令）</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/03/08/software-recommend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/08/software-recommend/" class="post-title-link" itemprop="url">相对小众的软件推荐</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-08 15:38:30" itemprop="dateCreated datePublished" datetime="2022-03-08T15:38:30+08:00">2022-03-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-05-02 21:34:39" itemprop="dateModified" datetime="2022-05-02T21:34:39+08:00">2022-05-02</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><em>记录一些我觉得还不错的软件（大部分软件同时开源）</em></p>
+<h1 id="通用软件"><a class="markdownIt-Anchor" href="#通用软件"></a> 通用软件</h1>
+<h2 id="hexo"><a class="markdownIt-Anchor" href="#hexo"></a> Hexo</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo">此为Hexo的GitHub仓库</a>。搭建博客的框架，同样也是搭建我这个博客的框架（主题为NEXT）。特点是轻量化且扩展性强。由于个人比较懒，所以本博客许多功能都未搭建完成，故先不详细介绍Hexo，此处暂且跳过。</p>
+<h2 id="clash"><a class="markdownIt-Anchor" href="#clash"></a> Clash</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/Dreamacro/clash">此为Clash的GitHub仓库</a>。<a href="">此为ClashForWindows的GitHub仓库</a>。<a target="_blank" rel="noopener" href="https://github.com/Kr328/ClashForAndroid">此为ClashForAndroid的GitHub仓库</a>。用的非常爽的科学上网软件。特色是可以不借助软路由直接开启局域网科学上网。使用GoLang编写。这是否也在侧面证明了GoLang在网络应用方面的强大能力呢？</p>
+<h1 id="windows"><a class="markdownIt-Anchor" href="#windows"></a> WINDOWS</h1>
 <h2 id="gimp"><a class="markdownIt-Anchor" href="#gimp"></a> GIMP</h2>
 <p>一句话评价：简单版photoshop。众所周知，photoshop是平面设计领域无可争议的王者软件，但对于普通用户来说，无论是其高昂的价格还是复杂的使用逻辑都相当地劝退。</p>
 <p>如果说有什么软件能代替photoshop的话，那一定是GIMP。GIMP全称为GNU Image Manipulation Program。（对，它也是GNU计划的一部分）。该软件具有相当多的优点：</p>
@@ -230,9 +452,23 @@
 <li>开源且免费，所有代码均可在<a target="_blank" rel="noopener" href="https://gitlab.gnome.org/GNOME/gimp">GIMP的Gitlab主页</a>上找到。</li>
 <li>支持使用python脚本进行编程。python是一种易于使用的脚本语言。大部分软件开发者都可以非常迅速的学会python的基本语法。GIMP支持通过python脚本修改图片。</li>
 <li>功能强大，根据<a target="_blank" rel="noopener" href="https://www.quora.com/What-are-some-generic-alternatives-for-Photoshop">Franklin Veaux的Quora回答</a>以及我个人的使用体验来看，基本上来说，我想要做的图片处理都可以非常轻松快速地完成。</li>
+<li>相对而言更加轻量化，例如启动速度较快，编辑响应速度较快。并没有比较过大文件（例如GB大小级别的图片）的响应时间，这是由于对于我这个普通用户来说，并没有这方面的需求。仅以日常使用而言，GIMP是更加方便趁手的。</li>
 </ul>
 <h2 id="grammly"><a class="markdownIt-Anchor" href="#grammly"></a> Grammly</h2>
 <p>一个轻量级且易于使用的语法检查软件（当然，是英文语法检查）。<a target="_blank" rel="noopener" href="https://app.grammarly.com/">此为官网地址</a>。安装好软件之后，所有在浏览器中编写的英文文本都将自动进行语法检查，且支持自动修改。软件分付费与免费两个版本。以我个人体验来看，免费版本即可满足我个人的所有需求。</p>
+<h2 id="motrix"><a class="markdownIt-Anchor" href="#motrix"></a> Motrix</h2>
+<p>开源的下载软件，<a target="_blank" rel="noopener" href="https://github.com/agalwood/Motrix">此为Motrix的Github仓库</a>。使用了Node相关的一系列技术栈来搭建，包括Electron和Vue。整体使用感觉良好。Chrome有Motrix的Web插件，但体验一般，非常可惜。该软件优点如下：</p>
+<ul>
+<li>下载速度不错。水平一般能力有限，不分析原因。仅为使用感受。一般文件的下载速度较快。</li>
+<li>界面清爽简介。这点纯粹是主观感受。但跟IDM和迅雷比一下就能明白，好看的外观绝对是加分项。</li>
+<li>支持各类常见协议的下载方式，除了HTTPS, BitTorrent之外，还支持RPC，这个就相对而言比较少见了。但是对我来说很有用。至于为什么有用这点暂且按住不表。甚至兼容迅雷的thunder协议，这点懂得都懂。</li>
+<li>允许使用代理服务器进行缓存下载。虽然我并不需要（有许多更好的解决措施），但有些人可能有这方面的需求。</li>
+</ul>
+<h2 id="captura"><a class="markdownIt-Anchor" href="#captura"></a> Captura</h2>
+<p>开源的视频录像软件，<a target="_blank" rel="noopener" href="https://github.com/MathewSachin/Captura">此为Captura的Github仓库</a>。</p>
+<h2 id="notion"><a class="markdownIt-Anchor" href="#notion"></a> Notion</h2>
+<p>我见过的最为简洁，轻量化而又功能强大的To-do-list应用。<a target="_blank" rel="noopener" href="https://www.notion.so/product">此为Notion官网</a>。我个人相当建议使用Notion来规划个人安排。</p>
+<h1 id="android"><a class="markdownIt-Anchor" href="#android"></a> ANDROID</h1>
 
       
     </div>
@@ -264,7 +500,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -365,7 +601,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -463,7 +699,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -605,12 +841,12 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/01/19/%E4%BD%BF%E7%94%A8MSYS2%E7%AE%A1%E7%90%86C-C-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/01/19/learn-to-use-MSYS2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -618,7 +854,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/19/%E4%BD%BF%E7%94%A8MSYS2%E7%AE%A1%E7%90%86C-C-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">使用MSYS2管理C/C++开发环境</a>
+          <a href="/2022/01/19/learn-to-use-MSYS2/" class="post-title-link" itemprop="url">使用MSYS2管理C/C++开发环境</a>
         </h2>
 
         <div class="post-meta-container">
@@ -628,10 +864,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-01-19 18:41:03 / 修改时间：21:10:52" itemprop="dateCreated datePublished" datetime="2022-01-19T18:41:03+08:00">2022-01-19</time>
+      <time title="创建时间：2022-01-19 18:41:03" itemprop="dateCreated datePublished" datetime="2022-01-19T18:41:03+08:00">2022-01-19</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-03-09 22:42:10" itemprop="dateModified" datetime="2022-03-09T22:42:10+08:00">2022-03-09</time>
+      </span>
 
   
 </div>
@@ -711,7 +953,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -823,7 +1065,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -921,7 +1163,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1027,243 +1269,6 @@
 <p>rust中的stdin与stdout被封装在io库中。使用io::stdin()与io::stdout()获取标准输入输出流，其使用方法近似于File。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> s = <span class="string">&quot;Hello World!&quot;</span>.to_string();</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> output = BufWriter::new(stdout());</span><br><span class="line">output.write(s.as_bytes());</span><br></pre></td></tr></table></figure>
 <p>我们输出了<code>Hello World!</code>而没有使用<code>println!()</code>宏</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">Rust文件与I/O（二） 文件</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-30 16:42:22" itemprop="dateCreated datePublished" datetime="2021-11-30T16:42:22+08:00">2021-11-30</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-13 23:31:58" itemprop="dateModified" datetime="2021-12-13T23:31:58+08:00">2021-12-13</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust标准库</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/%E6%96%87%E4%BB%B6%E4%B8%8EIO/" itemprop="url" rel="index"><span itemprop="name">文件与IO</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="fs基本文件操作"><a class="markdownIt-Anchor" href="#fs基本文件操作"></a> fs基本文件操作</h2>
-<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/index.html">fs</a>库实现了一些基本的文件操作。文件的创建与打开被封装在File类下，而对于目录的一系列操作，文件读写以及删除则以fs下的函数为入口。常用函数如下：</p>
-<ul>
-<li>文件内容复制 <code>fs::copy(from, to)</code></li>
-<li>创建新目录 <code>fs::create(path)</code></li>
-<li>读，写，删 <code>fs::read_*(path), fs::write(path), fs::remove_*(path)</code></li>
-<li>文件重命名 <code>fs::rename(path, path)</code></li>
-<li>设置权限 <code>fs::set_permissions(path, perm)</code></li>
-</ul>
-<h2 id="file"><a class="markdownIt-Anchor" href="#file"></a> File</h2>
-<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.File.html">File</a>为文件的简单抽象，聚合了文件的一系列基本操作，如创建文件与打开文件。一些复杂的操作需配合其他结构体来完成。</p>
-<h2 id="openoptions"><a class="markdownIt-Anchor" href="#openoptions"></a> OpenOptions</h2>
-<p>若直接使用<code>File::open()</code>打开文件，默认权限为只读。当文件不存在时产生Error。<code>File::create()</code>类似，但若文件不存在时会创建文件</p>
-<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.OpenOptions.html">OpenOptions</a>通过链式调用方法控制打开文件的权限。使用方法如下：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> path = Path::new();</span><br><span class="line">\\ ...</span><br><span class="line">\\ set path</span><br><span class="line">\\ ...</span><br><span class="line"><span class="keyword">let</span> f = OpenOptions::new()</span><br><span class="line">    .read(<span class="literal">true</span>)     <span class="comment">// 允许读</span></span><br><span class="line">    .create(<span class="literal">true</span>)   <span class="comment">// 未找到文件时创建文件</span></span><br><span class="line">    .write(<span class="literal">true</span>)    <span class="comment">// 允许写</span></span><br><span class="line">    .open(path);    <span class="comment">//也可以直接传入&amp;str来打开文件</span></span><br></pre></td></tr></table></figure>
-<p>除了读写权限，我们还可以控制是否直接在文件末尾添加内容，是否在读取时清空文件内容等操作，详见文档。</p>
-<p>我们也可以直接使用File::withOptions()方法创建OpenOption，这与OpenOptions::new()方法是等价的。</p>
-<h2 id="metadata"><a class="markdownIt-Anchor" href="#metadata"></a> MetaData</h2>
-<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">MetaData</a>是文件的元数据。所谓元数据，包括以下内容：</p>
-<ul>
-<li>文件类型：是文件还是目录</li>
-<li>是否受到链接</li>
-<li>长度</li>
-<li>权限（读写）</li>
-<li>修改时间（创建，打开，写入等）</li>
-</ul>
-<p>这些信息都可以通过MetaData查询。不过程序员无法修改MetaData，MetaDate只能由操作系统自身修改。</p>
-<p>我们可以通过调用File实例的metadata()方法来获得这个文件的元数据，并进行查询。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> metadata = file.metadata()?;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.accessed());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.created());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.len());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.is_file());</span><br></pre></td></tr></table></figure>
-<h2 id="readdir-direntry与dirbuilder"><a class="markdownIt-Anchor" href="#readdir-direntry与dirbuilder"></a> ReadDir, DirEntry与DirBuilder</h2>
-<p>fs库为目录提供了一系列操作。我们通过<code>fs::read_dir(path)</code>方法获取一个<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.ReadDir.html">ReadDir</a>对象，该对象本质上是一个迭代器，迭代类型为<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.DirEntry.html">DirEntry</a>。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// get path</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">for</span> entry <span class="keyword">in</span> fs::read_dir(path)? &#123;</span><br><span class="line">    <span class="keyword">let</span> dir = entry?;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, dir.path());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>DirEntry类似于File，区别在于，DirEntry本身并不持有数据，它标记了目录的入口，而不是目录本身，目录依旧是File类。要访问目录，使用path()方法获取路径。</p>
-<p>fs库文档中编写了一个遍历目录的函数来展示DirEntry的用法，如下：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"><span class="keyword">use</span> std::fs::&#123;<span class="keyword">self</span>, DirEntry&#125;;</span><br><span class="line"><span class="keyword">use</span> std::path::Path;</span><br><span class="line"></span><br><span class="line"><span class="comment">// one possible implementation of walking a directory only visiting files</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">visit_dirs</span></span>(dir: &amp;Path, cb: &amp;<span class="keyword">dyn</span> <span class="built_in">Fn</span>(&amp;DirEntry)) -&gt; io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> dir.is_dir() &#123;</span><br><span class="line">        <span class="keyword">for</span> entry <span class="keyword">in</span> fs::read_dir(dir)? &#123;</span><br><span class="line">            <span class="keyword">let</span> entry = entry?;</span><br><span class="line">            <span class="keyword">let</span> path = entry.path();</span><br><span class="line">            <span class="keyword">if</span> path.is_dir() &#123;</span><br><span class="line">                visit_dirs(&amp;path, cb)?;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cb(&amp;entry);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.DirBuilder.html">DirBuilder</a>用于辅助创建目录，常用于递归地创建目录。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> path = <span class="string">&quot;/tmp/foo/bar/baz&quot;</span>;</span><br><span class="line">DirBuilder::new()</span><br><span class="line">    .recursive(<span class="literal">true</span>)</span><br><span class="line">    .create(path).unwrap();</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%B8%80%EF%BC%89%E8%B7%AF%E5%BE%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%B8%80%EF%BC%89%E8%B7%AF%E5%BE%84/" class="post-title-link" itemprop="url">Rust文件与I/O（一） 路径</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-30 14:46:45" itemprop="dateCreated datePublished" datetime="2021-11-30T14:46:45+08:00">2021-11-30</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-01-20 14:16:16" itemprop="dateModified" datetime="2022-01-20T14:16:16+08:00">2022-01-20</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust标准库</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/%E6%96%87%E4%BB%B6%E4%B8%8EIO/" itemprop="url" rel="index"><span itemprop="name">文件与IO</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="osstring-与-osstr"><a class="markdownIt-Anchor" href="#osstring-与-osstr"></a> OsString 与 OsStr</h2>
-<p>OsString 为操作系统编码相关的字符串。不同操作系统中字符串有细微差别，如Windows偏向UTF-16编码且不作安全性检查，而Linux则以UTF-8为主。Rust中字符串编码为UTF-8，要编写具有跨平台能力的软件需要考虑平台特性。与操作系统通信时，应当使用OsString获取字符串内容而不是String。这一情况主要用于获取文件路径。</p>
-<p>OsStr与OsString的区别相当于str与String的区别。OsStr不持有数据，仅为OsString的切片。</p>
-<p>一般我们不会主动编写OsStr，但可能需要处理标准库返回的OsStr。对此可以使用相应方法，如OsStr中的<code>pub fn to_str(&amp;self) -&gt; Option&lt;&amp;str&gt;</code>转化为String或&amp;str进行下一步处理。在转化过程中，方法会判断该OsStr是否可以合法转化为UTF-8，不合法时返回<code>Option::None</code>。一切从OsStr或OsString到str或String的方法都会有此判断。</p>
-<h2 id="path-component与pathbuf"><a class="markdownIt-Anchor" href="#path-component与pathbuf"></a> Path, Component与PathBuf</h2>
-<p>我们可以直接使用字符串保存的路径打开文件，但我们总会遇到一些需要处理路径的时候，比如说提取文件名，后缀名或目录。这个时候我们需要提前封装路径并提供一些方法来简化编程。Rust标准库中提供了Path与PathBuf封装路径。</p>
-<p>本质上来说，Path是对OsStr的封装。<code>pub fn as_os_str(&amp;self) -&gt; &amp;OsStr</code>方法可以安全地返回&amp;OsStr。但是我们一般不会直接使用&amp;OsStr，故Path也提供了到&amp;str的转换方法<code>pub fn to_str(&amp;self) -&gt; Option&lt;&amp;str&gt;</code>。要想通过&amp;str生成path，则只需使用<code>Path::new()</code>方法即可。</p>
-<p>关于Path的详细内容可以查看<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/path/struct.Path.html">Path文档</a>。Path的常用方法有以下几个：</p>
-<ul>
-<li><code>pub fn components(&amp;self) -&gt; Components&lt;'_&gt;</code>：产生一个可以逐级访问每层目录的迭代器。</li>
-<li><code>pub fn extension(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件后缀名</li>
-<li><code>pub fn file_name(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件名（包含后缀名）。</li>
-<li><code>pub fn file_prefix(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件前缀</li>
-<li><code>pub fn file_stem(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件名（不包含后缀名）</li>
-<li><code>pub fn is_dir(&amp;self) -&gt; bool</code>：判断路径指向的是否为目录。</li>
-<li><code>pub fn is_file(&amp;self) -&gt; bool</code>：判断路径指向的是否为文件。</li>
-<li><code>pub fn is_relative(&amp;self) -&gt; bool</code>：判断路径是否为相对路径。</li>
-</ul>
-<p>等等，大部分是比较常见且常用的功能。</p>
-<p>需要简单提一下的是components方法，该方法返回一个Component的迭代器。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> p = Path::new(<span class="string">&quot;/bar/../foo/hello/world.txt&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> component <span class="keyword">in</span> p.components() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, component);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># output</span></span><br><span class="line">RootDir</span><br><span class="line">Normal(<span class="string">&quot;bar&quot;</span>)</span><br><span class="line">ParentDir</span><br><span class="line">Normal(<span class="string">&quot;foo&quot;</span>)</span><br><span class="line">Normal(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">Normal(<span class="string">&quot;world.txt&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>Component是path包下的一个枚举类，用来给路径分隔符之间的字符串分类。Component有以下几个枚举量：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">enum</span> <span class="title">Component</span></span>&lt;<span class="symbol">&#x27;a</span>&gt; &#123;</span><br><span class="line">    Prefix(PrefixComponent&lt;<span class="symbol">&#x27;a</span>&gt;),</span><br><span class="line">    RootDir,</span><br><span class="line">    CurDir,</span><br><span class="line">    ParentDir,</span><br><span class="line">    Normal(&amp;<span class="symbol">&#x27;a</span> OsStr),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体使用方法详见<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/path/enum.Component.html">Component文档</a>。</p>
-<p>接下来介绍PathBuf。PathBuf包含了Path的一切方法。而PathBuf同时还可以动态的改变路径。这是因为Path内部为&amp;str，不占有数据，而PathBuf内部为String，故对路径可读可写。</p>
-<p>PathBuf常用方法如下：</p>
-<ul>
-<li><code>pub fn pop(&amp;mut self) -&gt; bool</code></li>
-<li><code>pub fn push&lt;P: AsRef&lt;Path&gt;&gt;(&amp;mut self, path: P)</code></li>
-<li><code>pub fn set_file_name&lt;S: AsRef&lt;OsStr&gt;&gt;(&amp;mut self, file_name: S)</code></li>
-<li><code>pub fn set_extension&lt;S: AsRef&lt;OsStr&gt;&gt;(&amp;mut self, extension: S) -&gt; bool</code></li>
-</ul>
-<p>具体方法使用参考<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/path/struct.PathBuf.html">PathBuf文档</a>。</p>
 
       
     </div>

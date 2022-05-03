@@ -23,7 +23,7 @@
 <meta name="description" content="安装clap 首先，使用cargo search clap查询最新的clap版本号。截至2021年11月24日，稳定版本号为2.33.3，故在cargo.toml中的[dependencies]下加入[clap &#x3D; &quot;2.33.3&quot;]。 1234567[package]name &#x3D; &quot;demo&quot;author &#x3D; &quot;adamska &lt;2639">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用clap处理Rust命令行程序的参数">
-<meta property="og:url" content="https://adamska1008.github.io/2021/11/24/%E4%BD%BF%E7%94%A8clap%E5%A4%84%E7%90%86Rust%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8F%82%E6%95%B0/index.html">
+<meta property="og:url" content="https://adamska1008.github.io/2021/11/24/learn-to-use-clap/index.html">
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="安装clap 首先，使用cargo search clap查询最新的clap版本号。截至2021年11月24日，稳定版本号为2.33.3，故在cargo.toml中的[dependencies]下加入[clap &#x3D; &quot;2.33.3&quot;]。 1234567[package]name &#x3D; &quot;demo&quot;author &#x3D; &quot;adamska &lt;2639">
 <meta property="og:locale" content="zh_CN">
@@ -34,11 +34,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://adamska1008.github.io/2021/11/24/%E4%BD%BF%E7%94%A8clap%E5%A4%84%E7%90%86Rust%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8F%82%E6%95%B0/">
+<link rel="canonical" href="https://adamska1008.github.io/2021/11/24/learn-to-use-clap/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/11/24/%E4%BD%BF%E7%94%A8clap%E5%A4%84%E7%90%86Rust%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8F%82%E6%95%B0/","path":"2021/11/24/使用clap处理Rust命令行程序的参数/","title":"使用clap处理Rust命令行程序的参数"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/11/24/learn-to-use-clap/","path":"2021/11/24/learn-to-use-clap/","title":"使用clap处理Rust命令行程序的参数"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>使用clap处理Rust命令行程序的参数 | Blog</title>
@@ -130,24 +130,24 @@
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Adamska</p>
-  <div class="site-description" itemprop="description">LEARN TO READ</div>
+  <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -189,12 +189,12 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/24/%E4%BD%BF%E7%94%A8clap%E5%A4%84%E7%90%86Rust%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8F%82%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/24/learn-to-use-clap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="LEARN TO READ">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -275,7 +275,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://adamska1008.github.io/2021/11/24/%E4%BD%BF%E7%94%A8clap%E5%A4%84%E7%90%86Rust%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8F%82%E6%95%B0/" title="使用clap处理Rust命令行程序的参数">https://adamska1008.github.io/2021/11/24/使用clap处理Rust命令行程序的参数/</a>
+      <a href="https://adamska1008.github.io/2021/11/24/learn-to-use-clap/" title="使用clap处理Rust命令行程序的参数">https://adamska1008.github.io/2021/11/24/learn-to-use-clap/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
