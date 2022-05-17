@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,99 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/05/17/study-notes-CSAPP-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/17/study-notes-CSAPP-2/" class="post-title-link" itemprop="url">CSAPP笔记（二）—— 程序的机器级表示</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-17 12:45:59 / 修改时间：13:10:11" itemprop="dateCreated datePublished" datetime="2022-05-17T12:45:59+08:00">2022-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CSAPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CSAPP学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="程序编码"><a class="markdownIt-Anchor" href="#程序编码"></a> 程序编码</h2>
+<p>对于如下编译指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Og -o p p1.c p2.c</span><br></pre></td></tr></table></figure>
+<p>首先，<strong>C预处理器</strong>扩展源代码，插入所有用<code>#include</code>命令指定的<strong>文件</strong>，并扩展所有用<code>#define</code>声明指定的<strong>宏</strong>。</p>
+<p>其次，<strong>编译器</strong>产生两个源文件的<strong>汇编代码</strong>，名字分别为<code>p1.s</code> 和 <code>p2.s</code>。接下来，<strong>汇编器</strong>会将汇编代码转化成二进制<strong>目标代码</strong>文件<code>p1.o</code>和<code>p2.o</code>。目标代码是机器代码的一种形式，它包含所有指令的二进制表示，但是还没有填入全局值的地址。最后，<strong>链接器</strong>将两个目标代码文件与实现库函数（例如<code>printf</code>）的代码合并，并产生最终的<strong>可执行文件</strong><code>p</code>。</p>
+<h3 id="机器级代码"><a class="markdownIt-Anchor" href="#机器级代码"></a> 机器级代码</h3>
+<p>机器级编程着重于两种抽象：</p>
+<ol>
+<li>由 <strong>指令集架构（Instruction Set Architecture, ISA）</strong> 来定义机器级程序的格式和行为，它定义了处理器状态、指令的格式，以及每条指令对状态的影响。大多数ISA指令为顺序执行，但实际上由CPU并发执行。</li>
+<li>机器级程序使用的内存地址是 <strong>虚拟地址</strong>，提供的内存模型看上去是一个非常大的字节数组。</li>
+</ol>
+<p>汇编代码用可读性更好的文本格式表示机器级代码。一些隐藏的处理器状态对于汇编代码是可见的：</p>
+<ul>
+<li><strong>程序计数器（Program Counter，PC，%rip in x86_64）</strong> 给出将要执行的下一条指令在内存中的地址。</li>
+<li><strong>整数寄存器</strong> 用于存储地址或整数数据、记录程序状态、保存临时数据（例如过程的参数和局部变量，函数的返回值）。</li>
+<li><strong>条件码寄存器</strong> 保存最近执行的算数或逻辑指令的状态信息，实现条件变化，如 <code>if</code> 和 <code>while</code>。</li>
+<li><strong>向量寄存器</strong>，存放多个整数或浮点数值。</li>
+</ul>
+<p>机器级代码将内存看为按字节寻址的数组，数据用连续的字节来表示，汇编代码不区分有符号或无符号整数，不区分各类型的指针，也不区分整数和指针。</p>
+<p><strong>反汇编器（objdump）</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1631,113 +1724,6 @@ a \ge b \ 且 \ c \le 0 \Rightarrow a *^f c \le b *^f c
 <p>我们一开始的程序为x1寄存器赋值0x100，让我们继续执行一步并看看有没有生效。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) si</span><br><span class="line">(gdb) p/x <span class="variable">$x1</span></span><br></pre></td></tr></table></figure>
 <p>此时可以看到输出符合预期，即内核开始执行我们编写的程序。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/01/19/learn-to-use-MSYS2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/19/learn-to-use-MSYS2/" class="post-title-link" itemprop="url">使用MSYS2管理C/C++开发环境</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-01-19 18:41:03" itemprop="dateCreated datePublished" datetime="2022-01-19T18:41:03+08:00">2022-01-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-03-09 22:42:10" itemprop="dateModified" datetime="2022-03-09T22:42:10+08:00">2022-03-09</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="获取安装包"><a class="markdownIt-Anchor" href="#获取安装包"></a> 获取安装包</h2>
-<p>在<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/msys2/distrib/x86_64/">清华大学开源软件站</a>中获取MSYS2安装包。这篇文章使用的是<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/msys2/distrib/x86_64/msys2-x86_64-20220118.exe">msys2-x86_64-20220118.exe</a>版本。</p>
-<h2 id="安装过程"><a class="markdownIt-Anchor" href="#安装过程"></a> 安装过程</h2>
-<p>运行安装包进行安装。可能出现安装至66%时安装停滞的现象，断网即可解决这一问题。</p>
-<h2 id="msys2简介"><a class="markdownIt-Anchor" href="#msys2简介"></a> MSYS2简介</h2>
-<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Mingw-w64#MSYS2">MSYS2</a> (“minimal system 2”)是用于Microsoft Windows的软件发布与开发平台，基于Mingw-w64与Cygwin，把Unix环境中的代码移植到Windows。</p>
-<h2 id="配置msys2终端"><a class="markdownIt-Anchor" href="#配置msys2终端"></a> 配置MSYS2终端</h2>
-<p>Mintty是 MSYS2 中的默认终端，我们可以使用windows terminal更换终端。</p>
-<p>在windows terminal的下拉菜单栏中选择“设置”选项卡，选中最下角的&quot;Open JSON file&quot;，找到&quot;profiles&quot;键，并在其中添加如下内容</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假定安装在C:/msys64下，否则需要自行更改目录</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;guid&quot;</span>: <span class="string">&quot;&#123;71160544-14d8-4194-af25-d05feeac7233&#125;&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;MSYS / MSYS2&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;commandline&quot;</span>: <span class="string">&quot;C:/msys64/msys2_shell.cmd -defterm -here -no-start -msys&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;startingDirectory&quot;</span>: <span class="string">&quot;C:/msys64/home/%USERNAME%&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;icon&quot;</span>: <span class="string">&quot;C:/msys64/msys2.ico&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;fontFace&quot;</span>: <span class="string">&quot;Lucida Console&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;fontSize&quot;</span>: <span class="number">9</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
-<p>即可配置windows terminal为MSYS2的终端。</p>
-<h2 id="配置msys2镜像源清华大学"><a class="markdownIt-Anchor" href="#配置msys2镜像源清华大学"></a> 配置MSYS2镜像源(清华大学)</h2>
-<p>MSYS2使用<code>pacman</code>作为包管理器。使用MSYS2前，先修改镜像源。</p>
-<p>编辑 <code>/etc/pacman.d/mirrorlist.mingw32</code> ，在文件开头添加：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/i686</span><br></pre></td></tr></table></figure>
-<p>编辑 <code>/etc/pacman.d/mirrorlist.mingw64</code> ，在文件开头添加：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/x86_64</span><br></pre></td></tr></table></figure>
-<p>编辑 <code>/etc/pacman.d/mirrorlist.msys</code> ，在文件开头添加：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/$arch</span><br></pre></td></tr></table></figure>
-<p>修改完毕后，在命令行界面中输入<code>pacman -Syu</code>进行更新。<br />
-注: 本Help参考自<a target="_blank" rel="noopener" href="https://lug.ustc.edu.cn/wiki/mirrors/help/msys2/">USTC镜像</a></p>
-<h2 id="msys2命令简介"><a class="markdownIt-Anchor" href="#msys2命令简介"></a> MSYS2命令简介</h2>
-<p>如果您想在存储库中查找特定包但不知道具体包名，您可以使用以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Ss &lt;name or part of the name of the package&gt;</span><br></pre></td></tr></table></figure>
-<p>该命令将为您列出所有可能的包。<br />
-例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Ss openjp</span><br></pre></td></tr></table></figure>
-<p>如果要安装软件包，请使用以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S &lt;name of the package&gt;</span><br></pre></td></tr></table></figure>
-<p>以下命令将删除一个包（不会删除它的依赖项或运行它产生的任何文件）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -R &lt;name of the package&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="获取mingw"><a class="markdownIt-Anchor" href="#获取mingw"></a> 获取MinGW</h2>
-<p>执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S --needed base-devel mingw-w64-x86_64-toolchain</span><br></pre></td></tr></table></figure>
-<p>以获取MinGW以及相关工具链。</p>
-<p>安装完毕之后，将<code>\mingw64\bin</code>添加至环境变量，此即为编译器以及相关工具所在目录，同时重命名该目录下的<code>mingw32-make.exe</code>为<code>make.exe</code>以便捷地使用make。</p>
-<p>这一套工具链同时也安装了最新版本的python。</p>
 
       
     </div>
