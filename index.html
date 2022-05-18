@@ -1238,7 +1238,7 @@ a \ge b \ 且 \ c \le 0 \Rightarrow a *^f c \le b *^f c
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-05-18 18:15:23" itemprop="dateModified" datetime="2022-05-18T18:15:23+08:00">2022-05-18</time>
+        <time title="修改时间：2022-05-18 21:39:06" itemprop="dateModified" datetime="2022-05-18T21:39:06+08:00">2022-05-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1485,10 +1485,50 @@ a \ge b \ 且 \ c \le 0 \Rightarrow a *^f c \le b *^f c
 <p>显然，对于近似同一时间到达，但任务长度有差别的多个任务，可以先运行最短的任务。在考虑所有任务近似同时到达的情况下，不难证明，SJF确实是一个最优（optimal）调度算法。</p>
 <p>但是，若否定假设2，认为并非所有任务都同时到达。仍考虑长任务先到达时的情况，则与FIFO没有区别，且依旧遇到护航问题。</p>
 <h4 id="最短完成时间优先shortest-time-to-completion-firststcf"><a class="markdownIt-Anchor" href="#最短完成时间优先shortest-time-to-completion-firststcf"></a> 最短完成时间优先（Shortest Time-to-Completion First，STCF）。</h4>
-<p>向SJF添加抢占，即为STCF。STCF允许调度程序抢占正在运行的工作，并运行新到达的工作。每当新工作进入系统时，它就会确定剩余工作和新工作中，谁的剩余时间最少，然后调度该工作。这种算法可以大大提高平均周转时间。</p>
+<p>否定假设3，向SJF添加抢占，即为STCF。STCF允许调度程序抢占正在运行的工作，并运行新到达的工作。每当新工作进入系统时，它就会确定剩余工作和新工作中，谁的剩余时间最少，然后调度该工作。这种算法可以大大提高平均周转时间。</p>
 <p>STCF的缺点是，响应时间不一定足够优秀。由于必须执行完一个任务之后再执行下一个任务，随着任务队列的增长，到达时间和首次运行时间只差会越来越大。</p>
 <h4 id="轮转round-robin"><a class="markdownIt-Anchor" href="#轮转round-robin"></a> 轮转（Round-Robin）</h4>
-<p>基本思想很简单：RR在一个 <strong>时间片（time slice）</strong>（有时称作调度量子，scheduling quantum）内运行一个工作，然后切换到运行队列中的下一个任务，而不是运行一个任务直到结束。</p>
+<p>基本思想很简单：RR在一个 <strong>时间片（time slice）</strong>（有时称作调度量子，scheduling quantum）内运行一个工作，然后切换到运行队列中的下一个任务，而不是运行一个任务直到结束。它反复执行，直到任务完成。因此，RR 有时被称为时间切片（time-slicing）。</p>
+<p>时间片长度必须是时钟中断周期的倍数。</p>
+<p>时间片太短会造成上下文切换的时间不可忽略，故需权衡时间片的长度，以便平衡切换与响应。</p>
+<p>但显然，考虑周转时间时，RR算法的周转时间非常差。这也体现了公平与效率的冲突性。</p>
+<h3 id="结合io"><a class="markdownIt-Anchor" href="#结合io"></a> 结合I/O</h3>
+<p>放宽假设4，实质上任务基本上必然有I/O。</p>
+<p>显然，任务请求I/O时，调度程序需做出判断，安排另一项工作，否则会造成CPU资源浪费。</p>
+<p>同样，任务完成I/O时，操作系统会产生中断，并将原进程从阻塞移回就绪状态。</p>
+<h2 id="调度多级反馈队列"><a class="markdownIt-Anchor" href="#调度多级反馈队列"></a> 调度：多级反馈队列</h2>
+<p><strong>多级反馈队列（Multi-level Feedback Queue，MLFQ）</strong> 解决了三个的问题：</p>
+<ol>
+<li>优化周转时间。</li>
+<li>在不知道工作运行时间（非常常见）的情况下安排工作。</li>
+<li>降低响应时间。</li>
+</ol>
+<h3 id="基本规则"><a class="markdownIt-Anchor" href="#基本规则"></a> 基本规则</h3>
+<p>MLFQ中有多个不同的队列（queue），每个队列有不同的优先级（priority level）。任何一个时刻，一个工作只能存在于一个队列中。MLFQ总是执行较高优先级的工作。相同队列中的工作采用轮转调度。</p>
+<p>归纳得两条规则：</p>
+<ol>
+<li>如果 A 的优先级 &gt; B 的优先级，优先运行 A （不运行 B）。</li>
+<li>如果 A 的优先级 = B 的优先级，轮转运行 A 和 B 。</li>
+</ol>
+<p>并且，需要添加一个规则</p>
+<ol start="3">
+<li>工作进入系统时，放在最高优先级（最上层队列）。</li>
+</ol>
+<p>这是由于，如果不知道工作是短工作还是长工作，可以在开始时假设其是短工作，并赋予最高优先级。如果确实是短工作，将很快执行完毕，否则移入低优先级队列。通过这种方式，MLFQ近似于SJF。</p>
+<p>考虑到可能的I/O情况，需要在任务请求I/O时进行调度，且不应直接降低其优先级。但是，考虑 <strong>饥饿(starvation)问题</strong> 。如果系统有太多交互型工作，就会不断占用CPU，导致长工作无法得到CPU 。其次，通过主动调用I/O，任务有可能获得不符合公平原则的时间。</p>
+<p>因此追加两条规则。</p>
+<ol start="4">
+<li>
+<p>一旦工作用完了其在某一层中的时间配额（无论中间主动放弃了多少次CPU），就降低其优先级。</p>
+</li>
+<li>
+<p>经过一段时间 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span> ，就将系统中所有工作重新加入最高优先级队列。</p>
+</li>
+</ol>
+<p>规则5解决了饥饿问题，而规则4通过时间配额方式确认了降低优先级的规则，与是否进行I/O无关。</p>
+<h2 id="调度比例份额"><a class="markdownIt-Anchor" href="#调度比例份额"></a> 调度：比例份额</h2>
+<p>比例份额算法基于一个简单的想法：调度程序的最终目标是确保每个工作获得一定比例的CPU时间，而不是优化周转时间和响应时间。</p>
+<h3 id="彩票调度lottery-scheduling"><a class="markdownIt-Anchor" href="#彩票调度lottery-scheduling"></a> 彩票调度（lottery scheduling）</h3>
 
       
     </div>
