@@ -214,7 +214,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-05-21 13:26:53" itemprop="dateModified" datetime="2022-05-21T13:26:53+08:00">2022-05-21</time>
+        <time title="修改时间：2022-05-21 14:39:24" itemprop="dateModified" datetime="2022-05-21T14:39:24+08:00">2022-05-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -461,6 +461,33 @@
 <li>管理物理内存的空闲空间。分段造成了 <strong>外部碎片（external fragmentation）</strong> 。可以考虑使用紧凑（compact）物理内存或设计好的空闲列表管理算法。</li>
 </ol>
 <h2 id="空闲空间管理"><a class="markdownIt-Anchor" href="#空闲空间管理"></a> 空闲空间管理</h2>
+<p>当操作系统使用分段机制，或用户使用内存分配库（如<code>malloc()</code>和<code>free()</code>）时，可能出现外部碎片。即使总空闲空间超出了请求大小，也可能没有一块足够大的连续空闲空间。</p>
+<h3 id="底层机制"><a class="markdownIt-Anchor" href="#底层机制"></a> 底层机制</h3>
+<h4 id="分割与合并"><a class="markdownIt-Anchor" href="#分割与合并"></a> 分割与合并</h4>
+<p>空闲列表包含一组元素，记录哪些空间没有被分配，例如：</p>
+<pre class="mermaid">graph LR;
+    head --> 1([addr:0<br>len:10]) --> 2([addr:20<br>len:10]) --> NULL</pre>
+<p>表示在地址<code>0</code>和<code>20</code>处各有长度为 10 的空闲列表，显然，任何大于10字节的分配请求都会失败。</p>
+<p>若在第二个空闲区域头申请1字节，则为。</p>
+<pre class="mermaid">graph LR;
+    head --> 1([addr:0<br>len:10]) --> 2([addr:21<br>len:9]) --> NULL</pre>
+<p>或归还中间空余内存，得：</p>
+<pre class="mermaid">graph LR;
+    head --> 3([addr:10<br>len:10]) --> 1([addr:0<br>len:10]) --> 2([addr:20<br>len:10]) --> NULL</pre>
+<p>此时需要合并（coalescing）机制，合并相邻空闲列表，得：</p>
+<pre class="mermaid">graph LR;
+    head --> 1([addr:0<br>len:30]) --> NULL</pre>
+<h4 id="追踪已分配空间的大小"><a class="markdownIt-Anchor" href="#追踪已分配空间的大小"></a> 追踪已分配空间的大小</h4>
+<p><code>free(void *ptr)</code>假定对于给定的指针，可以确定需要释放空间的大小。</p>
+<p>为此，需要在分配空间同时增加头块（header），在头块中存储<code>&#123; int size; int magic; &#125;</code>。其中<code>magic</code>变量用于完整性检查。</p>
+<h3 id="基本策略"><a class="markdownIt-Anchor" href="#基本策略"></a> 基本策略</h3>
+<ul>
+<li>最优匹配（best fit）：首先遍历整个空闲列表，找到大于等于请求要求的空闲块，然后返回最小的一块。避免空间浪费，但是性能较差。</li>
+<li>最差匹配（worst fit）：将满足条件的最大空闲块，分割后将剩余的块加入空闲列表。各方面表现很差，正常不会使用。</li>
+<li>首次匹配（first fit）：找到第一个足够大的块，将请求返回给用户。速度快但有时会造成空间开头的大量碎片。</li>
+<li>下次匹配（next fit）：多维护一个指针，指向上次查找结束的位置。</li>
+</ul>
+<h2 id="分页"><a class="markdownIt-Anchor" href="#分页"></a> 分页</h2>
 
       
     </div>
@@ -2284,6 +2311,8 @@ a \ge b \ 且 \ c \le 0 \Rightarrow a *^f c \le b *^f c
   
 
 
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.2/dist/mermaid.min.js","integrity":"sha256-UIQPVkGifpwMvDH5yGgORJ9sSTDq38zz6BGU6dNaKhM="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
 
 
 
