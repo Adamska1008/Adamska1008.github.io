@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,104 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">rCore实验记录（二）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-01-20 17:30:26 / 修改时间：23:13:58" itemprop="dateCreated datePublished" datetime="2022-01-20T17:30:26+08:00">2022-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">rCore实验记录</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="引导至rust代码"><a class="markdownIt-Anchor" href="#引导至rust代码"></a> 引导至rust代码</h2>
+<p>在之前的内容的内容中，我们成功在不使用操作系统的情况下执行了我们的代码，然而这一代码并非由rust编写，rust仅仅是作为汇编器生成机器码交给机器执行罢了。要通过rust编写操作系统，我们需要将控制权转移到rust中的函数。</p>
+<p>修改entry.asm如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># os/src/entry.asm</span></span><br><span class="line">    .section .text.entry</span><br><span class="line">    .globl _start</span><br><span class="line">_start:</span><br><span class="line">    la sp, boot_stack_top</span><br><span class="line">    call rust_main</span><br><span class="line"></span><br><span class="line">    .section .bss.stack</span><br><span class="line">    .globl boot_stack</span><br><span class="line">boot_stack:</span><br><span class="line">    .space 4096 * 16</span><br><span class="line">    .globl boot_stack_top</span><br><span class="line">boot_stack_top:</span><br></pre></td></tr></table></figure>
+<p>这段汇编的含义为，在_start处为栈指针赋值，并跳转到rust_main函数中。栈空间定义在bss段中，共4096*16=64kb内存，boot_stack_top为栈顶指针，boot_stack为栈底指针。</p>
+<p>接下来修改<code>main.rs</code></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">rust_main</span> -&gt; ! &#123;</span></span><br><span class="line"><span class="function">    <span class="title">clear_bss</span></span>();</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">clear_bss</span></span>() &#123;</span><br><span class="line">    <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">sbss</span></span>();</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">ebss</span></span>();</span><br><span class="line">    &#125;</span><br><span class="line">    (sbss <span class="keyword">as</span> <span class="built_in">usize</span>..ebss <span class="keyword">as</span> <span class="built_in">usize</span>).for_each( |a| &#123;</span><br><span class="line">        <span class="keyword">unsafe</span> &#123; (a <span class="keyword">as</span> *<span class="keyword">mut</span> <span class="built_in">u8</span>).write_volatile(<span class="number">0</span>) &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>sbss</code>与<code>ebss</code>指针定义在链接表中，clear_bss()函数将sbss与ebss之间内容清0，使之符合bss段的定义。</p>
+<h2 id="使用rustsbi"><a class="markdownIt-Anchor" href="#使用rustsbi"></a> 使用RustSBI</h2>
+<p>RustSBI可以为我们编写的操作系统内核提供服务，我们可以使用其来进行简单的IO与关机操作。</p>
+<p>要使内核调用RustSBI，需编写下列语句。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="keyword">mod</span> sbi;</span><br><span class="line"></span><br><span class="line"><span class="comment">// os/src/sbi.rs</span></span><br><span class="line"><span class="keyword">use</span> core::arch::asm;</span><br><span class="line"><span class="meta">#[inline(always)]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">sbi_call</span></span>(which: <span class="built_in">usize</span>, arg0: <span class="built_in">usize</span>, arg1: <span class="built_in">usize</span>, arg2: <span class="built_in">usize</span>) -&gt; <span class="built_in">usize</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> ret;</span><br><span class="line">    <span class="keyword">unsafe</span> &#123;</span><br><span class="line">        asm!(</span><br><span class="line">            <span class="string">&quot;ecall&quot;</span>,</span><br><span class="line">            inlateout(<span class="string">&quot;x10&quot;</span>) arg0 =&gt; ret,</span><br><span class="line">            <span class="keyword">in</span>(<span class="string">&quot;x11&quot;</span>) arg1,</span><br><span class="line">            <span class="keyword">in</span>(<span class="string">&quot;x12&quot;</span>) arg2,</span><br><span class="line">            <span class="keyword">in</span>(<span class="string">&quot;x17&quot;</span>) which,</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">    ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们暂时不需理解这段代码的含义，我们只需知道这样编写之后，便可通过<code>sbi_call</code>函数调用SBI服务。</p>
+<p>函数的第一个参数表示服务类型，其为一个usize类型数字，不同数字代表不同服务。为方便记忆，定义常数如下</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/sbi.rs</span></span><br><span class="line"><span class="meta">#![allow(unused)]</span></span><br><span class="line"><span class="keyword">const</span> SBI_SET_TIMER: <span class="built_in">usize</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_CONSOLE_PUTCHAR: <span class="built_in">usize</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_CONSOLE_GETCHAR: <span class="built_in">usize</span> = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_CLEAR_IPI: <span class="built_in">usize</span> = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_SEND_IPI: <span class="built_in">usize</span> = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_REMOTE_FENCE_I: <span class="built_in">usize</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_REMOTE_SFENCE_VMA: <span class="built_in">usize</span> = <span class="number">6</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_REMOTE_SFENCE_VMA_ASID: <span class="built_in">usize</span> = <span class="number">7</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_SHUTDOWN: <span class="built_in">usize</span> = <span class="number">8</span>;</span><br></pre></td></tr></table></figure>
+<p>接下来可以通过<code>sbi_call</code>函数编写相关接口。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/sbi.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">console_putchar</span></span>(c: <span class="built_in">usize</span>) &#123;</span><br><span class="line">    sbi_call(SBI_CONSOLE_PUTCHAR, c, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">shutdown</span></span>() -&gt; ! &#123;</span><br><span class="line">    sbi_call(SBI_SHUTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">panic!</span>(<span class="string">&quot;It should shutdown!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们就得到了<code>putchar</code>与<code>shutdown</code>两个操作系统接口。</p>
+<p>我们接下来编写<code>println!</code>宏，编写内容与操作系统知识无关，与rust基础语法有关。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#[macro_use]</span></span><br><span class="line"><span class="keyword">mod</span> console;</span><br><span class="line"></span><br><span class="line"><span class="comment">// os/src/console.rs</span></span><br><span class="line"><span class="keyword">use</span> crate::sbi::console_putchar;</span><br><span class="line"><span class="keyword">use</span> core::fmt::&#123;<span class="keyword">self</span>, Write&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Stdout</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> Write <span class="keyword">for</span> Stdout &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">write_str</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, s: &amp;<span class="built_in">str</span>) -&gt; fmt::<span class="built_in">Result</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> s.chars() &#123;</span><br><span class="line">            console_putchar(c <span class="keyword">as</span> <span class="built_in">usize</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="literal">Ok</span>(())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">print</span></span>(args: fmt::Arguments) &#123;</span><br><span class="line">    Stdout.write_fmt(args).unwrap();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[macro_export]</span></span><br><span class="line"><span class="built_in">macro_rules!</span> print &#123;</span><br><span class="line">    ($fmt: literal $(, $($arg: tt)+)?) =&gt; &#123;</span><br><span class="line">        $crate::console::print(<span class="built_in">format_args!</span>($fmt $(, $($arg)+)?));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[macro_export]</span></span><br><span class="line"><span class="built_in">macro_rules!</span> println &#123;</span><br><span class="line">    ($fmt: literal $(, $($arg: tt)+)?) =&gt; &#123;</span><br><span class="line">        $crate::console::print(<span class="built_in">format_args!</span>(<span class="built_in">concat!</span>($fmt, <span class="string">&quot;\n&quot;</span>) $(, $($arg)+)?));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后编写<code>panic!</code>宏。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#![feature(panic_info_message)]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// os/src/lang_item.rs</span></span><br><span class="line"><span class="keyword">use</span> crate::sbi::shutdown;</span><br><span class="line"><span class="keyword">use</span> core::panic::PanicInfo;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[panic_handler]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">panic</span></span>(info: &amp;PanicInfo) -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> <span class="literal">Some</span>(location) = info.location() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(</span><br><span class="line">            <span class="string">&quot;Panicked at &#123;&#125;:&#123;&#125; &#123;&#125;&quot;</span>,</span><br><span class="line">            location.file(),</span><br><span class="line">            location.line(),</span><br><span class="line">            info.message().unwrap()</span><br><span class="line">        );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;Panicked: &#123;&#125;&quot;</span>, info.message().unwrap());</span><br><span class="line">    &#125;</span><br><span class="line">    shutdown()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改main函数</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">rust_main</span></span>() -&gt; ! &#123;</span><br><span class="line">    clear_bss();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello, world!&quot;</span>);</span><br><span class="line">    <span class="built_in">panic!</span>(<span class="string">&quot;Shutdown machine!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>即可完成输出<code>Hello, world!</code>与关机的操作。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1221,98 +1319,8 @@ u.sum=l.sum+r.sum\\
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/10/31/use-socket-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/31/use-socket-2/" class="post-title-link" itemprop="url">使用socket进行简单的通信(2)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-31 23:20:16" itemprop="dateCreated datePublished" datetime="2021-10-31T23:20:16+08:00">2021-10-31</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-02-12 20:21:45" itemprop="dateModified" datetime="2022-02-12T20:21:45+08:00">2022-02-12</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E4%BD%BF%E7%94%A8socket%E8%BF%9B%E8%A1%8C%E7%AE%80%E5%8D%95%E7%9A%84%E9%80%9A%E4%BF%A1/" itemprop="url" rel="index"><span itemprop="name">使用socket进行简单的通信</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="listen"><a class="markdownIt-Anchor" href="#listen"></a> listen()</h4>
-<p>当socket完成与地址的绑定之后，需要调用listen()进入监听状态。只有在监听状态下，socket才能响应外部的连接请求并建立连接。</p>
-<p><code>int listen (int __fd, int __n)</code>传入一个socket与一个数字，表示请求队列的长度上限。请求队列为请求的缓冲区。当socket已经建立了一个连接后，随后的连接请求将进入请求队列等待。若请求数量超过队列上线，那么请求将失败，客户端会收到<code>ECONNREFUSED</code>错误。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);</span></span><br><span class="line"><span class="comment">    ...</span></span><br><span class="line"><span class="comment">    bind(sock, (struct sockaddr *)&amp;addr, sizeof(addr));</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    listen(sock, <span class="number">500</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="accept"><a class="markdownIt-Anchor" href="#accept"></a> accept()</h4>
-<p>使用accept()函数从请求队列首部获取一个请求，并连接通信。</p>
-<p><code>int accept (int __fd, __SOCKADDR_ARG __addr, socklen_t *__restrict __addr_len);</code>有三个参数，第一个参数为服务器socket，第二个参数为客户端socket地址，第三个参数为客户端socket长度指针。后两个参数用于获取客户端socket的信息。我们将空的sockaddr_in和socklen_t传进去即可接收。函数返回客户端socket的句柄。</p>
-<p>使用了accept之后，我们就可以使用write()与read()等函数进行基本的通讯了。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//写一个简单的echo服务器</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> serv_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);</span><br><span class="line">    <span class="keyword">int</span> clnt_sock;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">serv_addr</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">clnt_addr</span>;</span></span><br><span class="line">    <span class="keyword">socklen_t</span> clnt_addr_sz;</span><br><span class="line">    <span class="keyword">char</span> buf[BUF_SIZE];</span><br><span class="line"></span><br><span class="line">    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);</span><br><span class="line">    serv_addr.sin_port = htons(atoi(argv[<span class="number">1</span>]));</span><br><span class="line">    serv_addr.sin_family = AF_INET;</span><br><span class="line">    bind(serv_sock, (struct sockaddr *)&amp;serv_sock, <span class="keyword">sizeof</span>(serv_sock));</span><br><span class="line"></span><br><span class="line">    listen(serv_sock, <span class="number">5</span>);</span><br><span class="line">    <span class="keyword">while</span> (clnt_sock = accept(serv_sock, (struct sockaddr *)&amp;clnt_addr, &amp;clnt_addr_sz) == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> msg_len = read(clnt_sock, buf, BUF_SIZE);</span><br><span class="line">        write(clnt_sock, buf, msg_len);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="connect"><a class="markdownIt-Anchor" href="#connect"></a> connect()</h4>
-<p>connect的函数用于客户端向服务器发起连接。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

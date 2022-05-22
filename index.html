@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,6 +183,93 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/05/22/study-notes-OSTEP-API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/22/study-notes-OSTEP-API/" class="post-title-link" itemprop="url">OSTEP笔记 —— Linux C 系统调用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-22 15:38:48 / 修改时间：22:23:31" itemprop="dateCreated datePublished" datetime="2022-05-22T15:38:48+08:00">2022-05-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OSTEP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OSTEP学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="进程api"><a class="markdownIt-Anchor" href="#进程api"></a> 进程API</h2>
+<h3 id="fork"><a class="markdownIt-Anchor" href="#fork"></a> fork</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">        fork() - create a child process</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">        #include &lt;sys/types.h&gt;</span><br><span class="line">        #include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">        pid_t fork(void);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>fork()</code>用于创建子进程，子进程与调用<code>fork()</code>的父进程几乎完全一样，但进程描述符（process identifier, PID）不同，这是因为它们是两个进程。</p>
+<p>子进程几乎拷贝了父进程的所有内容，除了<code>fork()</code>返回进程的pid。对于子进程，返回0；对于父进程，返回子进程的pid。子进程并不会从<code>main()</code>函数开始执行，而是直接从<code>fork()</code>系统调用处继续执行。</p>
+<p>使用<code>fork()</code>后，两个进程没有明显的运行顺序差异。</p>
+<h3 id="wait"><a class="markdownIt-Anchor" href="#wait"></a> wait</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">        wait, waitpid, waitid - wait for process to change state</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">        #include &lt;sys/types.h&gt;</span><br><span class="line">        #include &lt;sys/wait.h&gt;</span><br><span class="line"></span><br><span class="line">        pid_t wait(int *wstatus);</span><br><span class="line"></span><br><span class="line">        pid_t waitpid(pid_t pid, int *wstatus, int options);</span><br><span class="line"></span><br><span class="line">        int waitid()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>相较于<code>wait()</code>，<code>waitpid()</code>更加完整。</p>
+<p>父进程调用<code>wait()</code>，直到子进程执行完毕，再执行父进程。</p>
+<h3 id="exec"><a class="markdownIt-Anchor" href="#exec"></a> exec</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">        execl, execlp, execle, execv, execvp, execvpe - execute a file</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">        #include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">        extern char **environ;</span><br><span class="line"></span><br><span class="line">        int execl(const char *pathname, const char* arg, ...);</span><br><span class="line"></span><br><span class="line">        int execlp(const char *file, const char *arg, ...);</span><br><span class="line">        </span><br><span class="line">        int execle(const char *pathname, const char *arg, ...);</span><br><span class="line"></span><br><span class="line">        int execv(const char *pathname, char *const argv[]);</span><br><span class="line">        int execvp(const char *file, char *const argv[]);</span><br><span class="line">        int execvpe(const char *file, char *const argv[], char *const envp[]);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id=""><a class="markdownIt-Anchor" href="#"></a> </h2>
+<h2 id="-2"><a class="markdownIt-Anchor" href="#-2"></a> </h2>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/05/19/study-notes-OSTEP-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -214,7 +301,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-05-21 14:39:24" itemprop="dateModified" datetime="2022-05-21T14:39:24+08:00">2022-05-21</time>
+        <time title="修改时间：2022-05-22 11:33:40" itemprop="dateModified" datetime="2022-05-22T11:33:40+08:00">2022-05-22</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -488,6 +575,35 @@
 <li>下次匹配（next fit）：多维护一个指针，指向上次查找结束的位置。</li>
 </ul>
 <h2 id="分页"><a class="markdownIt-Anchor" href="#分页"></a> 分页</h2>
+<p>为防止空间碎片化，将空间分割成固定长度的分片。在虚拟内存中，称之为分页。分页将一个进程的地址空间分割成固定大小的单元，每个单元称为一页。将物理内存看作定长槽块的阵列，叫作页帧（page frame）。</p>
+<p>为记录地址空间的每个虚拟页放在物理内存中的位置，操作系统通常为每个进程保存一个数据结构，称为页表（page table）。页表的主要作用是为地址空间的每个虚拟页面保存地址转换（address translation）。</p>
+<p>一个虚拟地址可以分成两部分：虚拟页面号（virtual page number, VPN）和页内的偏移量（offset）。</p>
+<p><strong>举例</strong><br />
+假设页表为：<code>&#123; 0: 3, 1: 7, 2: 5, 3: 2 &#125;</code> ，地址空间为64字节，地址为六比特，其中前两比特为虚拟页号（VPN），后四比特为偏移量。</p>
+<p>以<code>movl 21, %eax</code>为例，21的二进制表示为<code>010101</code>。得VPN为<code>01</code>，即 1，对应物理帧（PFN）为 7 （二进制<code>111</code>）。</p>
+<p>于是得到物理地址为<code>1110101</code>。</p>
+<h3 id="页表的大小与位置"><a class="markdownIt-Anchor" href="#页表的大小与位置"></a> 页表的大小与位置</h3>
+<p>考虑一个 32 位地址空间，带有 4 KB大小的页。显然，页本身需要 12 位的偏移量，而余下 20 位为 VPN 。这表示地址转换数量为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>20</mn></msup></mrow><annotation encoding="application/x-tex">2^{20}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></span> 。这会消耗大量的内存。</p>
+<p>因此，页表不由MMU进行硬件支持。页表一般存储在内存之中，甚至交换到磁盘上。</p>
+<h3 id="页表内容"><a class="markdownIt-Anchor" href="#页表内容"></a> 页表内容</h3>
+<p>最简单的形式为线性表（linear page table），例如，前文页表可表示为 <code>a[4] = &#123; 3, 7, 5, 2 &#125;;</code> 。操作系统以VPN为索引，检索数组，并在索引处查找页表项（PTE），以便找到期望的物理帧号（PFN）。</p>
+<p>PTE中常见的位有</p>
+<ul>
+<li>有效位（valid bit），通常指示特定地址转换是否有效。</li>
+<li>保护位（protection bit），表明页是否可以读取、写入或执行。</li>
+<li>存在位（present bit），表示该页是在物理存储器还是在磁盘上。</li>
+<li>脏位（dirty bit），表明页面被带入内存后是否被修改过。</li>
+<li>参考位（reflection bit），有时用于追踪页是否被访问，或确定哪些页应该被保留在内存中。</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/05/22/8efF71M36LVpIBv.png" alt="Page-Table-Entry.png" /></p>
+<h3 id="分页内存引用过程"><a class="markdownIt-Anchor" href="#分页内存引用过程"></a> 分页内存引用过程</h3>
+<p>首先，假设一个页表基址寄存器（page-table base register）包含页表起始位置的物理地址。为找到目标PTE的位置，硬件将执行：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">VPN     = (VirtualAddress &amp; VPN_MASK) &gt;&gt; SHIFT          <span class="comment">// 获取VPN</span></span><br><span class="line">PTEAddr = PageTableBaseRegister + (VPN * <span class="keyword">sizeof</span>(PTE))   <span class="comment">// 用偏移量获取PTE地址</span></span><br></pre></td></tr></table></figure>
+<p>一旦知道了这个物理地址，硬件就可以从内存中获取PTE，提取PFN，并将它与来自虚拟地址的偏移量连接起来，形成所需的物理地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">offset      = VirtualAddress &amp; OFFSET_MASK</span><br><span class="line">PhysAddr    = (PFN &lt;&lt; SHIFT) | offset</span><br><span class="line">VPN         = (VirtualAddress &amp; VPN_MASK) &gt;&gt; SHIFT          </span><br><span class="line">PTEAddr     = PageTableBaseRegister + (VPN * <span class="keyword">sizeof</span>(PTE))   </span><br><span class="line">PTE         = AccessMemory(PTEAddr)</span><br><span class="line"><span class="keyword">if</span> (PTE.valid == False)</span><br><span class="line">    RaiseException(SEGMENTATION_FAULT)</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (CanAccess(PTE.ProtectBits) == False)</span><br><span class="line">    RaiseException(PROTECTION_FAULT)</span><br><span class="line"><span class="keyword">else</span> <span class="comment">// Access is OK</span></span><br><span class="line">    offset   = VirtualAddress &amp; OFFSET_MASK</span><br><span class="line">    PhysAddr = (PTE.PFN &lt;&lt; PFN_SHIFT) | offset</span><br><span class="line">    Register = AccessMemory(PhysAddr) </span><br></pre></td></tr></table></figure>
+<p>可以看到，这个过程显著增加复杂性，造成运行速度减慢。</p>
+<h2 id="快速地址转换tlb"><a class="markdownIt-Anchor" href="#快速地址转换tlb"></a> 快速地址转换（TLB）</h2>
+<p>使用分页会带来较大的性能开销。每一次内存引用，都需要额外读取一次内存得到转换信息。</p>
 
       
     </div>
@@ -1478,10 +1594,16 @@ a \ge b \ 且 \ c \le 0 \Rightarrow a *^f c \le b *^f c
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-05-04 14:45:04 / 修改时间：14:53:49" itemprop="dateCreated datePublished" datetime="2022-05-04T14:45:04+08:00">2022-05-04</time>
+      <time title="创建时间：2022-05-04 14:45:04" itemprop="dateCreated datePublished" datetime="2022-05-04T14:45:04+08:00">2022-05-04</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-05-22 16:58:54" itemprop="dateModified" datetime="2022-05-22T16:58:54+08:00">2022-05-22</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -1504,14 +1626,21 @@ a \ge b \ 且 \ c \le 0 \Rightarrow a *^f c \le b *^f c
     <div class="post-body" itemprop="articleBody">
           <p><em>Three easy pieces: 虚拟化，并发，持久性</em></p>
 <h1 id="并发"><a class="markdownIt-Anchor" href="#并发"></a> 并发</h1>
-<p><strong>关键词</strong>：</p>
-<ul>
-<li>线程</li>
-<li></li>
-</ul>
 <h2 id="线程"><a class="markdownIt-Anchor" href="#线程"></a> 线程</h2>
 <p><strong>特点</strong>：类似于独立的进程，只有一点区别：它们共享地址空间，从而能够访问相同的数据。</p>
 <p><strong>线程状态</strong>：</p>
+<ul>
+<li>程序计数器（PC）</li>
+<li>寄存器</li>
+</ul>
+<p>线程切换同样需要上下文切换。对于线程，我们保存上下文在一个或多个线程控制块（Thread Control Block，TCB）。与进程相比，线程在切换上下文时，地址空间不变。</p>
+<p>另一个区别在于栈的数量。多线程的程序中，每个线程独立运行，每个线程都有一个栈。所有位于栈上的变量、参数、返回值等将被放在线程本地（thread-local）存储的地方，即相关线程的栈。</p>
+<h3 id="可能存在的问题"><a class="markdownIt-Anchor" href="#可能存在的问题"></a> 可能存在的问题</h3>
+<ol>
+<li>线程执行顺序不确定，取决于调度顺序</li>
+<li>出现 <strong>竞争条件（race condition）</strong> ，使得结果不确定。</li>
+</ol>
+<p>当多个线程出于竞争状态时，称之为临界区（critical section）。</p>
 
       
     </div>
@@ -2181,106 +2310,8 @@ a \ge b \ 且 \ c \le 0 \Rightarrow a *^f c \le b *^f c
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">rCore实验记录（二）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-01-20 17:30:26 / 修改时间：23:13:58" itemprop="dateCreated datePublished" datetime="2022-01-20T17:30:26+08:00">2022-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">rCore实验记录</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="引导至rust代码"><a class="markdownIt-Anchor" href="#引导至rust代码"></a> 引导至rust代码</h2>
-<p>在之前的内容的内容中，我们成功在不使用操作系统的情况下执行了我们的代码，然而这一代码并非由rust编写，rust仅仅是作为汇编器生成机器码交给机器执行罢了。要通过rust编写操作系统，我们需要将控制权转移到rust中的函数。</p>
-<p>修改entry.asm如下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># os/src/entry.asm</span></span><br><span class="line">    .section .text.entry</span><br><span class="line">    .globl _start</span><br><span class="line">_start:</span><br><span class="line">    la sp, boot_stack_top</span><br><span class="line">    call rust_main</span><br><span class="line"></span><br><span class="line">    .section .bss.stack</span><br><span class="line">    .globl boot_stack</span><br><span class="line">boot_stack:</span><br><span class="line">    .space 4096 * 16</span><br><span class="line">    .globl boot_stack_top</span><br><span class="line">boot_stack_top:</span><br></pre></td></tr></table></figure>
-<p>这段汇编的含义为，在_start处为栈指针赋值，并跳转到rust_main函数中。栈空间定义在bss段中，共4096*16=64kb内存，boot_stack_top为栈顶指针，boot_stack为栈底指针。</p>
-<p>接下来修改<code>main.rs</code></p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">rust_main</span> -&gt; ! &#123;</span></span><br><span class="line"><span class="function">    <span class="title">clear_bss</span></span>();</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">clear_bss</span></span>() &#123;</span><br><span class="line">    <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">sbss</span></span>();</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">ebss</span></span>();</span><br><span class="line">    &#125;</span><br><span class="line">    (sbss <span class="keyword">as</span> <span class="built_in">usize</span>..ebss <span class="keyword">as</span> <span class="built_in">usize</span>).for_each( |a| &#123;</span><br><span class="line">        <span class="keyword">unsafe</span> &#123; (a <span class="keyword">as</span> *<span class="keyword">mut</span> <span class="built_in">u8</span>).write_volatile(<span class="number">0</span>) &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>sbss</code>与<code>ebss</code>指针定义在链接表中，clear_bss()函数将sbss与ebss之间内容清0，使之符合bss段的定义。</p>
-<h2 id="使用rustsbi"><a class="markdownIt-Anchor" href="#使用rustsbi"></a> 使用RustSBI</h2>
-<p>RustSBI可以为我们编写的操作系统内核提供服务，我们可以使用其来进行简单的IO与关机操作。</p>
-<p>要使内核调用RustSBI，需编写下列语句。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="keyword">mod</span> sbi;</span><br><span class="line"></span><br><span class="line"><span class="comment">// os/src/sbi.rs</span></span><br><span class="line"><span class="keyword">use</span> core::arch::asm;</span><br><span class="line"><span class="meta">#[inline(always)]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">sbi_call</span></span>(which: <span class="built_in">usize</span>, arg0: <span class="built_in">usize</span>, arg1: <span class="built_in">usize</span>, arg2: <span class="built_in">usize</span>) -&gt; <span class="built_in">usize</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> ret;</span><br><span class="line">    <span class="keyword">unsafe</span> &#123;</span><br><span class="line">        asm!(</span><br><span class="line">            <span class="string">&quot;ecall&quot;</span>,</span><br><span class="line">            inlateout(<span class="string">&quot;x10&quot;</span>) arg0 =&gt; ret,</span><br><span class="line">            <span class="keyword">in</span>(<span class="string">&quot;x11&quot;</span>) arg1,</span><br><span class="line">            <span class="keyword">in</span>(<span class="string">&quot;x12&quot;</span>) arg2,</span><br><span class="line">            <span class="keyword">in</span>(<span class="string">&quot;x17&quot;</span>) which,</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">    ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们暂时不需理解这段代码的含义，我们只需知道这样编写之后，便可通过<code>sbi_call</code>函数调用SBI服务。</p>
-<p>函数的第一个参数表示服务类型，其为一个usize类型数字，不同数字代表不同服务。为方便记忆，定义常数如下</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/sbi.rs</span></span><br><span class="line"><span class="meta">#![allow(unused)]</span></span><br><span class="line"><span class="keyword">const</span> SBI_SET_TIMER: <span class="built_in">usize</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_CONSOLE_PUTCHAR: <span class="built_in">usize</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_CONSOLE_GETCHAR: <span class="built_in">usize</span> = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_CLEAR_IPI: <span class="built_in">usize</span> = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_SEND_IPI: <span class="built_in">usize</span> = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_REMOTE_FENCE_I: <span class="built_in">usize</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_REMOTE_SFENCE_VMA: <span class="built_in">usize</span> = <span class="number">6</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_REMOTE_SFENCE_VMA_ASID: <span class="built_in">usize</span> = <span class="number">7</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_SHUTDOWN: <span class="built_in">usize</span> = <span class="number">8</span>;</span><br></pre></td></tr></table></figure>
-<p>接下来可以通过<code>sbi_call</code>函数编写相关接口。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/sbi.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">console_putchar</span></span>(c: <span class="built_in">usize</span>) &#123;</span><br><span class="line">    sbi_call(SBI_CONSOLE_PUTCHAR, c, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">shutdown</span></span>() -&gt; ! &#123;</span><br><span class="line">    sbi_call(SBI_SHUTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">panic!</span>(<span class="string">&quot;It should shutdown!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样我们就得到了<code>putchar</code>与<code>shutdown</code>两个操作系统接口。</p>
-<p>我们接下来编写<code>println!</code>宏，编写内容与操作系统知识无关，与rust基础语法有关。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#[macro_use]</span></span><br><span class="line"><span class="keyword">mod</span> console;</span><br><span class="line"></span><br><span class="line"><span class="comment">// os/src/console.rs</span></span><br><span class="line"><span class="keyword">use</span> crate::sbi::console_putchar;</span><br><span class="line"><span class="keyword">use</span> core::fmt::&#123;<span class="keyword">self</span>, Write&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Stdout</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> Write <span class="keyword">for</span> Stdout &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">write_str</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, s: &amp;<span class="built_in">str</span>) -&gt; fmt::<span class="built_in">Result</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> s.chars() &#123;</span><br><span class="line">            console_putchar(c <span class="keyword">as</span> <span class="built_in">usize</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="literal">Ok</span>(())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">print</span></span>(args: fmt::Arguments) &#123;</span><br><span class="line">    Stdout.write_fmt(args).unwrap();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[macro_export]</span></span><br><span class="line"><span class="built_in">macro_rules!</span> print &#123;</span><br><span class="line">    ($fmt: literal $(, $($arg: tt)+)?) =&gt; &#123;</span><br><span class="line">        $crate::console::print(<span class="built_in">format_args!</span>($fmt $(, $($arg)+)?));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[macro_export]</span></span><br><span class="line"><span class="built_in">macro_rules!</span> println &#123;</span><br><span class="line">    ($fmt: literal $(, $($arg: tt)+)?) =&gt; &#123;</span><br><span class="line">        $crate::console::print(<span class="built_in">format_args!</span>(<span class="built_in">concat!</span>($fmt, <span class="string">&quot;\n&quot;</span>) $(, $($arg)+)?));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最后编写<code>panic!</code>宏。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#![feature(panic_info_message)]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// os/src/lang_item.rs</span></span><br><span class="line"><span class="keyword">use</span> crate::sbi::shutdown;</span><br><span class="line"><span class="keyword">use</span> core::panic::PanicInfo;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[panic_handler]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">panic</span></span>(info: &amp;PanicInfo) -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> <span class="literal">Some</span>(location) = info.location() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(</span><br><span class="line">            <span class="string">&quot;Panicked at &#123;&#125;:&#123;&#125; &#123;&#125;&quot;</span>,</span><br><span class="line">            location.file(),</span><br><span class="line">            location.line(),</span><br><span class="line">            info.message().unwrap()</span><br><span class="line">        );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;Panicked: &#123;&#125;&quot;</span>, info.message().unwrap());</span><br><span class="line">    &#125;</span><br><span class="line">    shutdown()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>修改main函数</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">rust_main</span></span>() -&gt; ! &#123;</span><br><span class="line">    clear_bss();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello, world!&quot;</span>);</span><br><span class="line">    <span class="built_in">panic!</span>(<span class="string">&quot;Shutdown machine!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>即可完成输出<code>Hello, world!</code>与关机的操作。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
