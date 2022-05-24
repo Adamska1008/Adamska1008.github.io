@@ -214,7 +214,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-05-23 17:58:15" itemprop="dateModified" datetime="2022-05-23T17:58:15+08:00">2022-05-23</time>
+        <time title="修改时间：2022-05-24 11:32:39" itemprop="dateModified" datetime="2022-05-24T11:32:39+08:00">2022-05-24</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -262,6 +262,11 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以 int 为例</span></span><br><span class="line"><span class="keyword">int</span> *a = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(N * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">int</span> *b = (<span class="keyword">int</span> *)<span class="built_in">calloc</span>(N, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"><span class="comment">// 下者可读性较强</span></span><br></pre></td></tr></table></figure>
 <p>但是此时<code>sizeof(a)</code>或<code>sizeof(b)</code>会得到 8 （64位），这是由于没有足够的静态信息，<code>sizeof</code>计算的值为指针大小。</p>
 <p>对于字符串，常使用<code>malloc(strlen(s) + 1)</code>，这是为字符串末尾的<code>\0</code>多留一点空间。也可以直接使用<code>strdup()</code>函数直接为指针分配堆内存。</p>
+<p>使用<code>free()</code>释放内存。注意到<code>free()</code>只需要指针参数而不需要内存大小。</p>
+<h3 id="底层系统调用"><a class="markdownIt-Anchor" href="#底层系统调用"></a> 底层系统调用</h3>
+<p>事实上，<code>malloc</code>等函数并不是系统调用，而是库调用。</p>
+<p>控制堆内存分断（break）的函数为<code>brk</code>，也就是改变堆结束的位置。它需求传入一个参数，来设置新分断的地址。而<code>sbrk</code>函数则类似，区别是，它传入的参数为增量。直接使用这两个函数很可能会造成错误。</p>
+<p>这些函数存放在<code>unistd.h</code>中，表示<code>unix</code>标准下的系统调用。</p>
 <h2 id=""><a class="markdownIt-Anchor" href="#"></a> </h2>
 
       
