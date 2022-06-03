@@ -214,7 +214,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-06-03 15:13:05" itemprop="dateModified" datetime="2022-06-03T15:13:05+08:00">2022-06-03</time>
+        <time title="修改时间：2022-06-03 15:37:36" itemprop="dateModified" datetime="2022-06-03T15:37:36+08:00">2022-06-03</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -439,6 +439,45 @@ T_{avg \ transfer}=60/7200 RPM \times 1/400 (扇区/磁道) \times 1000ms/ms \ap
 <li>字抽取，与前者相同。</li>
 </ol>
 <h3 id="写操作"><a class="markdownIt-Anchor" href="#写操作"></a> 写操作</h3>
+<p>如果写一个已经缓存了的字<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span></span></span></span>，即<strong>写命中（write hit）</strong> 。在高速缓存更新后，同时要更新低一层次的副本。</p>
+<ul>
+<li><strong>直写（write-through）</strong> 立即将<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span></span></span></span>的高速缓存块写回到第一层中，简单，但是每次写都会引起总线流量。</li>
+<li><strong>写回（write-back）</strong> 尽可能地推迟更新。只有替换算法驱逐这个块时，才写到低层中，但是需要为每一个高速缓存行维护一个修改为（dirty bit）。</li>
+</ul>
+<p>写不命中时，也有两种处理方法</p>
+<ul>
+<li><strong>写分配（write-allowance）</strong>，加载相应低层中的块到高层中并更新，缺点是每次不命中都会导致数据传输。</li>
+<li><strong>非写分配（not-write-allowance）</strong>，直接写到低层中。</li>
+</ul>
+<p>直写通常搭配写分配，写回通常搭配非写分配。</p>
+<h3 id="高速缓存参数的性能影响"><a class="markdownIt-Anchor" href="#高速缓存参数的性能影响"></a> 高速缓存参数的性能影响</h3>
+<ul>
+<li><strong>不命中率（miss rate）</strong>，不命中数量/引用数量。</li>
+<li><strong>命中率（hit rate）</strong>，1-不命中率。</li>
+<li><strong>命中时间（hit time）</strong>，从高速缓存传送一个字到CPU所需的时间，包括组选择、行确认和字选择的时间。</li>
+<li><strong>不命中处罚（miss penalty）</strong>。由于不命中所需要的额外时间，L1不命中需要从L2得到服务，这就是不命中处罚。</li>
+</ul>
+<p><strong>高速缓存大小的影响</strong><br />
+较大的缓存可能会提高命中率，同时可能会增加命中时间。</p>
+<p><strong>块大小的影响</strong><br />
+较大的块可以利用空间局部性。但块越大意味着高速缓存行数越小，会损害时间局部性。块越大，传送时间也越长。<br />
+<strong>相联度的影响</strong><br />
+参数E选择的影响。较高的相联度降低了冲突不命中造成抖动的可能性，但是成本高，且会增加命中时间，增加不命中处罚。最终变成命中时间和不命中处罚之间的折中。<br />
+<strong>写策略的影响</strong><br />
+一般而言，高速缓存越下层，越可能使用写回而不是直写。</p>
+<h2 id="编写高速缓存友好的代码"><a class="markdownIt-Anchor" href="#编写高速缓存友好的代码"></a> 编写高速缓存友好的代码</h2>
+<ol>
+<li>让最常见的情况运行地最快。</li>
+<li>减小每个循环内部的缓存不命中数量，例如：
+<ul>
+<li>对局部变量的反复引用是好的，因为编译器能将它们缓存在寄存器中（时间局部性）。</li>
+<li>步长为1的引用模式是好的，因为存储器层次结构中所有层次上的缓存都是将数据存储为连续的块（空间局部性）。</li>
+</ul>
+</li>
+</ol>
+<p>在多维数组中，空间局部性尤其重要。</p>
+<h2 id="高速缓存对程序性能的影响"><a class="markdownIt-Anchor" href="#高速缓存对程序性能的影响"></a> 高速缓存对程序性能的影响</h2>
+<p>一个程序从存储系统中读数据的速率称为<strong>读吞吐量（read throughput）</strong> 或<strong>读带宽（read bandwidth）</strong>。如果程序在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>秒内读<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span>字节，那么读吞吐量就是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mi mathvariant="normal">/</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">n/s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">n</span><span class="mord">/</span><span class="mord mathdefault">s</span></span></span></span>。</p>
 
       
     </div>
