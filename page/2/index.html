@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,194 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/05/02/basic-makefile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/02/basic-makefile/" class="post-title-link" itemprop="url">makefile基本使用技巧</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-02 15:25:04 / 修改时间：19:10:03" itemprop="dateCreated datePublished" datetime="2022-05-02T15:25:04+08:00">2022-05-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="简易单文件编译调试方法"><a class="markdownIt-Anchor" href="#简易单文件编译调试方法"></a> 简易单文件编译调试方法</h3>
+<p>首先，在没有编写任何makefile文件的情况下，直接<code>make $&#123;filename&#125;</code>，即可直接编译对应文件。以代码文件名作为程序名。对应语句为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cc  <span class="variable">$&#123;FILENAME&#125;</span>.c -o <span class="variable">$&#123;FILENAME&#125;</span></span><br></pre></td></tr></table></figure>
+<p>而若需要自定义参数（这个需求及其普遍），则可使用如下语句</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FILE = /* 文件名... */</span><br><span class="line">ARGS = /* 参数... */</span><br><span class="line"></span><br><span class="line"><span class="section">$&#123;FILE&#125;:</span></span><br><span class="line">    @gcc $&#123;FILE&#125;.c -o $&#123;FILE&#125; $&#123;ARGS&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">run_$&#123;FILE&#125;: $&#123;FILE&#125;</span></span><br><span class="line">    @./$&#123;FILE&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">clean_$&#123;FILE&#125;:</span></span><br><span class="line">    @rm $&#123;FILE&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设文件名为 hello.c</span></span><br><span class="line"><span class="comment"># 假设参数为：-std=c11 -O2 -g -Wall</span></span><br><span class="line"><span class="comment"># 编译:</span></span><br><span class="line">make hello</span><br><span class="line"><span class="comment"># 编译且运行:</span></span><br><span class="line">make run_hello</span><br><span class="line"><span class="comment"># 清除:</span></span><br><span class="line">make clean_hello</span><br></pre></td></tr></table></figure>
+<p>非常方便</p>
+<h3 id="基本规则"><a class="markdownIt-Anchor" href="#基本规则"></a> 基本规则</h3>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">target...: prerequisites...</span></span><br><span class="line">    command</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><code>target</code><br />
+一个object file（目标文件），或一个执行文件，或一个标签（label）。</p>
+</li>
+<li>
+<p><code>prerequisites</code><br />
+生成该target所依赖的文件或另外的target本身</p>
+</li>
+<li>
+<p><code>command</code><br />
+该target要执行的命令（任意的shell命令）</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/03/08/software-recommend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/08/software-recommend/" class="post-title-link" itemprop="url">相对小众的软件推荐</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-08 15:38:30" itemprop="dateCreated datePublished" datetime="2022-03-08T15:38:30+08:00">2022-03-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-05-02 21:34:39" itemprop="dateModified" datetime="2022-05-02T21:34:39+08:00">2022-05-02</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><em>记录一些我觉得还不错的软件（大部分软件同时开源）</em></p>
+<h1 id="通用软件"><a class="markdownIt-Anchor" href="#通用软件"></a> 通用软件</h1>
+<h2 id="hexo"><a class="markdownIt-Anchor" href="#hexo"></a> Hexo</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo">此为Hexo的GitHub仓库</a>。搭建博客的框架，同样也是搭建我这个博客的框架（主题为NEXT）。特点是轻量化且扩展性强。由于个人比较懒，所以本博客许多功能都未搭建完成，故先不详细介绍Hexo，此处暂且跳过。</p>
+<h2 id="clash"><a class="markdownIt-Anchor" href="#clash"></a> Clash</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/Dreamacro/clash">此为Clash的GitHub仓库</a>。<a href="">此为ClashForWindows的GitHub仓库</a>。<a target="_blank" rel="noopener" href="https://github.com/Kr328/ClashForAndroid">此为ClashForAndroid的GitHub仓库</a>。用的非常爽的科学上网软件。特色是可以不借助软路由直接开启局域网科学上网。使用GoLang编写。这是否也在侧面证明了GoLang在网络应用方面的强大能力呢？</p>
+<h1 id="windows"><a class="markdownIt-Anchor" href="#windows"></a> WINDOWS</h1>
+<h2 id="gimp"><a class="markdownIt-Anchor" href="#gimp"></a> GIMP</h2>
+<p>一句话评价：简单版photoshop。众所周知，photoshop是平面设计领域无可争议的王者软件，但对于普通用户来说，无论是其高昂的价格还是复杂的使用逻辑都相当地劝退。</p>
+<p>如果说有什么软件能代替photoshop的话，那一定是GIMP。GIMP全称为GNU Image Manipulation Program。（对，它也是GNU计划的一部分）。该软件具有相当多的优点：</p>
+<ul>
+<li>开源且免费，所有代码均可在<a target="_blank" rel="noopener" href="https://gitlab.gnome.org/GNOME/gimp">GIMP的Gitlab主页</a>上找到。</li>
+<li>支持使用python脚本进行编程。python是一种易于使用的脚本语言。大部分软件开发者都可以非常迅速的学会python的基本语法。GIMP支持通过python脚本修改图片。</li>
+<li>功能强大，根据<a target="_blank" rel="noopener" href="https://www.quora.com/What-are-some-generic-alternatives-for-Photoshop">Franklin Veaux的Quora回答</a>以及我个人的使用体验来看，基本上来说，我想要做的图片处理都可以非常轻松快速地完成。</li>
+<li>相对而言更加轻量化，例如启动速度较快，编辑响应速度较快。并没有比较过大文件（例如GB大小级别的图片）的响应时间，这是由于对于我这个普通用户来说，并没有这方面的需求。仅以日常使用而言，GIMP是更加方便趁手的。</li>
+</ul>
+<h2 id="grammly"><a class="markdownIt-Anchor" href="#grammly"></a> Grammly</h2>
+<p>一个轻量级且易于使用的语法检查软件（当然，是英文语法检查）。<a target="_blank" rel="noopener" href="https://app.grammarly.com/">此为官网地址</a>。安装好软件之后，所有在浏览器中编写的英文文本都将自动进行语法检查，且支持自动修改。软件分付费与免费两个版本。以我个人体验来看，免费版本即可满足我个人的所有需求。</p>
+<h2 id="motrix"><a class="markdownIt-Anchor" href="#motrix"></a> Motrix</h2>
+<p>开源的下载软件，<a target="_blank" rel="noopener" href="https://github.com/agalwood/Motrix">此为Motrix的Github仓库</a>。使用了Node相关的一系列技术栈来搭建，包括Electron和Vue。整体使用感觉良好。Chrome有Motrix的Web插件，但体验一般，非常可惜。该软件优点如下：</p>
+<ul>
+<li>下载速度不错。水平一般能力有限，不分析原因。仅为使用感受。一般文件的下载速度较快。</li>
+<li>界面清爽简介。这点纯粹是主观感受。但跟IDM和迅雷比一下就能明白，好看的外观绝对是加分项。</li>
+<li>支持各类常见协议的下载方式，除了HTTPS, BitTorrent之外，还支持RPC，这个就相对而言比较少见了。但是对我来说很有用。至于为什么有用这点暂且按住不表。甚至兼容迅雷的thunder协议，这点懂得都懂。</li>
+<li>允许使用代理服务器进行缓存下载。虽然我并不需要（有许多更好的解决措施），但有些人可能有这方面的需求。</li>
+</ul>
+<h2 id="captura"><a class="markdownIt-Anchor" href="#captura"></a> Captura</h2>
+<p>开源的视频录像软件，<a target="_blank" rel="noopener" href="https://github.com/MathewSachin/Captura">此为Captura的Github仓库</a>。</p>
+<h2 id="notion"><a class="markdownIt-Anchor" href="#notion"></a> Notion</h2>
+<p>我见过的最为简洁，轻量化而又功能强大的To-do-list应用。<a target="_blank" rel="noopener" href="https://www.notion.so/product">此为Notion官网</a>。我个人相当建议使用Notion来规划个人安排。</p>
+<h1 id="android"><a class="markdownIt-Anchor" href="#android"></a> ANDROID</h1>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1077,218 +1265,6 @@
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"><span class="keyword">use</span> std::fs::&#123;<span class="keyword">self</span>, DirEntry&#125;;</span><br><span class="line"><span class="keyword">use</span> std::path::Path;</span><br><span class="line"></span><br><span class="line"><span class="comment">// one possible implementation of walking a directory only visiting files</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">visit_dirs</span></span>(dir: &amp;Path, cb: &amp;<span class="keyword">dyn</span> <span class="built_in">Fn</span>(&amp;DirEntry)) -&gt; io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> dir.is_dir() &#123;</span><br><span class="line">        <span class="keyword">for</span> entry <span class="keyword">in</span> fs::read_dir(dir)? &#123;</span><br><span class="line">            <span class="keyword">let</span> entry = entry?;</span><br><span class="line">            <span class="keyword">let</span> path = entry.path();</span><br><span class="line">            <span class="keyword">if</span> path.is_dir() &#123;</span><br><span class="line">                visit_dirs(&amp;path, cb)?;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cb(&amp;entry);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.DirBuilder.html">DirBuilder</a>用于辅助创建目录，常用于递归地创建目录。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> path = <span class="string">&quot;/tmp/foo/bar/baz&quot;</span>;</span><br><span class="line">DirBuilder::new()</span><br><span class="line">    .recursive(<span class="literal">true</span>)</span><br><span class="line">    .create(path).unwrap();</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%B8%80%EF%BC%89%E8%B7%AF%E5%BE%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%B8%80%EF%BC%89%E8%B7%AF%E5%BE%84/" class="post-title-link" itemprop="url">Rust文件与I/O（一） 路径</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-30 14:46:45" itemprop="dateCreated datePublished" datetime="2021-11-30T14:46:45+08:00">2021-11-30</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-01-20 14:16:16" itemprop="dateModified" datetime="2022-01-20T14:16:16+08:00">2022-01-20</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust标准库</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/%E6%96%87%E4%BB%B6%E4%B8%8EIO/" itemprop="url" rel="index"><span itemprop="name">文件与IO</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="osstring-与-osstr"><a class="markdownIt-Anchor" href="#osstring-与-osstr"></a> OsString 与 OsStr</h2>
-<p>OsString 为操作系统编码相关的字符串。不同操作系统中字符串有细微差别，如Windows偏向UTF-16编码且不作安全性检查，而Linux则以UTF-8为主。Rust中字符串编码为UTF-8，要编写具有跨平台能力的软件需要考虑平台特性。与操作系统通信时，应当使用OsString获取字符串内容而不是String。这一情况主要用于获取文件路径。</p>
-<p>OsStr与OsString的区别相当于str与String的区别。OsStr不持有数据，仅为OsString的切片。</p>
-<p>一般我们不会主动编写OsStr，但可能需要处理标准库返回的OsStr。对此可以使用相应方法，如OsStr中的<code>pub fn to_str(&amp;self) -&gt; Option&lt;&amp;str&gt;</code>转化为String或&amp;str进行下一步处理。在转化过程中，方法会判断该OsStr是否可以合法转化为UTF-8，不合法时返回<code>Option::None</code>。一切从OsStr或OsString到str或String的方法都会有此判断。</p>
-<h2 id="path-component与pathbuf"><a class="markdownIt-Anchor" href="#path-component与pathbuf"></a> Path, Component与PathBuf</h2>
-<p>我们可以直接使用字符串保存的路径打开文件，但我们总会遇到一些需要处理路径的时候，比如说提取文件名，后缀名或目录。这个时候我们需要提前封装路径并提供一些方法来简化编程。Rust标准库中提供了Path与PathBuf封装路径。</p>
-<p>本质上来说，Path是对OsStr的封装。<code>pub fn as_os_str(&amp;self) -&gt; &amp;OsStr</code>方法可以安全地返回&amp;OsStr。但是我们一般不会直接使用&amp;OsStr，故Path也提供了到&amp;str的转换方法<code>pub fn to_str(&amp;self) -&gt; Option&lt;&amp;str&gt;</code>。要想通过&amp;str生成path，则只需使用<code>Path::new()</code>方法即可。</p>
-<p>关于Path的详细内容可以查看<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/path/struct.Path.html">Path文档</a>。Path的常用方法有以下几个：</p>
-<ul>
-<li><code>pub fn components(&amp;self) -&gt; Components&lt;'_&gt;</code>：产生一个可以逐级访问每层目录的迭代器。</li>
-<li><code>pub fn extension(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件后缀名</li>
-<li><code>pub fn file_name(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件名（包含后缀名）。</li>
-<li><code>pub fn file_prefix(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件前缀</li>
-<li><code>pub fn file_stem(&amp;self) -&gt; Option&lt;&amp;OsStr&gt;</code>：获取文件名（不包含后缀名）</li>
-<li><code>pub fn is_dir(&amp;self) -&gt; bool</code>：判断路径指向的是否为目录。</li>
-<li><code>pub fn is_file(&amp;self) -&gt; bool</code>：判断路径指向的是否为文件。</li>
-<li><code>pub fn is_relative(&amp;self) -&gt; bool</code>：判断路径是否为相对路径。</li>
-</ul>
-<p>等等，大部分是比较常见且常用的功能。</p>
-<p>需要简单提一下的是components方法，该方法返回一个Component的迭代器。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> p = Path::new(<span class="string">&quot;/bar/../foo/hello/world.txt&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> component <span class="keyword">in</span> p.components() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, component);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># output</span></span><br><span class="line">RootDir</span><br><span class="line">Normal(<span class="string">&quot;bar&quot;</span>)</span><br><span class="line">ParentDir</span><br><span class="line">Normal(<span class="string">&quot;foo&quot;</span>)</span><br><span class="line">Normal(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">Normal(<span class="string">&quot;world.txt&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>Component是path包下的一个枚举类，用来给路径分隔符之间的字符串分类。Component有以下几个枚举量：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">enum</span> <span class="title">Component</span></span>&lt;<span class="symbol">&#x27;a</span>&gt; &#123;</span><br><span class="line">    Prefix(PrefixComponent&lt;<span class="symbol">&#x27;a</span>&gt;),</span><br><span class="line">    RootDir,</span><br><span class="line">    CurDir,</span><br><span class="line">    ParentDir,</span><br><span class="line">    Normal(&amp;<span class="symbol">&#x27;a</span> OsStr),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体使用方法详见<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/path/enum.Component.html">Component文档</a>。</p>
-<p>接下来介绍PathBuf。PathBuf包含了Path的一切方法。而PathBuf同时还可以动态的改变路径。这是因为Path内部为&amp;str，不占有数据，而PathBuf内部为String，故对路径可读可写。</p>
-<p>PathBuf常用方法如下：</p>
-<ul>
-<li><code>pub fn pop(&amp;mut self) -&gt; bool</code></li>
-<li><code>pub fn push&lt;P: AsRef&lt;Path&gt;&gt;(&amp;mut self, path: P)</code></li>
-<li><code>pub fn set_file_name&lt;S: AsRef&lt;OsStr&gt;&gt;(&amp;mut self, file_name: S)</code></li>
-<li><code>pub fn set_extension&lt;S: AsRef&lt;OsStr&gt;&gt;(&amp;mut self, extension: S) -&gt; bool</code></li>
-</ul>
-<p>具体方法使用参考<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/path/struct.PathBuf.html">PathBuf文档</a>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/24/learn-to-use-clap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/24/learn-to-use-clap/" class="post-title-link" itemprop="url">使用clap处理Rust命令行程序的参数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-24 22:40:45" itemprop="dateCreated datePublished" datetime="2021-11-24T22:40:45+08:00">2021-11-24</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-13 23:32:31" itemprop="dateModified" datetime="2021-12-13T23:32:31+08:00">2021-12-13</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rust%E5%B8%B8%E7%94%A8%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust常用库</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="安装clap"><a class="markdownIt-Anchor" href="#安装clap"></a> 安装clap</h3>
-<p>首先，使用<code>cargo search clap</code>查询最新的clap版本号。截至2021年11月24日，稳定版本号为<code>2.33.3</code>，故在cargo.toml中的<code>[dependencies]</code>下加入<code>[clap = &quot;2.33.3&quot;]</code>。</p>
-<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;demo&quot;</span></span><br><span class="line"><span class="attr">author</span> = <span class="string">&quot;adamska &lt;2639980868@qq.com&gt;&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;1.0.0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="attr">clap</span> = <span class="string">&quot;2.33.3&quot;</span></span><br></pre></td></tr></table></figure>
-<h3 id="使用clap获取命令行参数"><a class="markdownIt-Anchor" href="#使用clap获取命令行参数"></a> 使用clap获取命令行参数</h3>
-<p>clap中的App对象为程序的抽象。要在程序中使用clap，我们必须使用<code>clap::App</code>获取App类。使用<code>get_matches()</code>方法令App类返回ArgMatches对象，我们接下来将使用ArgMatches对象来控制程序运行。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> clap::App;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> matches = App::new(<span class="string">&quot;demo&quot;</span>) <span class="comment">//package name</span></span><br><span class="line">        .version(<span class="string">&quot;1.0.0&quot;</span>) </span><br><span class="line">        .author(<span class="string">&quot;Adamska&quot;</span>)</span><br><span class="line">        .get_matches();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要获取命令行参数，我们使用<code>clap::Arg</code>。Arg为App对象的组成部分，我们令App对象调用Arg方法配置参数。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> clap::&#123;App, Arg&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> matches = App::new(<span class="string">&quot;demo&quot;</span>) <span class="comment">//package name</span></span><br><span class="line">        .version(<span class="string">&quot;1.0.0&quot;</span>) </span><br><span class="line">        .author(<span class="string">&quot;Adamska&quot;</span>)</span><br><span class="line">        .arg(Arg::with_name(<span class="string">&quot;arg&quot;</span>)</span><br><span class="line">            .short(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">            .long(<span class="string">&quot;arg&quot;</span>)</span><br><span class="line">            .required(<span class="literal">true</span>))</span><br><span class="line">        .get_matches();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> config = matches.value_of(<span class="string">&quot;arg&quot;</span>).unwrap();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, config)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在这个案例中，我们在创建App对象时，使用<code>arg()</code>方法设置了参数arg，在输入时使用<code>-a</code>或<code>-arg</code>为其赋值。由于配置了<code>.required(true)</code>，这个参数是不可忽略的。要使参数可选，设置其为false。</p>
-<p>接下来，使用<code>matches.value_of(&quot;arg&quot;)</code>获取这个参数。该方法返回<code>Option&lt;String&gt;</code>，故需要对其处理。</p>
-<h3 id="使用clap设置子程序参数"><a class="markdownIt-Anchor" href="#使用clap设置子程序参数"></a> 使用clap设置子程序参数</h3>
-<p>许多命令含有子命令。例如，假设我们有一个kv数据库，我们便需要写例如<code>kv get KEY</code>或<code>kv set KEY VALUE</code>，其中<code>get</code>与<code>set</code>便是子命令。</p>
-<p>要配置子命令，我们使用<code>subcommand()</code>方法</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> clap::&#123;Arg, App, SubCommand&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> matches = App::new(<span class="built_in">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>))</span><br><span class="line">        .version(<span class="built_in">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>))</span><br><span class="line">        .about(<span class="built_in">env!</span>(<span class="string">&quot;CARGO_PKG_DESCRIPTION&quot;</span>))</span><br><span class="line">        .subcommand(SubCommand::with_name(<span class="string">&quot;set&quot;</span>)</span><br><span class="line">            .about(<span class="string">&quot;Set the value of a key&quot;</span>)</span><br><span class="line">            .arg(Arg::with_name(<span class="string">&quot;KEY&quot;</span>)</span><br><span class="line">                .help(<span class="string">&quot;Key with type of string&quot;</span>)</span><br><span class="line">                .required(<span class="literal">true</span>))</span><br><span class="line">            .arg(Arg::with_name(<span class="string">&quot;VALUE&quot;</span>)</span><br><span class="line">                .help(<span class="string">&quot;The string value of the key&quot;</span>)</span><br><span class="line">                .required(<span class="literal">true</span>)))</span><br><span class="line">        .subcommand(SubCommand::with_name(<span class="string">&quot;get&quot;</span>)</span><br><span class="line">            .about(<span class="string">&quot;Get the value of a key&quot;</span>)</span><br><span class="line">            .arg(Arg::with_name(<span class="string">&quot;KEY&quot;</span>)</span><br><span class="line">                .help(<span class="string">&quot;Key with type of string&quot;</span>)</span><br><span class="line">                .required(<span class="literal">true</span>)))</span><br><span class="line">        .get_matches();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">match</span> matches.subcommand()&#123;</span><br><span class="line">        (<span class="string">&quot;set&quot;</span>, <span class="literal">Some</span>(_<span class="keyword">match</span>)) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;set value &#123;&#123;&#123;&#125;&#125;&#125; to key &#123;&#123;&#123;&#125;&#125;&#125;&quot;</span>,</span><br><span class="line">                     _<span class="keyword">match</span>.value_of(<span class="string">&quot;VALUE&quot;</span>).unwrap(),</span><br><span class="line">                     _<span class="keyword">match</span>.value_of(<span class="string">&quot;KEY&quot;</span>).unwrap())</span><br><span class="line">        &#125;</span><br><span class="line">        (<span class="string">&quot;get&quot;</span>, <span class="literal">Some</span>(_<span class="keyword">match</span>)) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;value of &#123;&#123;&#123;&#125;&#125;&#125; is &#123;&#123;unimplemented&#125;&#125;&quot;</span>,</span><br><span class="line">                     _<span class="keyword">match</span>.value_of(<span class="string">&quot;KEY&quot;</span>).unwrap());</span><br><span class="line">        &#125;</span><br><span class="line">        _=&gt;&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>子命令的创建基本与创建App一致，我们同样可以为子命令设置参数。在这段案例程序中，我们创建了两个子命令<code>get</code>与<code>set</code>。</p>
-<p>在一个语句中，程序同时只会运行一个子命令。我们使用<code>matches.subcommand()</code>方法获取子命令，并使用<code>match</code>关键字控制程序运行。</p>
 
       
     </div>
