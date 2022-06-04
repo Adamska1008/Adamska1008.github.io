@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">46</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,263 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%B8%89%EF%BC%89IO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%B8%89%EF%BC%89IO/" class="post-title-link" itemprop="url">Rust文件与I/O（三） IO</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-30 20:19:02" itemprop="dateCreated datePublished" datetime="2021-11-30T20:19:02+08:00">2021-11-30</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-14 00:38:19" itemprop="dateModified" datetime="2021-12-14T00:38:19+08:00">2021-12-14</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust标准库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/%E6%96%87%E4%BB%B6%E4%B8%8EIO/" itemprop="url" rel="index"><span itemprop="name">文件与IO</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="read与write"><a class="markdownIt-Anchor" href="#read与write"></a> Read与Write</h2>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/trait.Read.html">Read</a>和<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/trait.Write.html">Write</a>是trait，满足这两个trait的结构体需要分别实现read与write等一系列方法。</p>
+<p><code>fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;</code>方法传入一个类型为&amp;mut[u8]的缓冲区，从这个缓冲区中读取数据，并返回读取数据的长度。write用法基本类似。</p>
+<p>基础的read与write是底层的系统读写接口，这意味着直接使用read或write是很不方便的。倘若在读取或写入时出现了阻塞，则会立即终止函数调用，故我们无法立即判断读取或写入结束时IO处于何种状态，只能借助返回的usize判断。同时，read与write需要直接访问内核态，而在用户态与内核态之间频繁切换将大幅度降低程序性能。</p>
+<p>由于直接使用read与write的缺点，我们极少直接使用read与write，而是使用封装好的含缓冲区的读写。</p>
+<h2 id="bufreader与bufwriter"><a class="markdownIt-Anchor" href="#bufreader与bufwriter"></a> BufReader与BufWriter</h2>
+<p>Rust中只有<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/trait.BufRead.html">BufRead</a>的trait而没有BufWrite，这是因为在rust中，含缓冲区的write与一般的write在方法上没有什么不同，只是在性能上利用缓冲区作了优化。而BufRead则包含了许多新功能，可以配合Seek使用。<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/struct.BufReader.html">BufReader</a>实现了BufRead。</p>
+<p>实现Trait BufRead需要实现两个方法：</p>
+<ul>
+<li><code>fn fill_buf(&amp;mut self) -&gt; Result&lt;&amp;[u8]&gt;</code>：返回缓冲区中的所有数据</li>
+<li><code>fn consume(&amp;mut self, amt: usize)</code> 清除缓冲区中amt字节的数据。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// set file</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> reader = BufReader::new(file);</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> buf = reader.fill_buf()?;</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> buf &#123;</span><br><span class="line">    <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, *item <span class="keyword">as</span> <span class="built_in">char</span>);</span><br><span class="line">&#125;</span><br><span class="line">reader.consume(<span class="number">10</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> buf = reader.fill_buf()?;</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> buf &#123;</span><br><span class="line">    <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, *item <span class="keyword">as</span> <span class="built_in">char</span>);</span><br><span class="line">&#125; <span class="comment">// 不会打印出前10字节的数据</span></span><br></pre></td></tr></table></figure>
+<p>BufRead也提供了许多有用的方法：</p>
+<ul>
+<li><code>has_data_left(&amp;mut self) -&gt; Result&lt;bool&gt;</code></li>
+<li><code>read_until(&amp;mut self, byte: u8, buf: &amp;mut Vec&lt;u8&gt;) -&gt; Result&lt;usize&gt;</code></li>
+<li><code>read_line(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt;</code></li>
+<li><code>fn lines(self) -&gt; Lines&lt;Self&gt;</code></li>
+</ul>
+<p>使用read_to_string()方法把文件中的所有内容都读取到了字符串中。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> reader = BufReader::new(fh);</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> s = <span class="string">&quot;&quot;</span>.to_string();</span><br><span class="line">reader.read_to_string(&amp;<span class="keyword">mut</span> s);</span><br></pre></td></tr></table></figure>
+<p>若你的文件内容需要以行分割，则可以使用lines()方法。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> reader.lines() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, line?); <span class="comment">// 此处的line是一个Result&lt;String&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，若只使用BufReader操作，我们只能够将一个文件看作一整个缓冲区进行整体操作，如果想要精确地改变某些位置的某些值，必须将文件全部读入内存中，之后再写回去，这显然不是我们希望的。我们希望的是直接对文件进行精确地操作，例如精确地只读取文件中第20个字节到40个字节的数据。这需要配合Seek与Take使用。</p>
+<h2 id="seek与take"><a class="markdownIt-Anchor" href="#seek与take"></a> Seek与Take</h2>
+<p>首先我们需要介绍<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/trait.Seek.html">Seek</a>。通过Seek，我们可以控制实现了Seek trait的Reader或Writer的读写位置。</p>
+<p>对于内存中存放的数据，我们可以自由对其进行修改。然而，读取文件则不同。考虑到一些文件可能是十分巨大的，一般来说，读取文件时并不会一次性把所有文件全部读取到内存中，这对内存的开销太大了。</p>
+<p>一般的输入输出遵循流式传输的概念，即stream。在这个情况下，我们一次只操作一部分流过程序的数据，故内存中的数据不会过于大，例如lines()方法，提供了以行为单位的流。这种IO方式虽然节约了内存，但是修改文件内容却很不方便。</p>
+<p>Seek则优化了读取流的方式。通过Seek，我们可以快速定位到流的某一个位置进行修改。它常常配合SeekFrom枚举类使用。</p>
+<p>SeekFrom枚举类中有三个枚举量，分别为：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">enum</span> <span class="title">SeekFrom</span></span> &#123;</span><br><span class="line">    Start(<span class="built_in">u64</span>),</span><br><span class="line">    End(<span class="built_in">i64</span>),</span><br><span class="line">    Current(<span class="built_in">i64</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>顾名思义，Start(offset)表示从流开始处计算偏移量，而Current与End分别表示从当前位置和结尾处开始计算。</p>
+<p>假设我们要把Seek光标定位到文件开头的第十二个字节处，我们可以这么写：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file.seek(SeekFrom::Start(<span class="number">12</span>))</span><br></pre></td></tr></table></figure>
+<p>这之后，如果再使用BufReader中的方法，则会跳过前十二个字节。</p>
+<p>假设有一个文件，内容为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello World!Hello World!Hello World!</span><br></pre></td></tr></table></figure>
+<p>我们编写如下程序：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">reader.seek(SeekFrom::Start(<span class="number">12</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> s = <span class="string">&quot;&quot;</span>.to_string();</span><br><span class="line">reader.read_to_string(&amp;<span class="keyword">mut</span> s)?;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, s);</span><br></pre></td></tr></table></figure>
+<p>将会得到输出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello World!Hello World!</span><br></pre></td></tr></table></figure>
+<p>如上，第一个<code>Hello World!</code>被跳过了（这恰好是十二个字节）。</p>
+<p>但是，光有Seek还不够。假如我在定位后，只想读取十二个字节的数据呢？朴素地，我们可以使用固定大小的buf。由于read_exact()会在buf满时停止，我们可以这样。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> buf = [<span class="number">0</span>; <span class="number">12</span>];</span><br><span class="line">reader.seek(SeekFrom::Start(<span class="number">12</span>));</span><br><span class="line">reader.read_exact(&amp;<span class="keyword">mut</span> buf);</span><br></pre></td></tr></table></figure>
+<p>但是，这非常麻烦，我们必须开一个固定大小的数组来保证只读一部分的的数据。而<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/io/struct.Take.html">Take</a>提供了一种定长读取文件的简单方法。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reader.seek(SeekFrom::Start(<span class="number">12</span>));</span><br><span class="line"><span class="keyword">let</span> handler = reader.take(<span class="number">12</span>);</span><br></pre></td></tr></table></figure>
+<p>我们可以把Take看作一个子缓冲区，使用reader.take(12)可以获取从reader的当前位置开始的12个字节的句柄。由于Take也实现了BufRead方法，所以从Take中获取数据基本上和BufReader一样。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> s = <span class="string">&quot;&quot;</span>.to_string();</span><br><span class="line">handler.read_to_string(&amp;<span class="keyword">mut</span> s);</span><br></pre></td></tr></table></figure>
+<p>需要注意的时，Take没有实现Seek，所以不能在Take中重定位光标。</p>
+<h2 id="stdin与stdout"><a class="markdownIt-Anchor" href="#stdin与stdout"></a> stdin与stdout</h2>
+<p>rust中的stdin与stdout被封装在io库中。使用io::stdin()与io::stdout()获取标准输入输出流，其使用方法近似于File。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> s = <span class="string">&quot;Hello World!&quot;</span>.to_string();</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> output = BufWriter::new(stdout());</span><br><span class="line">output.write(s.as_bytes());</span><br></pre></td></tr></table></figure>
+<p>我们输出了<code>Hello World!</code>而没有使用<code>println!()</code>宏</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/30/Rust%E6%96%87%E4%BB%B6%E4%B8%8EIO%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">Rust文件与I/O（二） 文件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-30 16:42:22" itemprop="dateCreated datePublished" datetime="2021-11-30T16:42:22+08:00">2021-11-30</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-13 23:31:58" itemprop="dateModified" datetime="2021-12-13T23:31:58+08:00">2021-12-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">rust标准库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/rust%E6%A0%87%E5%87%86%E5%BA%93/%E6%96%87%E4%BB%B6%E4%B8%8EIO/" itemprop="url" rel="index"><span itemprop="name">文件与IO</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="fs基本文件操作"><a class="markdownIt-Anchor" href="#fs基本文件操作"></a> fs基本文件操作</h2>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/index.html">fs</a>库实现了一些基本的文件操作。文件的创建与打开被封装在File类下，而对于目录的一系列操作，文件读写以及删除则以fs下的函数为入口。常用函数如下：</p>
+<ul>
+<li>文件内容复制 <code>fs::copy(from, to)</code></li>
+<li>创建新目录 <code>fs::create(path)</code></li>
+<li>读，写，删 <code>fs::read_*(path), fs::write(path), fs::remove_*(path)</code></li>
+<li>文件重命名 <code>fs::rename(path, path)</code></li>
+<li>设置权限 <code>fs::set_permissions(path, perm)</code></li>
+</ul>
+<h2 id="file"><a class="markdownIt-Anchor" href="#file"></a> File</h2>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.File.html">File</a>为文件的简单抽象，聚合了文件的一系列基本操作，如创建文件与打开文件。一些复杂的操作需配合其他结构体来完成。</p>
+<h2 id="openoptions"><a class="markdownIt-Anchor" href="#openoptions"></a> OpenOptions</h2>
+<p>若直接使用<code>File::open()</code>打开文件，默认权限为只读。当文件不存在时产生Error。<code>File::create()</code>类似，但若文件不存在时会创建文件</p>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.OpenOptions.html">OpenOptions</a>通过链式调用方法控制打开文件的权限。使用方法如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> path = Path::new();</span><br><span class="line">\\ ...</span><br><span class="line">\\ set path</span><br><span class="line">\\ ...</span><br><span class="line"><span class="keyword">let</span> f = OpenOptions::new()</span><br><span class="line">    .read(<span class="literal">true</span>)     <span class="comment">// 允许读</span></span><br><span class="line">    .create(<span class="literal">true</span>)   <span class="comment">// 未找到文件时创建文件</span></span><br><span class="line">    .write(<span class="literal">true</span>)    <span class="comment">// 允许写</span></span><br><span class="line">    .open(path);    <span class="comment">//也可以直接传入&amp;str来打开文件</span></span><br></pre></td></tr></table></figure>
+<p>除了读写权限，我们还可以控制是否直接在文件末尾添加内容，是否在读取时清空文件内容等操作，详见文档。</p>
+<p>我们也可以直接使用File::withOptions()方法创建OpenOption，这与OpenOptions::new()方法是等价的。</p>
+<h2 id="metadata"><a class="markdownIt-Anchor" href="#metadata"></a> MetaData</h2>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">MetaData</a>是文件的元数据。所谓元数据，包括以下内容：</p>
+<ul>
+<li>文件类型：是文件还是目录</li>
+<li>是否受到链接</li>
+<li>长度</li>
+<li>权限（读写）</li>
+<li>修改时间（创建，打开，写入等）</li>
+</ul>
+<p>这些信息都可以通过MetaData查询。不过程序员无法修改MetaData，MetaDate只能由操作系统自身修改。</p>
+<p>我们可以通过调用File实例的metadata()方法来获得这个文件的元数据，并进行查询。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> metadata = file.metadata()?;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.accessed());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.created());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.len());</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, metadata.is_file());</span><br></pre></td></tr></table></figure>
+<h2 id="readdir-direntry与dirbuilder"><a class="markdownIt-Anchor" href="#readdir-direntry与dirbuilder"></a> ReadDir, DirEntry与DirBuilder</h2>
+<p>fs库为目录提供了一系列操作。我们通过<code>fs::read_dir(path)</code>方法获取一个<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.ReadDir.html">ReadDir</a>对象，该对象本质上是一个迭代器，迭代类型为<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.DirEntry.html">DirEntry</a>。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// get path</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">for</span> entry <span class="keyword">in</span> fs::read_dir(path)? &#123;</span><br><span class="line">    <span class="keyword">let</span> dir = entry?;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;:?&#125;&quot;</span>, dir.path());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>DirEntry类似于File，区别在于，DirEntry本身并不持有数据，它标记了目录的入口，而不是目录本身，目录依旧是File类。要访问目录，使用path()方法获取路径。</p>
+<p>fs库文档中编写了一个遍历目录的函数来展示DirEntry的用法，如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"><span class="keyword">use</span> std::fs::&#123;<span class="keyword">self</span>, DirEntry&#125;;</span><br><span class="line"><span class="keyword">use</span> std::path::Path;</span><br><span class="line"></span><br><span class="line"><span class="comment">// one possible implementation of walking a directory only visiting files</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">visit_dirs</span></span>(dir: &amp;Path, cb: &amp;<span class="keyword">dyn</span> <span class="built_in">Fn</span>(&amp;DirEntry)) -&gt; io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> dir.is_dir() &#123;</span><br><span class="line">        <span class="keyword">for</span> entry <span class="keyword">in</span> fs::read_dir(dir)? &#123;</span><br><span class="line">            <span class="keyword">let</span> entry = entry?;</span><br><span class="line">            <span class="keyword">let</span> path = entry.path();</span><br><span class="line">            <span class="keyword">if</span> path.is_dir() &#123;</span><br><span class="line">                visit_dirs(&amp;path, cb)?;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cb(&amp;entry);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/fs/struct.DirBuilder.html">DirBuilder</a>用于辅助创建目录，常用于递归地创建目录。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> path = <span class="string">&quot;/tmp/foo/bar/baz&quot;</span>;</span><br><span class="line">DirBuilder::new()</span><br><span class="line">    .recursive(<span class="literal">true</span>)</span><br><span class="line">    .create(path).unwrap();</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1027,219 +1284,6 @@ u.sum=l.sum+r.sum\\
 <p>调用一次read()时，读取到缓冲区为空或读取的数据量达到上限为止。</p>
 <p>即使pipeline两端中一方关闭pipeline，缓冲区也不会消失，而是直到两端都关闭时才消失。</p>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/10/19/configure-vscode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/19/configure-vscode/" class="post-title-link" itemprop="url">在VSCode中配置C++</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-19 15:14:44" itemprop="dateCreated datePublished" datetime="2021-10-19T15:14:44+08:00">2021-10-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-02-12 20:18:46" itemprop="dateModified" datetime="2022-02-12T20:18:46+08:00">2022-02-12</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>官方文档：<a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/cpp">https://code.visualstudio.com/docs/cpp</a></p>
-<hr />
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir projects</span><br><span class="line">cd projects</span><br><span class="line">mkdir helloworld</span><br><span class="line">cd helloworld</span><br><span class="line">code .</span><br></pre></td></tr></table></figure>
-<p>使用<code>code .</code>命令在VSCode中打开文件夹，并将其作为工作目录。</p>
-<h2 id="tasksjson"><a class="markdownIt-Anchor" href="#tasksjson"></a> tasks.json</h2>
-<h4 id="生成tasksjson"><a class="markdownIt-Anchor" href="#生成tasksjson"></a> 生成tasks.json</h4>
-<p>按下<code>ctrl+shift+p</code>进入下拉栏，选中<code>C/C++ 生成调试和活动文件</code>，将在<code>.vscode</code>文件夹中生成默认的<code>tasks.json</code>文件，文件内容大致如下</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;tasks&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;cppbuild&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;label&quot;</span>: <span class="string">&quot;C/C++: g++.exe 生成活动文件&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;command&quot;</span>: <span class="string">&quot;C:\\Program Files\\mingw64\\bin\\g++.exe&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;args&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;-fdiagnostics-color=always&quot;</span>,</span><br><span class="line">                <span class="string">&quot;-g&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;file&#125;&quot;</span>,</span><br><span class="line">                <span class="string">&quot;-o&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;fileDirname&#125;\\$&#123;fileBasenameNoExtension&#125;.exe&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;options&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;problemMatcher&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;$gcc&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;group&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;kind&quot;</span>: <span class="string">&quot;build&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;isDefault&quot;</span>: <span class="literal">true</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;detail&quot;</span>: <span class="string">&quot;调试器生成的任务。&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;2.0.0&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>&quot;command&quot;</code>值即需要运行的程序，此处为g++编译器，若需要修改编译器根目录，只需修改此处即可。</p>
-<p><code>&quot;args&quot;</code>为传递给编译器的参数，参数意义如下：</p>
-<ul>
-<li><code>-fdiagnostics-color=always</code>：总是对诊断信息着色</li>
-<li><code>-g</code>：生成调试信息</li>
-<li><code>$&#123;file&#125;</code>：打开的文件名</li>
-<li><code>-o</code>：确定生成可执行文件的位置与文件名（默认为a.out）</li>
-<li><code>$&#123;fileDirname&#125;\\$&#123;fileBasenameNoExtension&#125;.exe</code>：在文件目录下生成与源文件名相同的可执行文件</li>
-</ul>
-<p><code>&quot;isDefault&quot;: true</code>意为执行build任务之后将运行任务。</p>
-<p>若需要编译根目录下所有文件，使用<code>$&#123;workspaceFolder&#125;\\*.cpp</code>替换<code>$&#123;file&#125;</code></p>
-<p>修改<code>args</code>值即可控制编译器参数，如加入<code>-std=c++17</code>即可修改标准，加入<code>&quot;-o2&quot;</code>即可开启编译器优化，加入<code>-I</code> <code>$&#123;workspaceFolder&#125;\\include</code>即可包含<code>include</code>目录下的所有头文件。</p>
-<h4 id="执行build任务"><a class="markdownIt-Anchor" href="#执行build任务"></a> 执行build任务</h4>
-<p>进入下拉栏，输入<code>build</code>，选中<code>任务：运行生成任务</code>，也可自行配置快捷键。</p>
-<p>完成build任务之后，即可在终端中运行可执行文件。</p>
-<h2 id="launchjson"><a class="markdownIt-Anchor" href="#launchjson"></a> launch.json</h2>
-<h4 id="生成launchjson"><a class="markdownIt-Anchor" href="#生成launchjson"></a> 生成launch.json</h4>
-<p>在主菜单中，选中<code>运行-&gt;添加配置-&gt;C++(GDB/LLDB)</code>，将生成如下文件</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;0.2.0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;(gdb) 启动&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;cppdbg&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;request&quot;</span>: <span class="string">&quot;launch&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;program&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;\\$&#123;fileBasenameNoExtension&#125;.exe&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;args&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;stopAtEntry&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;environment&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;externalConsole&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;MIMode&quot;</span>: <span class="string">&quot;gdb&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;miDebuggerPath&quot;</span>: <span class="string">&quot;/path/to/gdb&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;setupCommands&quot;</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;为 gdb 启用整齐打印&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;-enable-pretty-printing&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;ignoreFailures&quot;</span>: <span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;preLaunchTask&quot;</span>: <span class="string">&quot;C/C++: g++.exe 生成活动文件&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>将<code>program</code>值修改为与task.json中的输出一致，将<code>miDebuggerPath</code>值修改为调试器所在的目录，一般与编译器目录一致。</p>
-<p><code>stopAtEntry</code>默认为<code>false</code>，若修改为<code>true</code>，则调试时将在<code>main</code>函数开头暂停。</p>
-<p><code>preLaunchTask</code>为在指定需要在调试执行的Task，将其值设置为tasks.json中的label，以在开始调试前进行编译。</p>
-<h4 id="调试"><a class="markdownIt-Anchor" href="#调试"></a> 调试</h4>
-<p>launch.json编写完毕后，按下<code>F5</code>进行调试。</p>
-<h2 id="c_cpp_propertiesjson"><a class="markdownIt-Anchor" href="#c_cpp_propertiesjson"></a> c_cpp_properties.json</h2>
-<p>使用c_cpp_properties.json来进行项目中C++插件的设置。首先必须明确的是：此项设置仅修改intellisense，不会对实际的编译运行产生任何影响。需要配置编译命令，在tasks.json和launch.json中进行修改。</p>
-<p>在控制面板中，输入<code>C/C++</code>，选择<code>C/C++：编辑配置</code>即可对插件进行项目层面上的配置，其改动将存放在c_cpp_properties.json内部。</p>
-<p>默认生成的c_cpp_properties.json如下</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Win32&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;includePath&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;$&#123;default&#125;&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;windowsSdkVersion&quot;</span>: <span class="string">&quot;10.0.19041.0&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们对其进行简单的改动。</p>
-<ul>
-<li>添加键值对<code>&quot;cppStandard&quot;: &quot;c++17&quot;,</code></li>
-<li>添加键值对<code>&quot;cStandard&quot;: &quot;c17&quot;,</code></li>
-<li>添加键值对<code>&quot;compilerPath&quot;: &quot;C:\\Program Files\\mingw64\\bin\\g++.exe&quot;,</code></li>
-<li>为&quot;includePath&quot;添加新元素：<code>&quot;$&#123;workspaceFolder&#125;/**&quot;,</code></li>
-<li>修改<code>name</code>值为<code>GCC</code></li>
-</ul>
-<p>得到新的c_cpp_properties.json</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;GCC&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;includePath&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;$&#123;default&#125;&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;workspaceFolder&#125;/**&quot;</span>,</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;windowsSdkVersion&quot;</span>: <span class="string">&quot;10.0.19041.0&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;cppStandard&quot;</span>: <span class="string">&quot;c++17&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;cStandard&quot;</span>: <span class="string">&quot;c17&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;compilerPath&quot;</span>: <span class="string">&quot;C:\\Program Files\\mingw64\\bin\\g++.exe&quot;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样，修改了使用的c<ins>的标准（不需要在tasks.json中增加参数）,扩展了头文件存放的目录，确定了编译器路径（同时方便寻找头文件，若电脑中有不止一个c</ins>编译器，则极为实用）</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/15/%E9%A2%98%E8%A7%A3-trie-%E6%9C%80%E5%A4%A7%E5%BC%82%E6%88%96%E5%AF%B9/" class="post-title-link" itemprop="url">题解-trie-最大异或对</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-15 13:18:49 / 修改时间：13:34:37" itemprop="dateCreated datePublished" datetime="2021-10-15T13:18:49+08:00">2021-10-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法竞赛</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="最大异或对"><a class="markdownIt-Anchor" href="#最大异或对"></a> 最大异或对</h3>
-<p>在给定的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span></span> 个整数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mi mathvariant="normal">，</mi><msub><mi>A</mi><mn>2</mn></msub><mo>…</mo><mo>…</mo><msub><mi>A</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">A_1，A_2……A_N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord cjk_fallback">，</span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 中选出两个进行 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mi>o</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">xor</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span></span></span></span>（异或）运算，得到的结果最大是多少？</p>
-<h4 id="输入格式"><a class="markdownIt-Anchor" href="#输入格式"></a> 输入格式</h4>
-<p>第一行输入一个整数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span></span>。</p>
-<p>第二行输入 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span></span> 个整数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub><mo>∼</mo><msub><mi>A</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">A_1 \sim A_N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。</p>
-<h4 id="输出格式"><a class="markdownIt-Anchor" href="#输出格式"></a> 输出格式</h4>
-<p>输出一个整数表示答案。</p>
-<h4 id="数据范围"><a class="markdownIt-Anchor" href="#数据范围"></a> 数据范围</h4>
-<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mo>≤</mo><mi>N</mi><mo>≤</mo><mn>1</mn><msub><mn>0</mn><mn>5</mn></msub><mo separator="true">,</mo></mrow><annotation encoding="application/x-tex">1≤N≤10_5,</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.78041em;vertical-align:-0.13597em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8193em;vertical-align:-0.13597em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span></span></span></span><br />
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn><mo>≤</mo><msub><mi>A</mi><mi>i</mi></msub><mo>&lt;</mo><msub><mn>2</mn><mn>31</mn></msub></mrow><annotation encoding="application/x-tex">0≤A_i&lt;2_{31}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.78041em;vertical-align:-0.13597em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.79444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
-<h4 id="输入样例"><a class="markdownIt-Anchor" href="#输入样例"></a> 输入样例</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">1 2 3</span><br></pre></td></tr></table></figure>
-<h4 id="输出样例"><a class="markdownIt-Anchor" href="#输出样例"></a> 输出样例</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3</span><br></pre></td></tr></table></figure>
-<h4 id="题解"><a class="markdownIt-Anchor" href="#题解"></a> 题解</h4>
-<p>考虑对一个确定的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span>，如何求使其异或值最大的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span> ？显然，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span> 即为对 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span> 按位取反。</p>
-<p>假设有两个数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>b</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>b</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">b_i,b_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>，如何判断他们与 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span> 异或的值哪个大？由大到小按位进行位运算即可。若在高位第k位上，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>b</mi><mi>i</mi></msub><mo stretchy="false">[</mo><mi>k</mi><mo stretchy="false">]</mo><mtext> </mtext><mi>x</mi><mi>o</mi><mi>r</mi><mtext> </mtext><mi>a</mi><mo stretchy="false">[</mo><mi>k</mi><mo stretchy="false">]</mo><mo>=</mo><mo>=</mo><mn>1</mn><mi mathvariant="normal">，</mi><mi mathvariant="normal">而</mi><msub><mi>b</mi><mi>j</mi></msub><mo stretchy="false">[</mo><mi>k</mi><mo stretchy="false">]</mo><mtext> </mtext><mi>x</mi><mi>o</mi><mi>r</mi><mtext> </mtext><mi>a</mi><mo stretchy="false">[</mo><mi>k</mi><mo stretchy="false">]</mo><mo>=</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b_i[k] \  xor \ a[k] == 1，而 b_j[k] \  xor \ a[k] == 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">]</span><span class="mspace"> </span><span class="mord mathdefault">x</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace"> </span><span class="mord mathdefault">a</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord">1</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">而</span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">]</span><span class="mspace"> </span><span class="mord mathdefault">x</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace"> </span><span class="mord mathdefault">a</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>，那么必然有 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>b</mi><mi>i</mi></msub><mtext> </mtext><mi>x</mi><mi>o</mi><mi>r</mi><mtext> </mtext><mi>a</mi><mo>&gt;</mo><msub><mi>b</mi><mi>j</mi></msub><mtext> </mtext><mi>x</mi><mi>o</mi><mi>r</mi><mtext> </mtext><mi>a</mi></mrow><annotation encoding="application/x-tex">b_i \ xor \ a &gt; b_j \ xor \ a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace"> </span><span class="mord mathdefault">x</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace"> </span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace"> </span><span class="mord mathdefault">x</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace"> </span><span class="mord mathdefault">a</span></span></span></span>，这是因为比大小即按位判断。</p>
-<p>对于一组数字，使用trie存储01串。对每一个数字，从高位到低位查找是否有异或和为1的节点，若有则从此开始找，否则只能下降到另一个节点。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> endl <span class="meta-string">&#x27;\n&#x27;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">100010</span>, M = <span class="number">31</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line"><span class="keyword">int</span> son[M * N][<span class="number">2</span>], idx = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> p = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = M; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> b = (n &gt;&gt; i) &amp; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (!son[p][b])</span><br><span class="line">            son[p][b] = ++idx;</span><br><span class="line">        p = son[p][b];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mate</span><span class="params">(<span class="keyword">int</span> s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> p = <span class="number">0</span>, retVal = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = M; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> b = (s &gt;&gt; i) &amp; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (son[p][!b])</span><br><span class="line">        &#123;</span><br><span class="line">            p = son[p][!b];</span><br><span class="line">            retVal |= (<span class="number">1</span> &lt;&lt; i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            p = son[p][b];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> retVal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="literal">nullptr</span>);</span><br><span class="line">    cout.<span class="built_in">tie</span>(<span class="literal">nullptr</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cin &gt;&gt; a[i];</span><br><span class="line">        <span class="built_in">insert</span>(a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, <span class="built_in">mate</span>(a[i]));</span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
