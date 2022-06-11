@@ -287,7 +287,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-06-10 12:50:20" itemprop="dateModified" datetime="2022-06-10T12:50:20+08:00">2022-06-10</time>
+        <time title="修改时间：2022-06-11 14:43:45" itemprop="dateModified" datetime="2022-06-11T14:43:45+08:00">2022-06-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -608,6 +608,89 @@
 <p>还有可能使用双重间接指针，从而支持4GB的文件。</p>
 <p>这种不平衡树可以称为指向文件块的<strong>多级索引（multi-level index）</strong> 。</p>
 <h3 id="目录组织"><a class="markdownIt-Anchor" href="#目录组织"></a> 目录组织</h3>
+<p>一个目录基本上只包含一个二元组<code>(条目名称, inode号)</code>的表。对于给定目录中的每一个文件或目录，目录的数据块中都有一个字符串和数字。对于每个字符串，可能还有一个长度。</p>
+<p>假设目录dir（inode号是5）中有3个文件（foo、bar 和 foobar），它们的inode号分别为12、13、24，dir在磁盘上的数据可能如下所示。</p>
+<table>
+<thead>
+<tr>
+<th>inum</th>
+<th>reclen</th>
+<th>strlen</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>4</td>
+<td>2</td>
+<td>.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>3</td>
+<td>…</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>4</td>
+<td>foo</td>
+</tr>
+<tr>
+<td>13</td>
+<td>4</td>
+<td>4</td>
+<td>bar</td>
+</tr>
+<tr>
+<td>24</td>
+<td>8</td>
+<td>7</td>
+<td>foobar</td>
+</tr>
+</tbody>
+</table>
+<p>删除一个文件会在目录中留下一段空白空间，因此使用一些方法来标记它。这种删除也是使用记录长度的一个原因：新条目可能会重复使用旧的、更大的条目，从而留有额外空间。</p>
+<h3 id="空闲空间管理"><a class="markdownIt-Anchor" href="#空闲空间管理"></a> 空闲空间管理</h3>
+<p><strong>空闲空间管理（free space management）</strong> 记录哪些inode和数据块是空闲的。可以使用两个位图来实现。例如，创建一个文件时，为其分配一个inode。文件系统将通过位图搜索一个空闲的内容，并将其分配给该文件。</p>
+<h3 id="访问路径读取和写入"><a class="markdownIt-Anchor" href="#访问路径读取和写入"></a> 访问路径：读取和写入</h3>
+<p>假设文件系统已挂在，超级块在内存中，而其他信息在磁盘上。</p>
+<h4 id="从磁盘读文件"><a class="markdownIt-Anchor" href="#从磁盘读文件"></a> 从磁盘读文件</h4>
+<p>当发出<code>open</code>调用时，文件系统首先需要找到文件的inode。为此，文件系统需要遍历路径名。</p>
+<p>从文件系统的根开始，通过inumber号查找inode。root的inumber一般是2，要开始查找，文件系统首先读入inumber 2，挂载对应的inode，这就是第一个inode块。</p>
+<p>接下来，文件系统在inode中查找指向数据块的指针，数据块包含根目录的内容，其中将有我们需要的条目。接下来递归执行上述过程，直到找到对应文件。</p>
+<p>最后，将文件的inode读入内存，为此进程分配一个文件描述符，接下来可以使用系统函数在文件中读取。</p>
+<h4 id="写入磁盘"><a class="markdownIt-Anchor" href="#写入磁盘"></a> 写入磁盘</h4>
+<p>写入文件的大部分过程类似上文。但是，写入文件可能会涉及块的分配，并更新其他结果，例如数据位图和inode。写入文件在逻辑上会有五个I/O：读取数据位图，写入位图，再是两次读取，最后写入inode，最后一次写入块本身。</p>
+<p>创建文件时，不仅要分配inode，还要再目录中分配空间。</p>
+<h3 id="缓存和缓冲"><a class="markdownIt-Anchor" href="#缓存和缓冲"></a> 缓存和缓冲</h3>
+<p>为了弥补读取和写入文件的巨大I/O代价。大多数文件系统积极使用DRAM缓存重要的块。现代系统常使用动态划分，将虚拟内存页面和文件系统页面集成到统一页面缓存中。</p>
+<h2 id="崩溃一致性fsck和日志"><a class="markdownIt-Anchor" href="#崩溃一致性fsck和日志"></a> 崩溃一致性：FSCK和日志</h2>
+<p>文件系统面临的一个挑战在于：如何在出现断电或系统崩溃时，更新持久数据结构。这是<strong>崩溃一致性问题（crash-consistency problem）</strong> 。</p>
+<p>使用<strong>FSCK(文件系统检查程序，file system checker)</strong>，或<strong>日志记录（journaling，或预写日志）</strong> 解决这个问题。</p>
+<p>假设为文件添加内容，首先需要更新三个结构：</p>
+<ol>
+<li>inode，添加指向新块的指针</li>
+<li>数据块本身</li>
+<li>数据位图</li>
+</ol>
+<p>一开始，这些更新存放在内存中。写入到磁盘上时，可能会发生崩溃，可能在三个结构中，只更新了一个或两个，这就造成了不一致性。这就是崩溃一致性问题。</p>
+<h3 id="解决方案1文件系统检查程序"><a class="markdownIt-Anchor" href="#解决方案1文件系统检查程序"></a> 解决方案1：文件系统检查程序</h3>
+<p>fsck是一个UNIX工具，用于查找这些不一致并修复它们。</p>
+<p>以下是fsck的基本总结：</p>
+<ul>
+<li><strong>超级块</strong>：fsck首先检查超级块是否合理。进行健全性检查，以搜索有没有冲突的超级块。</li>
+<li><strong>空闲块</strong>：接下来，fsck扫描inode、间接块等，并利用其生成正确的分配位图。因此，如果位图和inode存在不一致，则信任inode。</li>
+<li><strong>inode状态</strong>：检查每个inode是否存在损坏或其他问题，如字段无效。如果存在问题，则被清除，同时更新inode位图。</li>
+<li><strong>inode链接</strong>：fsck还会验证每一个已分配的inode的链接数。为了验证，fsck从根目录开始扫描整个目录树，并构建自己的链接计数。如果新计算的计数与inode中找到的计数不匹配，则必须采取纠正措施。</li>
+<li><strong>重复</strong>：fsck还检查重复指针。即两个不同的inode引用同一个块的情况。</li>
+<li><strong>坏块</strong>：如果指针显然指向超出其有效范围的某个指针，则该指针被认为是坏的。</li>
+<li><strong>目录检查</strong>：fsck对每个目录进行检查，确保<code>.</code> <code>..</code>正常分配，目录条目中引用的每一个inode都已分配。</li>
+</ul>
+<h3 id="解决方案2日志或预写日志"><a class="markdownIt-Anchor" href="#解决方案2日志或预写日志"></a> 解决方案2：日志（或预写日志）</h3>
+<p>基本思路：更新磁盘时，在覆写结构之前，先写注记。当正在更新时若发生崩溃，可以返回并查看注记，然后重试。</p>
 
       
     </div>
