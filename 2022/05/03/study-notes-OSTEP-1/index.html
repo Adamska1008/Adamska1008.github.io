@@ -28,7 +28,7 @@
 <meta property="og:description" content="Three easy pieces: 虚拟化，并发，持久性  虚拟化CPU 关键词：  上下文切换 调度策略   进程 定义：运行的程序。 进程的构成：机器状态  地址空间（可访问内存） 寄存器信息  通用寄存器 特殊寄存器：  程序计数器（Program Counter, PC），用于管理指令执行 栈指针(stack pointer, %rsp in x86_64 asm) 与 帧指针(fram">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-03T05:13:29.000Z">
-<meta property="article:modified_time" content="2022-06-11T07:00:16.675Z">
+<meta property="article:modified_time" content="2022-06-11T07:41:50.679Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
@@ -220,7 +220,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-06-11 15:00:16" itemprop="dateModified" datetime="2022-06-11T15:00:16+08:00">2022-06-11</time>
+        <time title="修改时间：2022-06-11 15:41:50" itemprop="dateModified" datetime="2022-06-11T15:41:50+08:00">2022-06-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -285,6 +285,7 @@
 <p><strong>数据结构-进程列表（process list）</strong><br />
 为了跟踪进程信息，需要使用一个数据结构来记录所有进程的信息。当一个进程停止时，将在这个数据结构中保存对应的机器状态，从而使得这个进程可以被恢复。这就是 <strong>上下文切换</strong>。</p>
 <h2 id="受限的直接执行limited-direct-execution"><a class="markdownIt-Anchor" href="#受限的直接执行limited-direct-execution"></a> 受限的直接执行（limited direct execution）</h2>
+<p>直接执行时，若对程序无限制，则当需要访问系统资源或切换任务时，会难以进行。为此，我们对程序做出一定限制，区分用户模式与内核模式。</p>
 <p><strong>虚拟化机制的需求</strong><br />
 让许多任务共享（有限个）物理CPU。<br />
 <strong>虚拟化机制的挑战</strong></p>
@@ -372,7 +373,7 @@
 <li>解决方案：时钟中断时，操作系统中预先配置的中断处理程序会运行。此时，操作系统重新获得CPU的控制权，因此可以做它想做的事：停止当前进程，并启动另一个进程。</li>
 </ul>
 <p><strong>保存和恢复上下文</strong><br />
-底层代码。为当前正在执行的进程保存一些寄存器（通用寄存器，程序计数器，当前进程的内核栈指针）的值（例如，到它的内核栈），并为即将执行的进程恢复一些寄存器的值（从它的内核栈）。</p>
+考虑切换进程的问题。为当前正在执行的进程保存一些寄存器（通用寄存器，程序计数器，当前进程的内核栈指针）的值（例如，到它的内核栈），并为即将执行的进程恢复一些寄存器的值（从它的内核栈）。</p>
 <p><strong>LDE协议（时钟中断）</strong></p>
 <table>
 <thead>
@@ -460,7 +461,7 @@
 <h3 id="基本调度算法"><a class="markdownIt-Anchor" href="#基本调度算法"></a> 基本调度算法</h3>
 <h4 id="先进先出first-in-first-out-fifo"><a class="markdownIt-Anchor" href="#先进先出first-in-first-out-fifo"></a> 先进先出（First In First Out, FIFO）</h4>
 <p>即先到先服务。考虑到不可能所有任务都恰巧在同一时间到达，总有极其微小的差距。在此算法中，CPU按任务到达的先后顺序执行任务。每一个任务执行完之后，执行下一个。</p>
-<p>显然，若否定假设1，认为任务存在长短区别。若长任务先到达，则将浪费大量时间在长任务上，这使得平均周转时间很低，这个问题被称为护航效应（convoy effect）。</p>
+<p>显然，若否定假设1，认为任务存在长短区别。若长任务先到达，则将浪费大量时间在长任务上，这使得平均周转时间很低，这个问题被称为<strong>护航效应（convoy effect）</strong>。</p>
 <h4 id="最短任务优先shortest-job-first-sjf"><a class="markdownIt-Anchor" href="#最短任务优先shortest-job-first-sjf"></a> 最短任务优先（Shortest Job First, SJF）</h4>
 <p>显然，对于近似同一时间到达，但任务长度有差别的多个任务，可以先运行最短的任务。在考虑所有任务近似同时到达的情况下，不难证明，SJF确实是一个最优（optimal）调度算法。</p>
 <p>但是，若否定假设2，认为并非所有任务都同时到达。仍考虑长任务先到达时的情况，则与FIFO没有区别，且依旧遇到护航问题。</p>
@@ -487,8 +488,8 @@
 <p>MLFQ中有多个不同的队列（queue），每个队列有不同的优先级（priority level）。任何一个时刻，一个工作只能存在于一个队列中。MLFQ总是执行较高优先级的工作。相同队列中的工作采用轮转调度。</p>
 <p>归纳得两条规则：</p>
 <ol>
-<li>如果 A 的优先级 &gt; B 的优先级，优先运行 A （不运行 B）。</li>
-<li>如果 A 的优先级 = B 的优先级，轮转运行 A 和 B 。</li>
+<li>如果 A 的优先级 &gt; B 的优先级，优先运行 A （不运行 B）。即优先运行高优先级队列中的任务。</li>
+<li>如果 A 的优先级 = B 的优先级，轮转运行 A 和 B 。即同一优先级轮转调度。</li>
 </ol>
 <p>并且，需要添加一个规则</p>
 <ol start="3">

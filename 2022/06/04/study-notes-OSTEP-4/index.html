@@ -20,15 +20,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Three easy pieces: 虚拟化，并发，持久性  持久性  I&#x2F;O设备  系统架构 CPU通过内存总线（memory bus）连接到系统内存，图像或其他高性能I&#x2F;O设备通过I&#x2F;O总线（I&#x2F;O bus）连接到系统。外围总线如SCSI、SATA、USB连接低速设备。  标准设备 第一部分是向系统展示的硬件接口（interface） 和典型的交互协议。 第二部分是内部结构（internal">
+<meta name="description" content="Three easy pieces: 虚拟化，并发，持久性  持久性  I&#x2F;O设备  系统架构 CPU通过内存总线（memory bus）连接到系统内存，图像或其他高性能I&#x2F;O设备通过I&#x2F;O总线（I&#x2F;O bus）连接到系统。外围总线如SCSI、SATA、USB连接低速设备。  标准设备 一个标准的设备大致由两部分组成。 第一部分是向系统展示的硬件接口（interface） 和典型的交互协议。 第二">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OSTEP笔记（四）—— 持久性">
 <meta property="og:url" content="https://adamska1008.github.io/2022/06/04/study-notes-OSTEP-4/index.html">
 <meta property="og:site_name" content="Adamska&#39;s Blog">
-<meta property="og:description" content="Three easy pieces: 虚拟化，并发，持久性  持久性  I&#x2F;O设备  系统架构 CPU通过内存总线（memory bus）连接到系统内存，图像或其他高性能I&#x2F;O设备通过I&#x2F;O总线（I&#x2F;O bus）连接到系统。外围总线如SCSI、SATA、USB连接低速设备。  标准设备 第一部分是向系统展示的硬件接口（interface） 和典型的交互协议。 第二部分是内部结构（internal">
+<meta property="og:description" content="Three easy pieces: 虚拟化，并发，持久性  持久性  I&#x2F;O设备  系统架构 CPU通过内存总线（memory bus）连接到系统内存，图像或其他高性能I&#x2F;O设备通过I&#x2F;O总线（I&#x2F;O bus）连接到系统。外围总线如SCSI、SATA、USB连接低速设备。  标准设备 一个标准的设备大致由两部分组成。 第一部分是向系统展示的硬件接口（interface） 和典型的交互协议。 第二">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-06-04T07:17:31.000Z">
-<meta property="article:modified_time" content="2022-06-11T06:43:45.609Z">
+<meta property="article:modified_time" content="2022-06-15T03:39:42.671Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
@@ -220,7 +220,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-06-11 14:43:45" itemprop="dateModified" datetime="2022-06-11T14:43:45+08:00">2022-06-11</time>
+        <time title="修改时间：2022-06-15 11:39:42" itemprop="dateModified" datetime="2022-06-15T11:39:42+08:00">2022-06-15</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -248,6 +248,7 @@
 <h3 id="系统架构"><a class="markdownIt-Anchor" href="#系统架构"></a> 系统架构</h3>
 <p>CPU通过内存总线（memory bus）连接到系统内存，图像或其他高性能I/O设备通过I/O总线（I/O bus）连接到系统。外围总线如SCSI、SATA、USB连接低速设备。</p>
 <h3 id="标准设备"><a class="markdownIt-Anchor" href="#标准设备"></a> 标准设备</h3>
+<p>一个标准的设备大致由两部分组成。</p>
 <p>第一部分是向系统展示的<strong>硬件接口（interface）</strong> 和典型的交互协议。</p>
 <p>第二部分是<strong>内部结构（internal structure）</strong> ，设备通常使用芯片实现它们的功能。</p>
 <h3 id="标准协议"><a class="markdownIt-Anchor" href="#标准协议"></a> 标准协议</h3>
@@ -296,14 +297,17 @@
 <p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>R</mi><mrow><mi>I</mi><mi mathvariant="normal">/</mi><mi>O</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi mathvariant="normal">大</mi><msub><mi mathvariant="normal">小</mi><mrow><mi mathvariant="normal">传</mi><mi mathvariant="normal">输</mi></mrow></msub></mrow><msub><mi>T</mi><mrow><mi>I</mi><mi mathvariant="normal">/</mi><mi>O</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">R_{I/O}=\cfrac{大小_{传输}}{T_{I/O}}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.03853em;vertical-align:-0.3551999999999999em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.5198em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.07847em;">I</span><span class="mord mtight">/</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3551999999999999em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.6311999999999998em;vertical-align:-1.0412em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5899999999999999em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.5198em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.07847em;">I</span><span class="mord mtight">/</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3551999999999999em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.74em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">大</span><span class="mord"><span class="mord cjk_fallback">小</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:-0.15em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">传</span><span class="mord cjk_fallback mtight">输</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.0412em;"><span></span></span></span></span></span><span></span></span></span></span></span></span></p>
 <p>显然，由于更多的寻道和旋转时间，随机工作负载的时间远超于顺序工作负载。</p>
+<p>假设一个磁盘平均寻道时间4ms，RPM为15000，最大传输速度125MB/S。</p>
+<p>寻道时间以4ms计算，而对于旋转延迟则用RPM（圈每分钟）计算，15000RPM意味着，旋转一圈所花时间为60/15000=4ms，而旋转延迟取最大（转一圈）的二分之一，也就是2ms。在随机工作中，假设读取4KB的小数据，则传输时间只有4KB/125MB ≈ 0.000032ms = 32us 。</p>
 <h3 id="磁盘调度"><a class="markdownIt-Anchor" href="#磁盘调度"></a> 磁盘调度</h3>
 <p>对于磁盘调度，我们可以猜测到任务的大致时间，所以我们会尝试使用SJF（最短任务优先）。</p>
 <h4 id="sstf-最短寻道时间优先"><a class="markdownIt-Anchor" href="#sstf-最短寻道时间优先"></a> SSTF: 最短寻道时间优先</h4>
 <p>SSTF（Shortest-Seek-Time-First）按磁道对I/O请求队列排序，选择在最近磁道上的请求先完成。但有一个小问题：操作系统只能看到一系列的块。故可以使用<strong>最近块优先（Nearest-Block-First, NBF）</strong> ，而不是SSTF。]</p>
-<p>显然，这种算法可能造成饥饿问题。</p>
+<p>显然，这种算法可能造成饥饿问题，加入在某一磁道上有稳定请求，磁头可能不会移动。</p>
 <h4 id="电梯-又称scan-或-c-scan"><a class="markdownIt-Anchor" href="#电梯-又称scan-或-c-scan"></a> 电梯 (又称SCAN 或 C-SCAN)</h4>
 <p>SCAN以跨越磁道的顺序来服务磁盘请求。如果请求的块所属的磁道在这一次扫一遍中已经服务过了，它就不会立即处理，而是排队等待下次扫一遍。</p>
-<p>这种算法很想电梯，电梯要么一直向下要么一直向上，不会根据哪层楼近来服务请求。</p>
+<p>这种算法很像电梯，电梯要么一直向下要么一直向上，不会根据哪层楼近来服务请求。</p>
+<p>常见的C-SCAN算法，从外圈扫到内圈，再从内圈扫到外圈，如此往复。</p>
 <h4 id="sptf-最短定位时间优先"><a class="markdownIt-Anchor" href="#sptf-最短定位时间优先"></a> SPTF: 最短定位时间优先</h4>
 <p>SPTF(Shortest Positioning Time First, SPTF)，需要计算旋转与寻道相比的时间，并在计算完成后选择下一个请求应该如何安排，它通常在驱动器内部进行。</p>
 <h2 id="廉价冗余磁盘阵列raid"><a class="markdownIt-Anchor" href="#廉价冗余磁盘阵列raid"></a> 廉价冗余磁盘阵列（RAID）</h2>
@@ -370,9 +374,52 @@
 </table>
 <p>基本思想：以轮转方式将磁盘阵列的块分布在磁盘上。这种方法的目的是在对数组的连续块进行请求时，从阵列中获得最大的并行性。我们将同一行中的块称为条带。例如，上面的块0、1、2和3在同一条带中。</p>
 <p>上面的例子中，一个磁盘一次存储一个块，但我们可以在一个磁盘上一次存储两个块。这使得大块大小为2.</p>
-<p>大块大小会影响阵列性能。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">磁盘0</th>
+<th style="text-align:center">磁盘1</th>
+<th style="text-align:center">磁盘2</th>
+<th style="text-align:center">磁盘3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">14</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">15</td>
+</tr>
+</tbody>
+</table>
+<p>大块大小会影响阵列性能。在上例中，大块大小为8KB，条带由四个大块组成。</p>
 <p><strong>评估RAID 0性能</strong><br />
-单个块的请求延迟几乎等于单个磁盘的延迟，而从吞吐量的角度来看，等于N（磁盘数量）乘以S（单个磁盘的顺序带宽）。</p>
+分析RAID性能主要看两点：</p>
+<ol>
+<li>单请求延迟</li>
+<li>稳态吞吐量</li>
+</ol>
+<p>吞吐量需要考虑两种负载：顺序和随机。顺序块一次访问例如1MB的大量数据，而随机块则多次访问4KB的小数据，且数据地址不连续。</p>
+<p>不妨假设连续工作下，以S MB/s 传送数据，在随机工作下以R MB/s传送数据，显而易见，考虑到寻道时间和旋转延迟的影响，前者大部分时间用于传输数据，后者大部分时间用于寻道和旋转，所以后者的传输速率远低于前者。</p>
+<p>从延迟的角度来说，对于RAID0，单块请求的延迟与单个磁盘相同。在期望情况下，获得系统全部带宽，吞吐量等于N（磁盘数量）乘以S（单个磁盘的顺序带块）。对于大量随机磁盘，同样有吞吐量N × R MB/s 。</p>
 <h4 id="raid-1镜像"><a class="markdownIt-Anchor" href="#raid-1镜像"></a> RAID 1：镜像</h4>
 <p>镜像系统就是，生成每个块的多个副本。</p>
 <table>
@@ -413,11 +460,13 @@
 </table>
 <p>在这个例子中，磁盘0和1有相同的内容。2、3亦然。数据在镜像对上条带化。</p>
 <p>从容量角度上来看，对于N个硬盘，镜像的有用容量为N/2。</p>
-<p>从可靠性角度来看，RAID-1表现良好，可以容许任何一个磁盘的故障，最多课容许N/2个磁盘的故障。</p>
+<p>从可靠性角度来看，RAID-1表现良好，可以容许任何一个磁盘的故障，最多可容许N/2个磁盘的故障。</p>
 <p>从读取请求的角度来看，与单个磁盘的延迟相同。写入时，需要两次物理写入，但是并行发生，所以大致等于单次写入的时间。但是略差。</p>
-<p>顺序写入时，最大带宽为(N/2*S)，即峰值带宽的一半。顺序读取时，相同。而随机读取可以获得N*R的带宽。随机写入为N/2*R。</p>
+<p>顺序写入时，每个逻辑写入都导致两个物理写入，所以最大带宽为(N/2*S)，即峰值带宽的一半。</p>
+<p>顺序读取时，同样只有(N/2*S)，这需要考虑到，单个磁盘读取请求时，可能只响应一部分，而镜像响应另外一部分，使得带宽不能充分利用。</p>
+<p>而随机读取可以获得N*R的完整带宽。随机写入为N/2*R，同样因为每个逻辑写入需要变成两个物理写入。</p>
 <h4 id="raid-4-通过奇偶校验节省空间"><a class="markdownIt-Anchor" href="#raid-4-通过奇偶校验节省空间"></a> RAID 4: 通过奇偶校验节省空间</h4>
-<p>奇偶校验试图使用较少的容量，但是以性能为代价。</p>
+<p>奇偶校验试图使用较少的容量完成检验，但是以性能为代价。</p>
 <table>
 <thead>
 <tr>
@@ -460,9 +509,9 @@
 </tbody>
 </table>
 <p>对每一条数据添加奇偶校验块，用于存储该条块的冗余信息。</p>
-<p>对于给定的一组比特，如果比特中有偶数个1，则所有比特的XOR返回0；如果比特中有奇数个1，返回1。显然可以利用其进行检验和恢复。</p>
-<p>顺序读取时，可以提供(N-1)*S的峰值有效带块。顺序写入时，通过全条带写入，可也可以达到(N-1)*S。同样，随机读取为(N-1)*S。</p>
-<p>但是，随机写入比较麻烦。因为每次写入都要考虑更新校验位。总之，随机写非常糟糕。</p>
+<p>对于给定的一组比特，如果比特中有偶数个1，则所有比特的XOR返回0；如果比特中有奇数个1，返回1。显然可以利用其进行检验和恢复，这就是校验位。</p>
+<p>顺序读取时，可以提供(N-1)*S的峰值有效带块（只有奇偶校验位是用不上的）。顺序写入时，通过全条带写入，也就是一次写入一个条带的内容，顺带计算奇偶校验位，也可以达到(N-1)*S。同样，随机读取为(N-1)*S。</p>
+<p>但是，随机写入比较麻烦。因为每次写入都要考虑更新校验位。总之，随机写非常糟糕，大概可以认为是1/2 R。</p>
 <h4 id="raid-5-旋转奇偶校验"><a class="markdownIt-Anchor" href="#raid-5-旋转奇偶校验"></a> RAID 5: 旋转奇偶校验</h4>
 <p>RAID 5和RAID 4几乎相同，只是将奇偶校验块跨驱动器旋转。</p>
 <table>
@@ -513,7 +562,7 @@
 </tr>
 </tbody>
 </table>
-<p>它明显提高了随机写入性能，可以接近N/4*5 。</p>
+<p>顺序读写和随机读的性能基本相同。它明显提高了随机写入性能，因为它允许跨请求进行并行处理，可以接近N/4*R 。</p>
 <h2 id="文件系统的实现"><a class="markdownIt-Anchor" href="#文件系统的实现"></a> 文件系统的实现</h2>
 <p>文件系统是纯软件，没有硬件支持，所有文件系统都有不同的数据结构。使用VSFS文件系统进行教学。</p>
 <p>考虑文件系统时，通常需要考虑两个方面：</p>
@@ -524,21 +573,21 @@
 <h3 id="整体组织"><a class="markdownIt-Anchor" href="#整体组织"></a> 整体组织</h3>
 <p>首先，将磁盘分成4KB大小的块。</p>
 <p>磁盘分区：一系列大小为4KB的块，在大小为N个4KB块的分区中，这些块的地址为从0到N-1。</p>
-<p>假设有64块分区，大部分都留给了用户数据。但是，文件系统必须记录每个文件的信息，该信息是<strong>元数据（metadata）</strong>，为了存储这些信息，需要<strong>inode</strong> 解构。</p>
-<p>为了存放inode，我们还需要再磁盘上留出空间，我们称之为<strong>inode表（inode table）</strong> 。inode非常小。</p>
+<p>假设有64块4KB分区，大部分（后56个块）都留给了用户数据。但是，文件系统必须记录每个块的信息，该信息是<strong>元数据（metadata）</strong>，为了存储这些信息，需要<strong>inode</strong> 解构。</p>
+<p>为了存放inode，我们还需要再磁盘上留出空间，我们称之为<strong>inode表（inode table）</strong> 。inode非常小，例如256B，inode的数量可以多于文件块。</p>
 <p>我们还需要某种方法记录inode或数据块是空闲还是已分配，这种<strong>分配结构（allocation structure）</strong> 也是必须的。</p>
 <p>常用的数据结构是<strong>位图（bitmap）</strong>，一种用于数据区域，<strong>数据位图（data bitmap）</strong> ，一种用于inode表，<strong>inode位图（inode bitmap）</strong>。位图是一种简单的数据结构，每一个位用于指示相应的对象/块是空闲（0）还是正在使用（1）。</p>
 <p>最后保留一块超级块（superblock），包含特定文件系统的信息，例如文件中有多少inode和数据块，inode表的开始位置，可能还包括一些幻数来标识文件类型。</p>
 <h3 id="inode"><a class="markdownIt-Anchor" href="#inode"></a> inode</h3>
 <p>inode是index node的缩写，用于描述保存给定文件的元数据的结构，例如其长度、权限以及组成块的位置。</p>
-<p>每一个inode都由一个数字隐式引用，称为文件的<strong>低级名称（low-level name）</strong> 。在VSFS中，给定一个inumber，可以直接计算相应节点的位置。</p>
+<p>每一个inode都由一个数字（inumber）隐式引用，称为文件的<strong>低级名称（low-level name）</strong> 。在VSFS中，给定一个inumber，可以直接计算相应节点的位置。</p>
 <p>例如，要读取inode号32，文件系统会首先计算inode区域的偏移量，32 × inode的大小，加上inode表的起始位置。</p>
 <p>同时，注意到磁盘由大量可寻址扇区组成，所以为了获取inode地址，计算如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blk = (inumber * <span class="keyword">sizeof</span>(<span class="keyword">inode_t</span>)) / blockSize;</span><br><span class="line">sector = ((blk * blockSize) + inodeStartAddr) / sectorSize;</span><br></pre></td></tr></table></figure>
 <p>设计inode时，需要考虑如何引用数据块的位置。一个简单方法是在inode中有一个或多个直接指针，指向属于该文件的一个磁盘块。</p>
 <p><strong>多级索引</strong><br />
-为了支持更大的文件，文件系统设计者可能使用间接指针，指向包含更多指针的块。如果文件变得足够大，可能会分配一个间接块，并设置间接指针指向它。假设一个块是4KB，磁盘地址4字节，就增加1024个指针，文件增长到(12 + 1024) × 4KB = 4144KB。</p>
-<p>还有可能使用双重间接指针，从而支持4GB的文件。</p>
+为了支持更大的文件，文件系统设计者可能使用间接指针，指向包含更多指针的块。因此，inode可以有一些固定数量（例如12个）的直接指针和一个间接指针。如果文件变得足够大，可能会分配一个间接块（来自磁盘的数据块区域），并设置间接指针指向它。假设一个块是4KB，磁盘地址4字节，就增加1024个指针，文件增长到(12 + 1024) × 4KB = 4144KB。</p>
+<p>还有可能使用双重间接指针，如此便可使用 1024 × 1024 个4KB的块来构建文件，从而支持4GB的文件。</p>
 <p>这种不平衡树可以称为指向文件块的<strong>多级索引（multi-level index）</strong> 。</p>
 <h3 id="目录组织"><a class="markdownIt-Anchor" href="#目录组织"></a> 目录组织</h3>
 <p>一个目录基本上只包含一个二元组<code>(条目名称, inode号)</code>的表。对于给定目录中的每一个文件或目录，目录的数据块中都有一个字符串和数字。对于每个字符串，可能还有一个长度。</p>
