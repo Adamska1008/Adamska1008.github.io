@@ -20,15 +20,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="第一章：计算机网络概述">
+<meta name="description" content="内容：计算机网络的定义、结构、数据交换过程以及体系模型。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络笔记（一）-计算机网络概述">
 <meta property="og:url" content="https://adamska1008.github.io/2022/06/22/study-notes-Computer-Network-1/index.html">
 <meta property="og:site_name" content="Adamska&#39;s Blog">
-<meta property="og:description" content="第一章：计算机网络概述">
+<meta property="og:description" content="内容：计算机网络的定义、结构、数据交换过程以及体系模型。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-06-22T15:42:04.000Z">
-<meta property="article:modified_time" content="2022-06-28T11:37:09.180Z">
+<meta property="article:modified_time" content="2022-07-09T13:20:40.608Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
@@ -123,7 +123,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text"> 定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E6%88%90"><span class="nav-number">1.1.</span> <span class="nav-text"> 组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.2.</span> <span class="nav-text"> 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.3.</span> <span class="nav-text"> 协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text"> 结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%BE%B9%E7%BC%98"><span class="nav-number">2.1.</span> <span class="nav-text"> 网络边缘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5%E7%BD%91%E7%BB%9C"><span class="nav-number">2.2.</span> <span class="nav-text"> 接入网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%94%A8%E6%88%B7%E7%BA%BF%E8%B7%AFdigital-subscriber-line-dsl"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 数字用户线路（Digital Subscriber Line, DSL）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%B5%E7%BC%86%E7%BD%91%E7%BB%9C"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 电缆网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91ethernet"><span class="nav-number">2.2.3.</span> <span class="nav-text"> 以太网（Ethernet）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E6%8E%A5%E5%85%A5%E7%BD%91%E7%BB%9C"><span class="nav-number">2.2.4.</span> <span class="nav-text"> 无线接入网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83"><span class="nav-number">2.3.</span> <span class="nav-text"> 网络核心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#internet%E7%BB%93%E6%9E%84%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BD%91%E7%BB%9C"><span class="nav-number">2.4.</span> <span class="nav-text"> Internet结构：网络的网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text"> 数据交换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.1.</span> <span class="nav-text"> 电路交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%A5%E6%96%87-%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text"> 报文、分组交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98"><span class="nav-number">3.3.</span> <span class="nav-text"> 传输延迟问题</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text"> 定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E6%88%90"><span class="nav-number">1.1.</span> <span class="nav-text"> 组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.2.</span> <span class="nav-text"> 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.3.</span> <span class="nav-text"> 协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text"> 结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%BE%B9%E7%BC%98"><span class="nav-number">2.1.</span> <span class="nav-text"> 网络边缘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5%E7%BD%91%E7%BB%9C"><span class="nav-number">2.2.</span> <span class="nav-text"> 接入网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%94%A8%E6%88%B7%E7%BA%BF%E8%B7%AFdigital-subscriber-line-dsl"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 数字用户线路（Digital Subscriber Line, DSL）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%B5%E7%BC%86%E7%BD%91%E7%BB%9C"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 电缆网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91ethernet"><span class="nav-number">2.2.3.</span> <span class="nav-text"> 以太网（Ethernet）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E6%8E%A5%E5%85%A5%E7%BD%91%E7%BB%9C"><span class="nav-number">2.2.4.</span> <span class="nav-text"> 无线接入网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83"><span class="nav-number">2.3.</span> <span class="nav-text"> 网络核心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#internet%E7%BB%93%E6%9E%84%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BD%91%E7%BB%9C"><span class="nav-number">2.4.</span> <span class="nav-text"> Internet结构：网络的网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text"> 数据交换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.1.</span> <span class="nav-text"> 电路交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%A5%E6%96%87-%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text"> 报文、分组交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98"><span class="nav-number">3.3.</span> <span class="nav-text"> 传输延迟问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="nav-number">4.</span> <span class="nav-text"> 性能指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%B6%E8%BF%9F%E6%97%B6%E5%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text"> 延迟&#x2F;时延</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E5%BB%B6%E5%B8%A6%E5%AE%BD%E7%A7%AF"><span class="nav-number">4.2.</span> <span class="nav-text"> 时延带宽积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A2%E5%8C%85"><span class="nav-number">4.3.</span> <span class="nav-text"> 丢包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%9E%E5%90%90%E9%87%8F%E7%8E%87"><span class="nav-number">4.4.</span> <span class="nav-text"> 吞吐量&#x2F;率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text"> 体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#osi%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.1.</span> <span class="nav-text"> OSI参考模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82"><span class="nav-number">5.1.1.</span> <span class="nav-text"> 物理层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-number">5.1.2.</span> <span class="nav-text"> 数据链路层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="nav-number">5.1.3.</span> <span class="nav-text"> 网络层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="nav-number">5.1.4.</span> <span class="nav-text"> 传输层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E5%B1%82"><span class="nav-number">5.1.5.</span> <span class="nav-text"> 会话层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E5%B1%82"><span class="nav-number">5.1.6.</span> <span class="nav-text"> 表示层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82"><span class="nav-number">5.1.7.</span> <span class="nav-text"> 应用层</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tcpip%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.2.</span> <span class="nav-text"> TCP&#x2F;IP参考模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E5%B1%82%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.3.</span> <span class="nav-text"> 五层参考模型：</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -220,7 +220,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-06-28 19:37:09" itemprop="dateModified" datetime="2022-06-28T19:37:09+08:00">2022-06-28</time>
+        <time title="修改时间：2022-07-09 21:20:40" itemprop="dateModified" datetime="2022-07-09T21:20:40+08:00">2022-07-09</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -242,7 +242,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>第一章：计算机网络概述</p>
+        <p>内容：计算机网络的定义、结构、数据交换过程以及体系模型。</p>
 <span id="more"></span>
 <h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
 <p>计算机网络是<strong>互联</strong>的、<strong>自治</strong>的计算机集合</p>
@@ -386,6 +386,141 @@
 <p>假设有两路交换机，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo>=</mo><mn>7.5</mn><mi>M</mi><mi>B</mi><mi mathvariant="normal">，</mi><mi>L</mi><mo>=</mo><mn>1.5</mn><mi>K</mi><mi>B</mi><mi mathvariant="normal">，</mi><mi>R</mi><mo>=</mo><mn>1.5</mn><mi>M</mi><mi>B</mi><mi mathvariant="normal">/</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">M = 7.5MB，L=1.5KB，R=1.5MB/s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">7</span><span class="mord">.</span><span class="mord">5</span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord cjk_fallback">，</span><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">.</span><span class="mord">5</span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord cjk_fallback">，</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord">.</span><span class="mord">5</span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord">/</span><span class="mord mathdefault">s</span></span></span></span>，有 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>M</mi><mi>R</mi></mfrac><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">\frac{M}{R}=5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.217331em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.872331em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.00773em;">R</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span></span></span></span>，报文交换需要三次传输，需要15秒，路由器本身需要至少7.5MB缓存。</p>
 <p>按照分组交换，一个报文需要 1ms 传输，传输完毕后，可以同时继续向第一个路由器传输报文，同时可以向第二个路由器发送报文。经过 3ms，第一个报文传送完毕。当 4999ms 时，开始发送最后一个报文，并在 5002ms 时传输完成。此时，需要5.002s，明显快于报文交换。这是由于，分组交换并行地利用了带宽。同时，分组交换中，路由器只需要1.5KB的缓存就能工作，远小于报文交换。</p>
 <p>分组交换中，假设有n个路由器，则交付时间为：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi><mo>=</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mi>M</mi><mi>R</mi></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mi>n</mi><mi>L</mi></mrow><mi>R</mi></mfrac></mstyle></mrow><annotation encoding="application/x-tex">T=\cfrac{M}{R}+\cfrac{nL}{R}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.276em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5899999999999999em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.74em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.276em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5899999999999999em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.74em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">n</span><span class="mord mathdefault">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span></span></span></span></span></span>。</p>
+<h2 id="性能指标"><a class="markdownIt-Anchor" href="#性能指标"></a> 性能指标</h2>
+<h3 id="延迟时延"><a class="markdownIt-Anchor" href="#延迟时延"></a> 延迟/时延</h3>
+<p>当分组等待正在传输的分组，或排队时，会产生延迟。当分组缓存已满，但仍有数据包发送时，数据可能会被丢弃，产生丢包。</p>
+<p>主要有四种时间延迟：</p>
+<ol>
+<li>结点处理延迟（nodal processing delay）：差错检测、确定输出链路。时间相对小。</li>
+<li>排队延迟（queueing delay）：等待输出链路可用。取决于路由器拥塞程度。</li>
+<li>传输延迟（transmission delay）：传输数据本身的延迟。取决于分组长度和链路带宽。</li>
+<li>传播延迟（propagation delay）：信号在链路上传输的时间，与物理链路长度和速度有关。</li>
+</ol>
+<h3 id="时延带宽积"><a class="markdownIt-Anchor" href="#时延带宽积"></a> 时延带宽积</h3>
+<p>时延带宽积 = 传播时延(d<sub>prop</sub>) × 带宽®，又称为以比特为单位的链路长度，可以理解为链路上能够容纳多少比特。</p>
+<h3 id="丢包"><a class="markdownIt-Anchor" href="#丢包"></a> 丢包</h3>
+<p>路由器队列缓存有限，分组到达已满队列将被丢弃，丢弃分组可能由前序节点或源重发（或不重发）。用丢包率衡量。</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">丢</mi><mi mathvariant="normal">包</mi><mi mathvariant="normal">率</mi><mo>=</mo><mfrac><mrow><mi mathvariant="normal">丢</mi><mi mathvariant="normal">包</mi><mi mathvariant="normal">数</mi></mrow><mrow><mi mathvariant="normal">已</mi><mi mathvariant="normal">发</mi><mi mathvariant="normal">分</mi><mi mathvariant="normal">组</mi><mi mathvariant="normal">总</mi><mi mathvariant="normal">数</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">丢包率=\cfrac{丢包数}{已发分组总数}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mord cjk_fallback">丢</span><span class="mord cjk_fallback">包</span><span class="mord cjk_fallback">率</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.276em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5899999999999999em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">已</span><span class="mord cjk_fallback">发</span><span class="mord cjk_fallback">分</span><span class="mord cjk_fallback">组</span><span class="mord cjk_fallback">总</span><span class="mord cjk_fallback">数</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.74em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">丢</span><span class="mord cjk_fallback">包</span><span class="mord cjk_fallback">数</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span></span></span></span></span></span></span></p>
+<h3 id="吞吐量率"><a class="markdownIt-Anchor" href="#吞吐量率"></a> 吞吐量/率</h3>
+<p>表示在发送端与接收端之间传送数据吞吐量</p>
+<ul>
+<li>即时吞吐量</li>
+<li>平均吞吐量</li>
+</ul>
+<p>假设由两条链路串联组成一条链路，吞吐量由较小的链路决定。</p>
+<p>假设共享链路，则还需考虑共享链路，取三者最小值为实际吞吐量。</p>
+<h2 id="体系结构"><a class="markdownIt-Anchor" href="#体系结构"></a> 体系结构</h2>
+<p>计算机网络体系结构是分层结构。</p>
+<ul>
+<li><strong>实体（entity）</strong> 表示任何可发送或接收信息的硬件或软件进程</li>
+<li><strong>协议</strong> 是控制两个对等实体进行通信的规则的集合，协议是 “水平的”。</li>
+<li>任一层实体需要使用下层服务，遵循本层协议，实现本层功能，向上层提供服务，服务是“垂直的”。</li>
+<li>下层协议的实现对上层的服务用户是透明的。</li>
+<li>同系统的相邻层实体间通过接口进行交互，通过<strong>服务访问点SAP（Service Access Point）</strong>，交换原语，指定请求的特定服务。</li>
+</ul>
+<h3 id="osi参考模型"><a class="markdownIt-Anchor" href="#osi参考模型"></a> OSI参考模型</h3>
+<p><strong>开放系统互连</strong> 参考模型是异构网络系统互联的国际标准，是理解网络通信的理论模型，它将网络从功能上划分成七个层次，从上到下分别是</p>
+<ul>
+<li>应用层</li>
+<li>表示层</li>
+<li>会话层</li>
+<li>传输层</li>
+<li>网络层</li>
+<li>数据链路层</li>
+<li>物理层</li>
+</ul>
+<p>在传输网络中，主机需要完成所有七层功能。而路由器等只需要完成最下三层功能。通信基于一种传输介质。</p>
+<p>假设主机A向B传输数据，从上到下依次处理数据，中间系统从物理层接收数据，还原到网络层，每一层数据包称之为PDU，网络层明确了如何传输，于是继续向下处理，最后在B逐层还原。在某一层看来，逻辑上相当于每一层直接通信，但实际上不是，仅仅在协议上是对等的。</p>
+<p>前四层直接面对目的主机，称之为<strong>端到端层（end-end）</strong>，后三层为非端到端。</p>
+<p>每一层的数据称为协议数据单元，每一层向下传递时加上头部信息，而数据链路层则会额外加上尾部信息，到达物理层时，解释为比特流，在物理介质上传播。</p>
+<p>数据分装的作用：</p>
+<ul>
+<li>增加控制信息
+<ul>
+<li>构造协议数据单元（PDU）</li>
+</ul>
+</li>
+<li>内容：
+<ul>
+<li>地址（Address）：标识发送端和接收端</li>
+<li>差错检测编码（Error-detecting code）</li>
+<li>协议控制（protocol control）：实现附加信息，如：优先级（priority）、服务质量（QoS）、安全控制。</li>
+</ul>
+</li>
+</ul>
+<p>每层功能：</p>
+<h4 id="物理层"><a class="markdownIt-Anchor" href="#物理层"></a> 物理层</h4>
+<ul>
+<li>接口特性：机械特性、电气特性、功能特性、规范特性</li>
+<li>比特编码</li>
+<li>数据率</li>
+<li>比特同步（时钟同步）</li>
+<li>传输模式
+<ul>
+<li>单工</li>
+<li>半双工，例如对讲机，发收不能同时进行</li>
+<li>全双工，收发同时进行，一般使用两个信号</li>
+</ul>
+</li>
+</ul>
+<h4 id="数据链路层"><a class="markdownIt-Anchor" href="#数据链路层"></a> 数据链路层</h4>
+<p>物理层解决了单一比特的传输问题，而数据链路层负责<strong>结点到结点（node-to-node）</strong> 传输，以帧作为数据传输的单位。</p>
+<p><strong>组帧（Framing）</strong> 将数据包装为帧，使得接收时能将数据切割为帧。</p>
+<p><strong>物理寻址（Physical addressing）</strong> ，在帧头中增加发送端和/或接收端的物理地址标识数据帧的发送端/接收端。当且仅当接收地址与接收端相同时，才接收。</p>
+<p><strong>流量控制（Flow control）</strong>，匹配发送与接收速度，避免淹没接收端。</p>
+<p><strong>差错控制（Error control）</strong>，根据差错编码判断数据是否有错。</p>
+<p><strong>访问控制（Access control）</strong>，决定谁能使用介质，在共享链路层中有用。</p>
+<h4 id="网络层"><a class="markdownIt-Anchor" href="#网络层"></a> 网络层</h4>
+<p>负责从源主机到目的主机数据分组的交付，进行<strong>逻辑寻址</strong>，全局唯一地址，保证数据正确传送，如IP地址。</p>
+<p><strong>路由（Routing）</strong>，路由互联网络，并分组至最终目的主机（分组转发）。</p>
+<h4 id="传输层"><a class="markdownIt-Anchor" href="#传输层"></a> 传输层</h4>
+<p>负责端到端完整报文的传输。</p>
+<p>功能：</p>
+<ul>
+<li>分段和重组</li>
+<li>SAP寻址
+<ul>
+<li>确保将完整报文提交给正确进程，如端口号</li>
+</ul>
+</li>
+<li>连接控制</li>
+<li>流量控制</li>
+<li>差错控制</li>
+</ul>
+<h4 id="会话层"><a class="markdownIt-Anchor" href="#会话层"></a> 会话层</h4>
+<p>会话层不分割表示层的数据，而是插入同步控制点。功能：</p>
+<ul>
+<li>对话控制（dialog controlling）</li>
+<li>同步（synchronization）在数据流中插入同步点</li>
+</ul>
+<p>较为单薄，实际上可能不存在，下同。</p>
+<h4 id="表示层"><a class="markdownIt-Anchor" href="#表示层"></a> 表示层</h4>
+<p>处理两个系统之间信息的语法与语义（syntax and semantics）问题 。</p>
+<ul>
+<li>数据转化：转化成与主机无关或相关的编码</li>
+<li>加密/解密</li>
+<li>压缩/解压缩</li>
+</ul>
+<h4 id="应用层"><a class="markdownIt-Anchor" href="#应用层"></a> 应用层</h4>
+<p>应用之间的通信，如http、ftp、smtp，网络应用通过相应协议编写控制信息。支持用户通过用户代理（如浏览器）或网络接口使用网络。</p>
+<h3 id="tcpip参考模型"><a class="markdownIt-Anchor" href="#tcpip参考模型"></a> TCP/IP参考模型</h3>
+<p>先有协议，后总结了模型。其共有四层：</p>
+<ul>
+<li>应用层：http…</li>
+<li>运输层：TCP,UDP</li>
+<li>网际层：ip</li>
+<li>网络接口层</li>
+</ul>
+<p>特点：everything on ip 。</p>
+<h3 id="五层参考模型"><a class="markdownIt-Anchor" href="#五层参考模型"></a> 五层参考模型：</h3>
+<ul>
+<li>应用层：http…</li>
+<li>传输层：进程-进程</li>
+<li>网络层：ip协议，路由协议</li>
+<li>数据链路层：相邻网络元素（主机、交换机、路由器等），以太网、wifi、PPP</li>
+<li>物理层：比特传输</li>
+</ul>
 
     </div>
 
