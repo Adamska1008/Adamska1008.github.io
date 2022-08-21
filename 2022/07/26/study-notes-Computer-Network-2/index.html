@@ -28,7 +28,7 @@
 <meta property="og:description" content="计算机网络-应用层知识点">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-26T10:49:25.000Z">
-<meta property="article:modified_time" content="2022-08-10T08:26:08.773Z">
+<meta property="article:modified_time" content="2022-08-21T12:03:11.237Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
@@ -123,7 +123,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E6%9C%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text"> 客户机&#x2F;服务器结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p2p%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text"> P2P结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="nav-number">3.</span> <span class="nav-text"> 网络应用进程通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">4.</span> <span class="nav-text"> 应用层协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#web-%E4%B8%8E-http"><span class="nav-number">5.</span> <span class="nav-text"> Web 与 HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E9%A1%B5"><span class="nav-number">5.1.</span> <span class="nav-text"> 网页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.2.</span> <span class="nav-text"> 协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.3.</span> <span class="nav-text"> 连接类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="nav-number">5.4.</span> <span class="nav-text"> 消息格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie"><span class="nav-number">5.5.</span> <span class="nav-text"> Cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#web%E7%BC%93%E5%AD%98%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">5.6.</span> <span class="nav-text"> Web缓存&#x2F;代理服务器技术</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#email%E5%BA%94%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text"> Email应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E6%88%90"><span class="nav-number">6.1.</span> <span class="nav-text"> 构成：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#smtp"><span class="nav-number">6.2.</span> <span class="nav-text"> SMTP</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E6%9C%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text"> 客户机&#x2F;服务器结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p2p%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text"> P2P结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="nav-number">3.</span> <span class="nav-text"> 网络应用进程通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">4.</span> <span class="nav-text"> 应用层协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#web-%E4%B8%8E-http"><span class="nav-number">5.</span> <span class="nav-text"> Web 与 HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E9%A1%B5"><span class="nav-number">5.1.</span> <span class="nav-text"> 网页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.2.</span> <span class="nav-text"> 协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.3.</span> <span class="nav-text"> 连接类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="nav-number">5.4.</span> <span class="nav-text"> 消息格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie"><span class="nav-number">5.5.</span> <span class="nav-text"> Cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#web%E7%BC%93%E5%AD%98%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">5.6.</span> <span class="nav-text"> Web缓存&#x2F;代理服务器技术</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#email%E5%BA%94%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text"> Email应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E6%88%90"><span class="nav-number">6.1.</span> <span class="nav-text"> 构成：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#smtp"><span class="nav-number">6.2.</span> <span class="nav-text"> SMTP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mime%E5%A4%9A%E5%AA%92%E4%BD%93%E9%82%AE%E4%BB%B6%E6%89%A9%E5%B1%95"><span class="nav-number">6.3.</span> <span class="nav-text"> MIME：多媒体邮件扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%82%AE%E4%BB%B6%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.4.</span> <span class="nav-text"> 邮件访问协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pop%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.5.</span> <span class="nav-text"> POP协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#imap"><span class="nav-number">6.6.</span> <span class="nav-text"> IMAP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dns%E5%BA%94%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text"> DNS应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">7.1.</span> <span class="nav-text"> 域名服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dns%E8%AE%B0%E5%BD%95%E7%BC%93%E5%AD%98%E5%92%8C%E6%9B%B4%E6%96%B0"><span class="nav-number">7.2.</span> <span class="nav-text"> DNS记录缓存和更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dns%E8%AE%B0%E5%BD%95%E5%92%8C%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="nav-number">7.3.</span> <span class="nav-text"> DNS记录和消息格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p2p-%E5%BA%94%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text"> P2P 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%88%86%E5%8F%91"><span class="nav-number">8.1.</span> <span class="nav-text"> 文件分发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E6%8A%80%E6%9C%AF"><span class="nav-number">8.2.</span> <span class="nav-text"> 索引技术</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#socket%E7%BC%96%E7%A8%8B"><span class="nav-number">9.</span> <span class="nav-text"> Socket编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">9.1.</span> <span class="nav-text"> 应用编程接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#winsock"><span class="nav-number">9.2.</span> <span class="nav-text"> WinSock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AD%97%E8%8A%82%E9%A1%BA%E5%BA%8F"><span class="nav-number">9.3.</span> <span class="nav-text"> 网络字节顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#socket%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="nav-number">9.4.</span> <span class="nav-text"> Socket基本流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90"><span class="nav-number">9.5.</span> <span class="nav-text"> 解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tcp%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BD%AF%E4%BB%B6%E6%B5%81%E7%A8%8B"><span class="nav-number">9.6.</span> <span class="nav-text"> TCP客户端软件流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#udp%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BD%AF%E4%BB%B6%E6%B5%81%E7%A8%8B"><span class="nav-number">9.7.</span> <span class="nav-text"> UDP客户端软件流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1"><span class="nav-number">9.8.</span> <span class="nav-text"> 服务器软件设计</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -136,7 +136,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -220,7 +220,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-08-10 16:26:08" itemprop="dateModified" datetime="2022-08-10T16:26:08+08:00">2022-08-10</time>
+        <time title="修改时间：2022-08-21 20:03:11" itemprop="dateModified" datetime="2022-08-21T20:03:11+08:00">2022-08-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -437,6 +437,352 @@
 <li>使用持久性连接</li>
 <li>要求消息必须由7位ASCII码构成</li>
 <li>SMTP服务器利用CRLF确定消息的结束。</li>
+</ul>
+<p>文本消息格式：</p>
+<ul>
+<li>头部行：
+<ul>
+<li>To</li>
+<li>From</li>
+<li>Subject</li>
+</ul>
+</li>
+<li>消息体
+<ul>
+<li>消息本身（只能是ASCII字符）</li>
+</ul>
+</li>
+</ul>
+<h4 id="mime多媒体邮件扩展"><a class="markdownIt-Anchor" href="#mime多媒体邮件扩展"></a> MIME：多媒体邮件扩展</h4>
+<ul>
+<li>通过在邮件头部增加额外的行以声明MIME的内容类型</li>
+</ul>
+<h4 id="邮件访问协议"><a class="markdownIt-Anchor" href="#邮件访问协议"></a> 邮件访问协议</h4>
+<p>通过邮件访问协议从服务器获取邮件。</p>
+<ul>
+<li>POP: Post Office Protocol [RFC 1939]
+<ul>
+<li>认证/授权（客户端&lt;–&gt;服务器）和下载</li>
+</ul>
+</li>
+<li>IMAP: Internet Mail Access Protocol [RFC 1730]
+<ul>
+<li>更多功能，更加负载，能够操纵服务器上存储的信息</li>
+</ul>
+</li>
+<li>HTTP: 163, QQ Mail等。</li>
+</ul>
+<h4 id="pop协议"><a class="markdownIt-Anchor" href="#pop协议"></a> POP协议</h4>
+<ul>
+<li>认证过程
+<ul>
+<li>客户端命令：
+<ul>
+<li>User: 声明用户名</li>
+<li>Pass: 声明密码</li>
+</ul>
+</li>
+<li>服务器响应
+<ul>
+<li>+OK</li>
+<li>-ERR</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>事务阶段
+<ul>
+<li>List: 列出消息数量</li>
+<li>Retr: 用编号获取消息</li>
+<li>Dele: 删除消息</li>
+<li>Quit</li>
+</ul>
+</li>
+</ul>
+<h4 id="imap"><a class="markdownIt-Anchor" href="#imap"></a> IMAP</h4>
+<ul>
+<li>所有消息统一保存在服务器</li>
+<li>允许用户利用文件夹组织消息</li>
+<li>支持跨会话（Session）的用户状态：
+<ul>
+<li>文件夹的名字</li>
+<li>文件夹与消息ID之间的映射</li>
+</ul>
+</li>
+</ul>
+<h3 id="dns应用"><a class="markdownIt-Anchor" href="#dns应用"></a> DNS应用</h3>
+<p>DNS(Domain Name System)，域名解析系统，解决了互联网上主机/路由器的识别问题：映射域名与IP地址。能够将域名翻译为IP地址。</p>
+<ul>
+<li>多层命名服务器构成的分布式数据库</li>
+<li>应用层协议：完成名字的解析</li>
+<li>负载均衡：Web服务器</li>
+</ul>
+<p>客户端想要查询www.amazon.com的IP：</p>
+<ul>
+<li>客户端查询根服务器，找到com域名解析服务器</li>
+<li>客户端查询com域名解析服务器，找到amazon.com域名解析服务器</li>
+<li>客户端查询amazon.com域名解析服务器，获得www.amazon.com的IP地址</li>
+</ul>
+<h4 id="域名服务器"><a class="markdownIt-Anchor" href="#域名服务器"></a> 域名服务器</h4>
+<p><strong>DNS根域名服务器</strong><br />
+本地域名服务器无法解析域名时，访问根域名服务器</p>
+<ul>
+<li>如果不知道映射，访问权威域名服务器</li>
+<li>获得映射</li>
+<li>向本地域名服务器返回映射</li>
+</ul>
+<p><strong>TLD和权威域名解析服务器</strong><br />
+负责com,org,net,edu等顶级域名和国家顶级域名，例如cn,uk,fr。</p>
+<p><strong>权威域名服务器</strong><br />
+组织的域名解析服务器，提供组织内部服务器的解析服务。</p>
+<p><strong>本地域名解析服务器</strong></p>
+<ul>
+<li>不严格属于层级体系</li>
+<li>每个ISP有一个本地域名服务器（默认域名解析服务器）</li>
+<li>当主机进行DNS查询时，查询被发送道本地域名服务器，作为代理，将查询转发给（层级式）域名服务器</li>
+</ul>
+<h4 id="dns记录缓存和更新"><a class="markdownIt-Anchor" href="#dns记录缓存和更新"></a> DNS记录缓存和更新</h4>
+<p>只要域名解析服务器获得域名-IP映射，即缓存这一映射</p>
+<ul>
+<li>一段时间过后，缓存条目失效（删除）</li>
+<li>本地域名服务器一般会缓存顶级域名服务器的映射，因此根域名服务器不经常访问。</li>
+</ul>
+<h4 id="dns记录和消息格式"><a class="markdownIt-Anchor" href="#dns记录和消息格式"></a> DNS记录和消息格式</h4>
+<p>资源记录（RR,resource records）<br />
+RR format: (name, value, type, ttl)</p>
+<ul>
+<li>Type=A
+<ul>
+<li>Name: 主机域名</li>
+<li>Value: IP地址</li>
+</ul>
+</li>
+<li>Type=NS
+<ul>
+<li>Name: 域（<a target="_blank" rel="noopener" href="http://edu.cn">edu.cn</a>）</li>
+<li>Value: 该域权威域名解析服务器的主机域名</li>
+</ul>
+</li>
+<li>Type=CNAME
+<ul>
+<li>Name: 某一真实域名的别名</li>
+<li>Value: 真实域名</li>
+</ul>
+</li>
+<li>Type=MX
+<ul>
+<li>Value是与name相对应的邮件服务器</li>
+</ul>
+</li>
+</ul>
+<p>DNS协议：查询和回复消息，消息格式相同</p>
+<ul>
+<li>消息头部：
+<ul>
+<li>Identification: 16位查询编号，回复使用相同的编号</li>
+<li>flags: 查询或回复、期望递归、递归可用、权威回答</li>
+</ul>
+</li>
+<li>内容：
+<ul>
+<li>questiongs:Name,Type</li>
+<li>answers: RR</li>
+<li>authority: records for authoritative servers</li>
+</ul>
+</li>
+</ul>
+<h3 id="p2p-应用"><a class="markdownIt-Anchor" href="#p2p-应用"></a> P2P 应用</h3>
+<h4 id="文件分发"><a class="markdownIt-Anchor" href="#文件分发"></a> 文件分发</h4>
+<p>假设一个模型：服务器提供一个大小为F的文件分发给N个客户端，上传时间为u<sub>s</sub>，单个客户端下载时间为d<sub>i</sub>。</p>
+<p>在C/S架构中，总时间为max{NF/u<sub>s</sub>,F/min{d<sub>i</sub>}}，与客户端数量线性相关。</p>
+<p>在P2P架构中，服务器必须发送一个副本，时间 F/u<sub>s</sub>，客户机需要 F/d<sub>i</sub> 时间下载，总共需要下载 NF 比特。所有主机一起上传，最快的可能上传速率为 u<sub>s</sub> + ∑u<sub>i</sub>，总时间为 max{F/u<sub>s</sub>,F/min{d<sub>i</sub>},NF/(u<sub>s</sub>+∑u<sub>i</sub>)}。</p>
+<h4 id="索引技术"><a class="markdownIt-Anchor" href="#索引技术"></a> 索引技术</h4>
+<ul>
+<li>P2P系统的索引：信息到接地那位置（IP地址+端口号）的映射。</li>
+<li>文件共享：
+<ul>
+<li>利用索引动态跟踪节点所共享的文件的位置</li>
+<li>节点需要告诉索引它拥有哪些文件</li>
+<li>节点搜索索引，从而能够得到哪些文件</li>
+</ul>
+</li>
+<li>即时消息
+<ul>
+<li>索引负责将用户名映射到位置</li>
+<li>当用户开启IM应用时，需要通知索引它的位置</li>
+<li>节点检索索引，确定用户的IP地址</li>
+</ul>
+</li>
+</ul>
+<p><strong>集中式索引</strong></p>
+<ol>
+<li>节点加入时，通知中央服务器：IP地址、内容</li>
+<li>通过中央服务器查找</li>
+<li>通过P2P获取内容</li>
+</ol>
+<p>内容和文件传输是分布式的，但是内容定位是高度集中式的。</p>
+<p><strong>洪泛式查询（Query flooding）</strong></p>
+<ul>
+<li>完全分布式架构</li>
+<li>每个节点对它共享的文件进行索引，且只对它共享的文件索引</li>
+</ul>
+<p><strong>覆盖网络</strong>：节点XY之间如果有TCP连接，那么构成一个边。所有活动节点和边构成覆盖网络，节点一般邻居数小于十个。</p>
+<p>查询通过已有的TCP连接发送，节点转发查询消息。如果查询命中，则利用反向路径返回查询节点。</p>
+<p><strong>层次式覆盖网络</strong></p>
+<ul>
+<li>介于集中式索引和洪泛查询之间的方法</li>
+<li>每一个节点或者是超级节点，或者被分配一个超级节点
+<ul>
+<li>节点和超级节点间维持TCP</li>
+<li>某些超级节点之间维持TCP</li>
+</ul>
+</li>
+<li>超级节点负责跟踪子节点的内容</li>
+</ul>
+<h3 id="socket编程"><a class="markdownIt-Anchor" href="#socket编程"></a> Socket编程</h3>
+<h4 id="应用编程接口"><a class="markdownIt-Anchor" href="#应用编程接口"></a> 应用编程接口</h4>
+<ul>
+<li>数据链路层
+<ul>
+<li>直接网卡编程</li>
+<li>基于Packet Driver编程</li>
+</ul>
+</li>
+<li>网络层
+<ul>
+<li>基于NDIS网络编程（Winodws）</li>
+<li>基于LibPcap/WinPcap、Libnet、Libnids、Libicmp编程</li>
+</ul>
+</li>
+<li>传输层
+<ul>
+<li>NetBIOS编程（Windows）</li>
+<li>Socket编程</li>
+</ul>
+</li>
+<li>应用层
+<ul>
+<li>Web/RPC/中间件编程</li>
+</ul>
+</li>
+</ul>
+<p>Berkeley UNIX操作系统定义了Socket(套接字)，微软形成了一个稍有不同的API，称之为WINSOCK。</p>
+<p>Socket是网络应用最典型的API接口，使用客户/服务器模型。使用IP地址+端口号唯一标识一个套接字。操作系统对内使用套接字描述符（socket descripter）管理套接字。套接字的抽象类似于文件。</p>
+<p><strong>地址结构</strong><br />
+使用TCP/IP协议簇的网络应用程序声明端点地址变量时，使用<code>sockaddr_in</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    u_char sin_len;             <span class="comment">// 地址长度</span></span><br><span class="line">    u_char sin_family;          <span class="comment">// 地址族（TCP/IP: AF_INET）</span></span><br><span class="line">    u_short sin_port;           <span class="comment">// 端口号</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> <span class="title">sin_addr</span>;</span>    <span class="comment">// IP地址</span></span><br><span class="line">    <span class="keyword">char</span> sin_zero[<span class="number">8</span>];           <span class="comment">// 未用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="winsock"><a class="markdownIt-Anchor" href="#winsock"></a> WinSock</h4>
+<p><code>int WSAStartup(WORD wVersionRequested, LPWSADATA IpWSAData)</code>。使用Socket的程序在使用之前必须首先调用<code>WSAStartup</code>函数。第一个参数指明程序请求使用的WinSock版本，其中高位字节指明副版本，低位字节指明主版本，例如<code>0x102</code>表示2.1版（十六进制）。第二个参数返回实际的WinSock版本信息，指向WSADATA结构的指针。</p>
+<p><code>int WSACleanup(void);</code>解除与Socket库的绑定，释放Socket库所占用的系统资源。</p>
+<p><code>int socket(protofamily, type, proto)</code>函数创建套接字，返回套接字描述符。</p>
+<p>第一个参数是协议族，<code>PF_INET</code>表示TCP/IP，第二个参数表示套接字类型，<code>type=SOCK_STREAM, SOCK_DGRAM or SOCK_RAW</code>，第三个参数表示协议号，默认<code>0</code>。</p>
+<p>套接字类型中<code>SOCK_STREAM</code>（流式）面向TCP，<code>SOCK_DGRAM</code>（数据报）面向UDP，<code>SOCK_RAW</code>面向网络层协议。</p>
+<ul>
+<li>TCP：可靠、面向连接、字节流传输、点对点</li>
+<li>UDP：不可靠、无连接、数据报传输</li>
+</ul>
+<p><code>int closesocket(SOCKET sd);</code>关闭一个描述符为sd的套接字。如果多个进程共享一个套接字，调用其将套接字引用计数减1，减至0才关闭。一个进程中的多线程对其不计数。</p>
+<p><code>int bind(sd,localaddr,addrlen)</code>，绑定套接字的本地端点地址（IP+端口号）。参数：</p>
+<ul>
+<li>套接字描述符</li>
+<li>本地端点地址（socketaddr_in）</li>
+</ul>
+<p>客户端程序一般不必调用bind函数。服务器段需要调用设置端口号。服务器的IP地址可以使用地址通配符<code>INADDR_ANY</code>表示主机的任意一个IP地址。</p>
+<p><code>int listen(sd,queuesize)</code>服务器套接字置于被动监听状态，仅用于服务器端，面向连接的流套接字。<code>queuesize</code>表示缓存队列的大小。</p>
+<p><code>connect(sd,saddr,saddrlen)</code>只用于客户端，调用connect来连接客户套接字<code>sd</code>和特定端口<code>saddr</code>。</p>
+<p><code>accept(sd,caddr,caddrlen)</code>只用于服务器端TCP套接字，从listen缓存队列中取出请求，创建新套接字与客户通信。</p>
+<p><code>send(sd,*buf,len,flags)</code> <code>sendto(sd,*buf,len,flags,destaddr,addrlen)</code>发送数据。</p>
+<p><code>recv(sd,*buffer,len,flags)</code> <code>recvfrom(sd,*buf,len,flags,senderaddr,saddrlen)</code>接收数据。</p>
+<p><code>setsockopt</code> <code>getsockapt</code>设置socket参数。</p>
+<h4 id="网络字节顺序"><a class="markdownIt-Anchor" href="#网络字节顺序"></a> 网络字节顺序</h4>
+<p>TCP/IP定义了标准的独立于操作系统的网络字节顺序。某些Socket函数的参数需要存储为网络字节顺序（如IP地址、端口号等）。</p>
+<ul>
+<li>htons：本地字节顺序-&gt;网络字节顺序（16bits）</li>
+<li>ntohs：网络字节顺序-&gt;本地字节顺序（16bits）</li>
+<li>htonl：本地字节顺序-&gt;网络字节顺序（32bits）</li>
+<li>ntohl：网络字节顺序-&gt;本地字节顺序（32bits）</li>
+</ul>
+<h4 id="socket基本流程"><a class="markdownIt-Anchor" href="#socket基本流程"></a> Socket基本流程</h4>
+<p>服务器端：</p>
+<ol>
+<li>（WINDOWS下）调用<code>WSAStartup</code></li>
+<li><code>s = socket()</code></li>
+<li><code>bind(s)</code></li>
+<li><code>listen(s)</code></li>
+<li><code>ns = accept(s)</code>（阻塞）</li>
+<li><code>recv(ns) || send(ns)</code></li>
+<li><code>closesocket(ns)</code></li>
+<li>back to 5</li>
+<li>（WINDOWS下）<code>WSACleanup</code></li>
+</ol>
+<p>客户端：</p>
+<ol>
+<li>（WINDOWS下）调用<code>WSAStartup</code></li>
+<li><code>s = socket()</code></li>
+<li><code>connect(s)</code>（阻塞）</li>
+<li><code>send(s) || recv(ns)</code></li>
+<li><code>closesocket(s)</code></li>
+<li>（WINDOWS下）<code>WSACleanup</code></li>
+</ol>
+<h4 id="解析"><a class="markdownIt-Anchor" href="#解析"></a> 解析</h4>
+<p>客户端可能使用域名或IP地址标识服务器，IP协议需要32位二进制IP地址，函数<code>inet_addr()</code>实现点分十进制IP地址到32位IP地址转换，函数<code>gethostbyname()</code>实现域名到32位IP地址转换，返回一个指向结构<code>hostent</code>的指针。</p>
+<p>客户端还可能使用服务名标识服务器端口。需要将服务名转换为熟知端口号，使用函数<code>getservbyname()</code>。</p>
+<p>所有的协议都使用协议号进行标识。客户端可能使用协议名指定协议，例如TCP-&gt;6。函数<code>getprotobyname()</code>实现协议名到协议号的转换。</p>
+<h4 id="tcp客户端软件流程"><a class="markdownIt-Anchor" href="#tcp客户端软件流程"></a> TCP客户端软件流程</h4>
+<ol>
+<li>确定服务器IP地址与端口号</li>
+<li>创建套接字</li>
+<li>分配本地端点地址（IP地址+端口号，操作系统自动完成）</li>
+<li>连接服务器（套接字）</li>
+<li>遵循应用层协议进行通信</li>
+<li>关闭/释放连接</li>
+</ol>
+<h4 id="udp客户端软件流程"><a class="markdownIt-Anchor" href="#udp客户端软件流程"></a> UDP客户端软件流程</h4>
+<ol>
+<li>确定服务器IP地址与端口号</li>
+<li>创建套接字</li>
+<li>分配本地端点地址</li>
+<li>指定服务器端点地址，构造UDP数据报</li>
+<li>遵循应用层协议进行通信</li>
+<li>关闭/释放套接字</li>
+</ol>
+<h4 id="服务器软件设计"><a class="markdownIt-Anchor" href="#服务器软件设计"></a> 服务器软件设计</h4>
+<p>四种基本类型服务器：</p>
+<ul>
+<li>循环无连接
+<ol>
+<li>创建套接字</li>
+<li>绑定端点地址（INADDR_ANY+端口号）</li>
+<li>反复接收来自客户端的请求</li>
+<li>遵循应用层协议，构造响应报文，发送给客户</li>
+</ol>
+</li>
+<li>循环面向连接服务器
+<ol>
+<li>创建主套接字，并绑定熟知端口号</li>
+<li>设置（主）套接字为被动监听模式，准备用于服务器</li>
+<li>调用<code>accept()</code>函数接收下一个连接请求，通过新套接字用于与该客户建立连接</li>
+<li>遵循应用层协议，反复接收客户请求，构造并发送响应</li>
+<li>完成为特定客户服务后，关闭与该客户之间的连接，返回步骤3</li>
+</ol>
+</li>
+<li>并发无连接服务器基本流程<br />
+主线程<br />
+1. 创建套接字，并绑定熟知端口号<br />
+2. 反复接收下一个客户请求，并创建新线程处理该客户响应<br />
+子线程<br />
+1. 接收一个待定请求<br />
+2. 依据应用层协议构造响应报文并发送<br />
+3. 退出</li>
+<li>并发面向连接服务器基本流程<br />
+主线程<br />
+1. 创建（主）套接字，并绑定熟知端口号<br />
+2. 设置（主）套接字为被动监听模式，准备用于服务器<br />
+3. 反复接收下一个请求，并创建一个新的子线程处理该客户响应<br />
+子线程<br />
+1. 接收一个客户的服务请求<br />
+2. 遵循应用层协议与特定客户交互<br />
+3. 关闭/释放连接并退出</li>
 </ul>
 
     </div>

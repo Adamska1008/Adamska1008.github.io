@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="计算机网络-传输层知识点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络笔记（三）- 传输层">
+<meta property="og:url" content="https://adamska1008.github.io/2022/08/21/study-notes-Computer-Network-3/index.html">
+<meta property="og:site_name" content="Adamska&#39;s Blog">
+<meta property="og:description" content="计算机网络-传输层知识点">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-21T10:34:40.000Z">
+<meta property="article:modified_time" content="2022-08-21T12:03:35.634Z">
+<meta property="article:author" content="Adamska">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://adamska1008.github.io/2022/08/21/study-notes-Computer-Network-3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2022/08/21/study-notes-Computer-Network-3/","path":"2022/08/21/study-notes-Computer-Network-3/","title":"计算机网络笔记（三）- 传输层"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机网络笔记（三）- 传输层 | Adamska's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Adamska's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#internet%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.</span> <span class="nav-text"> Internet传输层协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E5%92%8C%E5%A4%9A%E8%B7%AF%E5%88%86%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text"> 多路复用和多路分用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E8%BF%9E%E6%8E%A5%E5%88%86%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text"> 无连接分用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%88%86%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text"> 面向连接的分用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#udp%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.</span> <span class="nav-text"> UDP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%A5%E6%96%87%E6%AE%B5%E6%A0%BC%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text"> 报文段格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-number">4.</span> <span class="nav-text"> 可靠数据传输</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Adamska</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/08/21/study-notes-Computer-Network-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络笔记（三）- 传输层
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-08-21 18:34:40 / 修改时间：20:03:35" itemprop="dateCreated datePublished" datetime="2022-08-21T18:34:40+08:00">2022-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">《计算机网络：自顶向下方法》学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>计算机网络-传输层知识点</p>
+<span id="more"></span>
+<p>传输层服务的基本理论和基本机制：</p>
+<ul>
+<li>多路复用/分用</li>
+<li>可靠数据传输机制</li>
+<li>流量控制机制</li>
+<li>拥塞控制机制<br />
+Internet的传输层协议</li>
+<li>UDP：无连接传输服务</li>
+<li>TCP：面向连接传输服务</li>
+<li>TCP拥塞控制</li>
+</ul>
+<p>传输层协议为运行在不同Host上的进程提供了一种逻辑通信机制。</p>
+<p>端系统运行传输层协议：</p>
+<ul>
+<li>发送方：将应用递交的消息分成一个或多个Segment向下传给网络层。</li>
+<li>接收方：将接收到的Segment组装成消息，并向上交给应用层。</li>
+</ul>
+<p>传输层位于网络层之上，依赖于网络层服务，对网络层服务（可能的）加强，提供应用进程之间的逻辑通信机制。</p>
+<h3 id="internet传输层协议"><a class="markdownIt-Anchor" href="#internet传输层协议"></a> Internet传输层协议</h3>
+<ul>
+<li>
+<p>可靠、按需的交付服务（TCP）</p>
+<ul>
+<li>拥塞控制</li>
+<li>流量控制</li>
+<li>连接建立</li>
+</ul>
+</li>
+<li>
+<p>不可靠的交付服务（UDP）</p>
+<ul>
+<li>基于“尽力而为（Best-effort）”的网络层协议</li>
+</ul>
+</li>
+</ul>
+<p>两种服务都不提供延迟和带宽的保障</p>
+<h3 id="多路复用和多路分用"><a class="markdownIt-Anchor" href="#多路复用和多路分用"></a> 多路复用和多路分用</h3>
+<p>如果某层的一个协议对应直接上层的多个协议/实体，则需要复用/分用。</p>
+<p>接收端进行多路分用：传输层依据头部信息将收到的Segment交给正确的Socket，即不同的进程。</p>
+<p>从多个Socket接收数据，为每块数据分装上头部信息，生成Segment，交给网络层。</p>
+<p><strong>工作方式</strong><br />
+主机接收到IP数据报（datagram），每个数据报携带源IP地址、目的IP地址，一个传输层的段。每个段携带源端口号和目的端口号。</p>
+<p>主机收到Segment后，传输层协议提取IP地址和端口号信息，将Segment导向相应的Socket。</p>
+<h4 id="无连接分用"><a class="markdownIt-Anchor" href="#无连接分用"></a> 无连接分用</h4>
+<p>UDP的Socket用二元组（目的IP地址，目的端口号）标识，主机收到UDP段后检查段中的目的端口号，将UDP段导向绑定在该端口号的Socket。来自不同源IP地址和/或源端口号的IP数据包被导向同一个Socket。</p>
+<h4 id="面向连接的分用"><a class="markdownIt-Anchor" href="#面向连接的分用"></a> 面向连接的分用</h4>
+<p>TCP的Socket用四元组标识（源IP地址，源端口号，目的IP地址，目的端口号），接收端利用所有四个值将Segment导向Socket，服务器可能支持多个TCP Socket。</p>
+<h3 id="udp协议"><a class="markdownIt-Anchor" href="#udp协议"></a> UDP协议</h3>
+<p>User Datagram Protocol</p>
+<ul>
+<li>基于Internet IP协议，实现了多路复用/分用，简单的错误校验机制（没有错误恢复）。</li>
+<li>UDP段可能丢失或非按序到达。</li>
+<li>无连接，发送方接收方不需要握手，每个UDP段的处理独立于其他段。</li>
+</ul>
+<p>优势：</p>
+<ul>
+<li>无需建立连接，减少延迟</li>
+<li>实现简单，无需维护连接状态</li>
+<li>头部开销少（8字节）</li>
+<li>没有拥塞控制，应用可以更好地控制发送时间和发送速率</li>
+</ul>
+<p>常用于流媒体应用，容忍丢失，速率敏感。</p>
+<h4 id="报文段格式"><a class="markdownIt-Anchor" href="#报文段格式"></a> 报文段格式</h4>
+<ol>
+<li>源端口号、目的端口号（共32字节）</li>
+<li>长度，错误校验和（共32字节）</li>
+<li>数据</li>
+</ol>
+<p><strong>校验和（check sum）</strong><br />
+目的：检测UDP段在传输中是否发生错误（如位翻转）</p>
+<p>发送方</p>
+<ul>
+<li>将段的内容视为16-bit整数</li>
+<li>校验和计算：计算所有整数的和，进位加在和的后面，将得到的值按位求反，得到校验和</li>
+<li>放入校验和字段</li>
+</ul>
+<p>接收方</p>
+<ul>
+<li>计算所收到的段的校验和</li>
+<li>将其与校验和字段进行对比
+<ul>
+<li>不相等：检测出错误</li>
+<li>相等：没有检测出是错误（但可能有错误）</li>
+</ul>
+</li>
+</ul>
+<h3 id="可靠数据传输"><a class="markdownIt-Anchor" href="#可靠数据传输"></a> 可靠数据传输</h3>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Adamska
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://adamska1008.github.io/2022/08/21/study-notes-Computer-Network-3/" title="计算机网络笔记（三）- 传输层">https://adamska1008.github.io/2022/08/21/study-notes-Computer-Network-3/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/14/codeforces-problem-set/" rel="prev" title="codeforces刷题集">
+                  <i class="fa fa-chevron-left"></i> codeforces刷题集
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adamska</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.2/dist/mermaid.min.js","integrity":"sha256-UIQPVkGifpwMvDH5yGgORJ9sSTDq38zz6BGU6dNaKhM="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css" integrity="sha256-M6KFoDq9eUpmogkDgw6+3R3ZgUPSuFXnQyr8tskSfQs=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

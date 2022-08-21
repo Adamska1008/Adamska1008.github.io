@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,230 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/05/22/study-notes-OSTEP-API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/22/study-notes-OSTEP-API/" class="post-title-link" itemprop="url">OSTEP笔记 —— Linux C 系统调用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-22 15:38:48" itemprop="dateCreated datePublished" datetime="2022-05-22T15:38:48+08:00">2022-05-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-05-26 11:10:36" itemprop="dateModified" datetime="2022-05-26T11:10:36+08:00">2022-05-26</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OSTEP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OSTEP学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="进程api"><a class="markdownIt-Anchor" href="#进程api"></a> 进程API</h2>
+<h3 id="fork"><a class="markdownIt-Anchor" href="#fork"></a> fork</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">        fork() - create a child process</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">        #include &lt;sys/types.h&gt;</span><br><span class="line">        #include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">        pid_t fork(void);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>fork()</code>用于创建子进程，子进程与调用<code>fork()</code>的父进程几乎完全一样，但进程描述符（process identifier, PID）不同，这是因为它们是两个进程。</p>
+<p>子进程几乎拷贝了父进程的所有内容，除了<code>fork()</code>返回进程的pid。对于子进程，返回0；对于父进程，返回子进程的pid。子进程并不会从<code>main()</code>函数开始执行，而是直接从<code>fork()</code>系统调用处继续执行。</p>
+<p>使用<code>fork()</code>后，两个进程没有明显的运行顺序差异。</p>
+<h3 id="wait"><a class="markdownIt-Anchor" href="#wait"></a> wait</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">        wait, waitpid, waitid - wait for process to change state</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">        #include &lt;sys/types.h&gt;</span><br><span class="line">        #include &lt;sys/wait.h&gt;</span><br><span class="line"></span><br><span class="line">        pid_t wait(int *wstatus);</span><br><span class="line"></span><br><span class="line">        pid_t waitpid(pid_t pid, int *wstatus, int options);</span><br><span class="line"></span><br><span class="line">        int waitid()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>相较于<code>wait()</code>，<code>waitpid()</code>更加完整。</p>
+<p>父进程调用<code>wait()</code>，直到子进程执行完毕，再执行父进程。</p>
+<h3 id="exec"><a class="markdownIt-Anchor" href="#exec"></a> exec</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">        execl, execlp, execle, execv, execvp, execvpe - execute a file</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">        #include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">        extern char **environ;</span><br><span class="line"></span><br><span class="line">        int execl(const char *pathname, const char* arg, ...);</span><br><span class="line"></span><br><span class="line">        int execlp(const char *file, const char *arg, ...);</span><br><span class="line">        </span><br><span class="line">        int execle(const char *pathname, const char *arg, ...);</span><br><span class="line"></span><br><span class="line">        int execv(const char *pathname, char *const argv[]);</span><br><span class="line">        int execvp(const char *file, char *const argv[]);</span><br><span class="line">        int execvpe(const char *file, char *const argv[], char *const envp[]);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>以<code>int execvp(const char* __file, char *const *__argv)</code>为例，前一参数为需运行的二进制文件，后一参数为程序参数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *myargs[<span class="number">3</span>];</span><br><span class="line">myargs[<span class="number">0</span>] = strdup(<span class="string">&quot;wc&quot;</span>);</span><br><span class="line">myargs[<span class="number">1</span>] = strdup(<span class="string">&quot;p3.c&quot;</span>);</span><br><span class="line">myargs[<span class="number">2</span>] = <span class="literal">NULL</span>; </span><br><span class="line">execvp(myargs[<span class="number">0</span>], myargs);</span><br></pre></td></tr></table></figure>
+<p>等价于</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prompt &gt; wc p3.c</span><br></pre></td></tr></table></figure>
+<p><code>exec()</code>会从可执行程序中加载代码和静态数据，并用它覆写自己的代码段以及静态数据，堆、栈和其他内存空间也会被重新初始化。它没有创建新进程，而是改变运行程序。</p>
+<h2 id="内存操作api"><a class="markdownIt-Anchor" href="#内存操作api"></a> 内存操作API</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">        malloc, free, calloc, realloc, reallocarray - allocate and free dynamic memory</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">        #include &lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">        void *malloc(size_t size);</span><br><span class="line">        void free(void *ptr);</span><br><span class="line">        void *calloc(size_t nmemb, size_t size);</span><br><span class="line">        void *realloc(void *ptr, size_t size);</span><br><span class="line">        void *reallocarray(void *ptr, size_t nmemb, size_t size);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>例如，如果需要为double分配堆内存，可以写</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> *d = (<span class="keyword">double</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">double</span>));</span><br></pre></td></tr></table></figure>
+<p>而不建议直接传入数字参数。</p>
+<p>对于为数组分配内存，可以使用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以 int 为例</span></span><br><span class="line"><span class="keyword">int</span> *a = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(N * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">int</span> *b = (<span class="keyword">int</span> *)<span class="built_in">calloc</span>(N, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"><span class="comment">// 下者可读性较强</span></span><br></pre></td></tr></table></figure>
+<p>但是此时<code>sizeof(a)</code>或<code>sizeof(b)</code>会得到 8 （64位），这是由于没有足够的静态信息，<code>sizeof</code>计算的值为指针大小。</p>
+<p>对于字符串，常使用<code>malloc(strlen(s) + 1)</code>，这是为字符串末尾的<code>\0</code>多留一点空间。也可以直接使用<code>strdup()</code>函数直接为指针分配堆内存。</p>
+<p>使用<code>free()</code>释放内存。注意到<code>free()</code>只需要指针参数而不需要内存大小。</p>
+<h3 id="底层系统调用"><a class="markdownIt-Anchor" href="#底层系统调用"></a> 底层系统调用</h3>
+<p>事实上，<code>malloc</code>等函数并不是系统调用，而是库调用。</p>
+<p>控制堆内存分断（break）的函数为<code>brk</code>，也就是改变堆结束的位置。它需求传入一个参数，来设置新分断的地址。而<code>sbrk</code>函数则类似，区别是，它传入的参数为增量。直接使用这两个函数很可能会造成错误。</p>
+<p>这些函数存放在<code>unistd.h</code>中，表示<code>unix</code>标准下的系统调用。</p>
+<h2 id="进程api-2"><a class="markdownIt-Anchor" href="#进程api-2"></a> 进程API</h2>
+<blockquote>
+<p>PPOSIX线程（英语：POSIX Threads，常被缩写为Pthreads）是POSIX的线程标准，定义了创建和操纵线程的一套API。<br />
+实现POSIX 线程标准的库常被称作Pthreads，一般用于Unix-like POSIX 系统，如Linux、 Solaris。但是Microsoft Windows上的实现也存在，例如直接使用Windows API实现的第三方库pthreads-w32；而利用Windows的SFU/SUA子系统，则可以使用微软提供的一部分原生POSIX API。<br />
+<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/zh-cn/POSIX%E7%BA%BF%E7%A8%8B">维基百科（中文） POSIX线程 ［DB/OL］</a></p>
+</blockquote>
+<h3 id="pthread_create"><a class="markdownIt-Anchor" href="#pthread_create"></a> pthread_create</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">        pthread_create - create a new thread</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">        #include &lt;pthread.h&gt;</span><br><span class="line"></span><br><span class="line">        int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void *), void *arg);</span><br><span class="line"></span><br><span class="line">        Complie and link with -pthread</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>该函数有四个参数：<code>thread</code>、<code>attr</code>、<code>start_routine</code> 和 <code>arg</code> 。</p>
+<ul>
+<li>参数<code>thread</code>是指向<code>pthread_t</code>结构类型的指针，我们将利用这个结构与线程交互</li>
+<li>参数<code>attr</code>用于指定该线程可能具有的任何属性，包括设置栈大小或关于该线程调度优先级的信息。不需设置时传入<code>NULL</code> 。</li>
+<li>参数<code>start_routine</code>为一个函数指针（function pointer）。它被传入一个<code>void *</code>类型的参数，返回一个<code>void *</code>指针。通过强制类型转化，<code>void *</code>可以转化为指向任何类型的执政。</li>
+<li>参数<code>arg</code>是要传递给线程开始执行的函数的参数。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pthread_t</span> p;</span><br><span class="line"><span class="keyword">int</span> rc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">myarg_t</span> args;</span><br><span class="line">args.a = <span class="number">10</span>;</span><br><span class="line">args.b = <span class="number">20</span>;</span><br><span class="line">rc = pthread_create(&amp;p, <span class="literal">NULL</span>, mythread, &amp;args);</span><br></pre></td></tr></table></figure>
+<h3 id="pthread_join"><a class="markdownIt-Anchor" href="#pthread_join"></a> pthread_join</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">        pthread_join - join with a terminated thread</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">        #include &lt;pthread.h&gt;</span><br><span class="line"></span><br><span class="line">        int pthread_join(pthread_t thread, void **retval);</span><br><span class="line"></span><br><span class="line">        compile and link with -pthread</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>用于等待线程完成。</p>
+<p>该函数有两个参数</p>
+<ul>
+<li><code>pthread_t</code>类型，指定需要等待的线程。</li>
+<li>指针，指向所希望得到的返回值。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// has already run pthread_t p</span></span><br><span class="line"><span class="keyword">myret_t</span> *m;</span><br><span class="line">pthread_join(p, (<span class="keyword">void</span> **) &amp;m);</span><br></pre></td></tr></table></figure>
+<p>如果线程最终无返回值，则<code>retval</code>传入<code>NULL</code>即可。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/05/19/study-notes-OSTEP-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/19/study-notes-OSTEP-3/" class="post-title-link" itemprop="url">OSTEP笔记（三）—— 并发</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-19 21:51:33" itemprop="dateCreated datePublished" datetime="2022-05-19T21:51:33+08:00">2022-05-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-06-28 10:51:51" itemprop="dateModified" datetime="2022-06-28T10:51:51+08:00">2022-06-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OSTEP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">OSTEP学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><em>Three easy pieces: 虚拟化，并发，持久性</em><br />
+本段内容包括线程，锁，条件变量，信号量，常见并发问题。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/19/study-notes-OSTEP-3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2709,253 +2933,8 @@ a \ge b \ 且 \ c \le 0 \Rightarrow a *^f c \le b *^f c
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">rCore实验记录（二）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-01-20 17:30:26 / 修改时间：23:13:58" itemprop="dateCreated datePublished" datetime="2022-01-20T17:30:26+08:00">2022-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">rCore实验记录</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="引导至rust代码"><a class="markdownIt-Anchor" href="#引导至rust代码"></a> 引导至rust代码</h2>
-<p>在之前的内容的内容中，我们成功在不使用操作系统的情况下执行了我们的代码，然而这一代码并非由rust编写，rust仅仅是作为汇编器生成机器码交给机器执行罢了。要通过rust编写操作系统，我们需要将控制权转移到rust中的函数。</p>
-<p>修改entry.asm如下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># os/src/entry.asm</span></span><br><span class="line">    .section .text.entry</span><br><span class="line">    .globl _start</span><br><span class="line">_start:</span><br><span class="line">    la sp, boot_stack_top</span><br><span class="line">    call rust_main</span><br><span class="line"></span><br><span class="line">    .section .bss.stack</span><br><span class="line">    .globl boot_stack</span><br><span class="line">boot_stack:</span><br><span class="line">    .space 4096 * 16</span><br><span class="line">    .globl boot_stack_top</span><br><span class="line">boot_stack_top:</span><br></pre></td></tr></table></figure>
-<p>这段汇编的含义为，在_start处为栈指针赋值，并跳转到rust_main函数中。栈空间定义在bss段中，共4096*16=64kb内存，boot_stack_top为栈顶指针，boot_stack为栈底指针。</p>
-<p>接下来修改<code>main.rs</code></p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">rust_main</span> -&gt; ! &#123;</span></span><br><span class="line"><span class="function">    <span class="title">clear_bss</span></span>();</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">clear_bss</span></span>() &#123;</span><br><span class="line">    <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">sbss</span></span>();</span><br><span class="line">        <span class="function"><span class="keyword">fn</span> <span class="title">ebss</span></span>();</span><br><span class="line">    &#125;</span><br><span class="line">    (sbss <span class="keyword">as</span> <span class="built_in">usize</span>..ebss <span class="keyword">as</span> <span class="built_in">usize</span>).for_each( |a| &#123;</span><br><span class="line">        <span class="keyword">unsafe</span> &#123; (a <span class="keyword">as</span> *<span class="keyword">mut</span> <span class="built_in">u8</span>).write_volatile(<span class="number">0</span>) &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>sbss</code>与<code>ebss</code>指针定义在链接表中，clear_bss()函数将sbss与ebss之间内容清0，使之符合bss段的定义。</p>
-<h2 id="使用rustsbi"><a class="markdownIt-Anchor" href="#使用rustsbi"></a> 使用RustSBI</h2>
-<p>RustSBI可以为我们编写的操作系统内核提供服务，我们可以使用其来进行简单的IO与关机操作。</p>
-<p>要使内核调用RustSBI，需编写下列语句。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="keyword">mod</span> sbi;</span><br><span class="line"></span><br><span class="line"><span class="comment">// os/src/sbi.rs</span></span><br><span class="line"><span class="keyword">use</span> core::arch::asm;</span><br><span class="line"><span class="meta">#[inline(always)]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">sbi_call</span></span>(which: <span class="built_in">usize</span>, arg0: <span class="built_in">usize</span>, arg1: <span class="built_in">usize</span>, arg2: <span class="built_in">usize</span>) -&gt; <span class="built_in">usize</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> ret;</span><br><span class="line">    <span class="keyword">unsafe</span> &#123;</span><br><span class="line">        asm!(</span><br><span class="line">            <span class="string">&quot;ecall&quot;</span>,</span><br><span class="line">            inlateout(<span class="string">&quot;x10&quot;</span>) arg0 =&gt; ret,</span><br><span class="line">            <span class="keyword">in</span>(<span class="string">&quot;x11&quot;</span>) arg1,</span><br><span class="line">            <span class="keyword">in</span>(<span class="string">&quot;x12&quot;</span>) arg2,</span><br><span class="line">            <span class="keyword">in</span>(<span class="string">&quot;x17&quot;</span>) which,</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">    ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们暂时不需理解这段代码的含义，我们只需知道这样编写之后，便可通过<code>sbi_call</code>函数调用SBI服务。</p>
-<p>函数的第一个参数表示服务类型，其为一个usize类型数字，不同数字代表不同服务。为方便记忆，定义常数如下</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/sbi.rs</span></span><br><span class="line"><span class="meta">#![allow(unused)]</span></span><br><span class="line"><span class="keyword">const</span> SBI_SET_TIMER: <span class="built_in">usize</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_CONSOLE_PUTCHAR: <span class="built_in">usize</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_CONSOLE_GETCHAR: <span class="built_in">usize</span> = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_CLEAR_IPI: <span class="built_in">usize</span> = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_SEND_IPI: <span class="built_in">usize</span> = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_REMOTE_FENCE_I: <span class="built_in">usize</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_REMOTE_SFENCE_VMA: <span class="built_in">usize</span> = <span class="number">6</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_REMOTE_SFENCE_VMA_ASID: <span class="built_in">usize</span> = <span class="number">7</span>;</span><br><span class="line"><span class="keyword">const</span> SBI_SHUTDOWN: <span class="built_in">usize</span> = <span class="number">8</span>;</span><br></pre></td></tr></table></figure>
-<p>接下来可以通过<code>sbi_call</code>函数编写相关接口。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/sbi.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">console_putchar</span></span>(c: <span class="built_in">usize</span>) &#123;</span><br><span class="line">    sbi_call(SBI_CONSOLE_PUTCHAR, c, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">shutdown</span></span>() -&gt; ! &#123;</span><br><span class="line">    sbi_call(SBI_SHUTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">panic!</span>(<span class="string">&quot;It should shutdown!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样我们就得到了<code>putchar</code>与<code>shutdown</code>两个操作系统接口。</p>
-<p>我们接下来编写<code>println!</code>宏，编写内容与操作系统知识无关，与rust基础语法有关。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#[macro_use]</span></span><br><span class="line"><span class="keyword">mod</span> console;</span><br><span class="line"></span><br><span class="line"><span class="comment">// os/src/console.rs</span></span><br><span class="line"><span class="keyword">use</span> crate::sbi::console_putchar;</span><br><span class="line"><span class="keyword">use</span> core::fmt::&#123;<span class="keyword">self</span>, Write&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Stdout</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> Write <span class="keyword">for</span> Stdout &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">write_str</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, s: &amp;<span class="built_in">str</span>) -&gt; fmt::<span class="built_in">Result</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> s.chars() &#123;</span><br><span class="line">            console_putchar(c <span class="keyword">as</span> <span class="built_in">usize</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="literal">Ok</span>(())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">print</span></span>(args: fmt::Arguments) &#123;</span><br><span class="line">    Stdout.write_fmt(args).unwrap();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[macro_export]</span></span><br><span class="line"><span class="built_in">macro_rules!</span> print &#123;</span><br><span class="line">    ($fmt: literal $(, $($arg: tt)+)?) =&gt; &#123;</span><br><span class="line">        $crate::console::print(<span class="built_in">format_args!</span>($fmt $(, $($arg)+)?));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[macro_export]</span></span><br><span class="line"><span class="built_in">macro_rules!</span> println &#123;</span><br><span class="line">    ($fmt: literal $(, $($arg: tt)+)?) =&gt; &#123;</span><br><span class="line">        $crate::console::print(<span class="built_in">format_args!</span>(<span class="built_in">concat!</span>($fmt, <span class="string">&quot;\n&quot;</span>) $(, $($arg)+)?));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最后编写<code>panic!</code>宏。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#![feature(panic_info_message)]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// os/src/lang_item.rs</span></span><br><span class="line"><span class="keyword">use</span> crate::sbi::shutdown;</span><br><span class="line"><span class="keyword">use</span> core::panic::PanicInfo;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[panic_handler]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">panic</span></span>(info: &amp;PanicInfo) -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> <span class="literal">Some</span>(location) = info.location() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(</span><br><span class="line">            <span class="string">&quot;Panicked at &#123;&#125;:&#123;&#125; &#123;&#125;&quot;</span>,</span><br><span class="line">            location.file(),</span><br><span class="line">            location.line(),</span><br><span class="line">            info.message().unwrap()</span><br><span class="line">        );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;Panicked: &#123;&#125;&quot;</span>, info.message().unwrap());</span><br><span class="line">    &#125;</span><br><span class="line">    shutdown()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>修改main函数</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// os/src/main.rs</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">rust_main</span></span>() -&gt; ! &#123;</span><br><span class="line">    clear_bss();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello, world!&quot;</span>);</span><br><span class="line">    <span class="built_in">panic!</span>(<span class="string">&quot;Shutdown machine!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>即可完成输出<code>Hello, world!</code>与关机的操作。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/20/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">rCore实验记录（一）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-01-20 11:32:48 / 修改时间：19:37:06" itemprop="dateCreated datePublished" datetime="2022-01-20T11:32:48+08:00">2022-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/rCore%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">rCore实验记录</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="环境配置"><a class="markdownIt-Anchor" href="#环境配置"></a> 环境配置</h2>
-<p>参考rCore-Tutorial-Book-v3中的<a target="_blank" rel="noopener" href="https://rcore-os.github.io/rCore-Tutorial-Book-v3/chapter0/5setup-devel-env.html">环境配置</a>一节即可。</p>
-<h2 id="从hello-world开始"><a class="markdownIt-Anchor" href="#从hello-world开始"></a> 从Hello world开始</h2>
-<p>对于一段简单的代码</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.rs</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello world!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用strace工具可获取程序执行时所请求的系统调用以及其返回值。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strace target/debug/os</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">execve(<span class="string">&quot;target/debug/os&quot;</span>, [<span class="string">&quot;target/debug/os&quot;</span>], 0x7ffc57f64c80 /* 29 vars */) = 0</span><br><span class="line"></span><br><span class="line"><span class="comment">#...... 省略大量语句</span></span><br><span class="line"></span><br><span class="line">write(1, <span class="string">&quot;Hello, world!\n&quot;</span>, 14Hello, world!</span><br><span class="line">)         = 14</span><br><span class="line">sigaltstack(&#123;ss_sp=NULL, ss_flags=SS_DISABLE, ss_size=8192&#125;, NULL) = 0</span><br><span class="line">munmap(0x7f9abeed6000, 12288)           = 0</span><br><span class="line">exit_group(0)                           = ?</span><br><span class="line">+++ exited with 0 +++</span><br></pre></td></tr></table></figure>
-<p>与输入直接相关的系统调用为write函数，向标准输出流中输出了<code>&quot;Hello world\n&quot;</code>。通过观察这些代码可以直观感受到程序运行中的复杂系统调用。</p>
-<h2 id="切换至risc-v"><a class="markdownIt-Anchor" href="#切换至risc-v"></a> 切换至RISC-V</h2>
-<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/RISC-V">RISC-V</a>（发音为“risk-five”）是一个基于精简指令集（RISC）原则的开源指令集架构（ISA），简易解释为开源软件运动相对应的一种“开源硬件”。</p>
-<p>为了便于编写代码和学习先进的RISC-V架构，我们使用交叉编译，以RISC-V为目标平台编写操作系统。</p>
-<p>我们可以在编译时使用<code>cargo build --target riscv64gc-unknown-none-elf</code>命令，或者在<code>os</code>下新建<code>.cargo</code>目录，并新建文件<code>config</code>，添加如下语句</p>
-<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[build]</span></span><br><span class="line"><span class="attr">target</span> = <span class="string">&quot;riscv64gc-unknown-none-elf&quot;</span></span><br></pre></td></tr></table></figure>
-<p>便可以直接以RISC-V为目标平台编译程序。</p>
-<p>此时执行<code>cargo build</code>会出现报错</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">error[E0463]: can<span class="string">&#x27;t find crate for `std`</span></span><br><span class="line"><span class="string">  |</span></span><br><span class="line"><span class="string">  = note: the `riscv64gc-unknown-none-elf` target may not support the standard library</span></span><br><span class="line"><span class="string">  = note: `std` is required by `os` because it does not declare `#![no_std]`</span></span><br></pre></td></tr></table></figure>
-<p>这是由于目标平台不支持rust中的标准库，我们无法通过标准库便捷的进行编程。</p>
-<h2 id="移除标准库"><a class="markdownIt-Anchor" href="#移除标准库"></a> 移除标准库</h2>
-<p>要不依赖操作系统编写输出语句，需要禁用标准库，同时删除println!宏，因为这个宏是标准库的一部分。</p>
-<p>通过<code>no_std</code>属性禁用</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#![no_std]</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此时执行<code>cargo build</code>将产生两个错误</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">error: language item required, but not found: `eh_personality`</span><br><span class="line"></span><br><span class="line">error: `#[panic_handler]` function required, but not found</span><br></pre></td></tr></table></figure>
-<p>让我们先来看第一个错误，提示缺乏language item <code>eh_personality</code>，在<a target="_blank" rel="noopener" href="https://os.phil-opp.com/zh-CN/freestanding-rust-binary/">Writing an OS in Rust</a>中写有</p>
-<blockquote>
-<p>eh_personality 语言项标记的函数，将被用于实现栈展开（stack unwinding）。在使用标准库的情况下，当 panic 发生时，Rust 将使用栈展开，来运行在栈上所有活跃的变量的析构函数（destructor）——这确保了所有使用的内存都被释放，允许调用程序的父进程（parent thread）捕获 panic，处理并继续运行。但是，栈展开是一个复杂的过程，如 Linux 的 libunwind 或 Windows 的结构化异常处理（structured exception handling, SEH），通常需要依赖于操作系统的库；所以我们不在自己编写的操作系统中使用它。</p>
-</blockquote>
-<p>于是我们需要禁用栈展开，编辑cargo.toml添加</p>
-<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[profile.dev]</span></span><br><span class="line"><span class="attr">panic</span> = <span class="string">&quot;abort&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[profile.release]</span></span><br><span class="line"><span class="attr">panic</span> = <span class="string">&quot;abort&quot;</span></span><br></pre></td></tr></table></figure>
-<p>另一个错误是缺乏<code>#[panic_handler]</code>函数，于是需要自己定义一个panic处理函数。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> core::panic::PanicInfo;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 这个函数将在 panic 时被调用</span></span><br><span class="line"><span class="meta">#[panic_handler]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">panic</span></span>(_info: &amp;PanicInfo) -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此时重新编译，又会产生一个新错误</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: requires `start` lang_item</span><br></pre></td></tr></table></figure>
-<p>提示我们缺少start语言项。我们可以直接加上<code>#[no_main]</code>属性，并自行编写一段入口点。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="keyword">fn</span> <span class="title">_start</span></span>() -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>我们使用 no_mangle 标记这个函数，来对它禁用名称重整（name mangling）——这确保 Rust 编译器输出一个名为 _start 的函数；否则，编译器可能最终生成名为 _ZN3blog_os4_start7hb173fedf945531caE 的函数，无法让链接器正确辨别。</p>
-</blockquote>
-<p>现在main.rs内容如下</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#![no_std]</span></span><br><span class="line"><span class="meta">#![no_main]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> core::panic::PanicInfo;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 这个函数将在 panic 时被调用</span></span><br><span class="line"><span class="meta">#[panic_handler]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">panic</span></span>(_info: &amp;PanicInfo) -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="keyword">fn</span> <span class="title">_start</span></span>() -&gt; ! &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>并可以正常编译。</p>
-<h2 id="手动加载可执行文件"><a class="markdownIt-Anchor" href="#手动加载可执行文件"></a> 手动加载可执行文件</h2>
-<p>在这部分内容中，我们需要不经过操作系统，直接加载程序交给内核执行。</p>
-<p>首先，编写一段asm嵌入到main.rs中，用于观察是否成功将程序对接到qemu上。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># os/src/entry.asm</span></span><br><span class="line">    .section .text.entry</span><br><span class="line">    .globl _start</span><br><span class="line">_start:</span><br><span class="line">    li x1, 100</span><br></pre></td></tr></table></figure>
-<p>这段代码的含义为将即时值装载到寄存器x1中。li的含义为load immediately。注意到实验环境为RISC-V，所以寄存器与指令与常见的x86-64平台不同，需自己查阅相关资料。</p>
-<p>编写main.rs如下（已将panic函数放置到lang_item.rs中）</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#![no_main]</span></span><br><span class="line"><span class="meta">#![no_std]</span></span><br><span class="line"><span class="meta">#![feature(global_asm)]</span></span><br><span class="line"><span class="comment">// 注意需使用nightly版本以启用特性global_asm</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">mod</span> lang_items;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> core::arch::global_asm;</span><br><span class="line">global_asm!(<span class="built_in">include_str!</span>(<span class="string">&quot;entry.asm&quot;</span>));</span><br></pre></td></tr></table></figure>
-<p>修改链接器布局，使得链接方式符合RISC-V架构</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># os/src/linker.ld</span></span><br><span class="line">OUTPUT_ARCH(riscv)</span><br><span class="line">ENTRY(_start)</span><br><span class="line">BASE_ADDRESS = 0x80200000;</span><br><span class="line"></span><br><span class="line">SECTIONS</span><br><span class="line">&#123;</span><br><span class="line">    . = BASE_ADDRESS;</span><br><span class="line">    skernel = .;</span><br><span class="line"></span><br><span class="line">    stext = .;</span><br><span class="line">    .text : &#123;</span><br><span class="line">        *(.text.entry)</span><br><span class="line">        *(.text .text.*)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    . = ALIGN(4K);</span><br><span class="line">    etext = .;</span><br><span class="line">    srodata = .;</span><br><span class="line">    .rodata : &#123;</span><br><span class="line">        *(.rodata .rodata.*)</span><br><span class="line">        *(.srodata .srodata.*)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    . = ALIGN(4K);</span><br><span class="line">    erodata = .;</span><br><span class="line">    sdata = .;</span><br><span class="line">    .data : &#123;</span><br><span class="line">        *(.data .data.*)</span><br><span class="line">        *(.sdata .sdata.*)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    . = ALIGN(4K);</span><br><span class="line">    edata = .;</span><br><span class="line">    .bss : &#123;</span><br><span class="line">        *(.bss.stack)</span><br><span class="line">        sbss = .;</span><br><span class="line">        *(.bss .bss.*)</span><br><span class="line">        *(.sbss .sbss.*)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    . = ALIGN(4K);</span><br><span class="line">    ebss = .;</span><br><span class="line">    ekernel = .;</span><br><span class="line"></span><br><span class="line">    /DISCARD/ : &#123;</span><br><span class="line">        *(.eh_frame)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>第二行定义了程序入口点为<code>_start</code>，第四行定义了<code>BASE_ADDRESS</code>常量为<code>0x80200000</code>，这是由于我们使用的bootloader运行完毕后便将执行权转移到<code>0x80200000</code>处。之后的语句用于修改链接器布局，其中<code>.</code>表示当前位置，而</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.rodata : &#123;</span><br><span class="line">    *(.rodata)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这些语句便规定了段名与段内的数据。</p>
-<p>最后，我们从<a target="_blank" rel="noopener" href="https://github.com/chyyuu/os_kernel_lab">os_kernel_lab</a>的仓库中获取所需的bootloader程序并放在与os平行的目录下，即完成准备工作。</p>
-<p>接下来我们编译程序。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo build --release</span><br></pre></td></tr></table></figure>
-<p>丢弃元数据并获取可直接在内核上运行的程序镜像。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rust-objcopy --strip-all target/riscv64gc-unknown-none-elf/release/os -O binary target/riscv64gc-unknown-none-elf/release/os.bin</span><br></pre></td></tr></table></figure>
-<p>通过以下指令启动qemu并加载RustSBI并加载程序镜像。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-riscv64 \</span><br><span class="line">    -machine virt \</span><br><span class="line">    -nographic \</span><br><span class="line">    -bios ../bootloader/rustsbi-qemu.bin \</span><br><span class="line">    -device loader,file=target/riscv64gc-unknown-none-elf/release/os.bin,addr=0x80200000 \</span><br><span class="line">    -s -S</span><br></pre></td></tr></table></figure>
-<p>接下来，程序将在本地1234端口等待GDB客户端链接，我们从另一个终端连接到qemu并开始调试</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">riscv64-unknown-elf-gdb \</span><br><span class="line">    -ex <span class="string">&#x27;file target/riscv64gc-unknown-none-elf/release/os&#x27;</span> \</span><br><span class="line">    -ex <span class="string">&#x27;set arch riscv:rv64&#x27;</span> \</span><br><span class="line">    -ex <span class="string">&#x27;target remote localhost:1234&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>可以看到输出为</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0x0000000000001000 <span class="keyword">in</span> ?? ()</span><br><span class="line">(gdb) </span><br></pre></td></tr></table></figure>
-<p>如预料一样，PC首先定位到0x1000，我们可以检查接下来的指令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/10i <span class="variable">$pc</span></span><br><span class="line">=&gt; 0x1000:      auipc   t0,0x0</span><br><span class="line">   0x1004:      addi    a1,t0,32</span><br><span class="line">   0x1008:      csrr    a0,mhartid</span><br><span class="line">   0x100c:      ld      t0,24(t0)</span><br><span class="line">   0x1010:      jr      t0</span><br><span class="line">   0x1014:      unimp</span><br><span class="line">   0x1016:      unimp</span><br><span class="line">   0x1018:      unimp</span><br><span class="line">   0x101a:      0x8000</span><br><span class="line">   0x101c:      unimp</span><br></pre></td></tr></table></figure>
-<p>当运行至0x1010处时，为jr指令，t0寄存器数据为0x80000000，这意味着接下来将要跳转到bootloader处执行程序。</p>
-<p>让我们跳过bootloader，直接在0x80200000处下断点，</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b *0x80200000</span><br><span class="line">(gdb) c</span><br></pre></td></tr></table></figure>
-<p>可以看到原终端出现了大量RustSBI的输出，同时也成功跳转到了0x80200000。</p>
-<p>我们一开始的程序为x1寄存器赋值0x100，让我们继续执行一步并看看有没有生效。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) si</span><br><span class="line">(gdb) p/x <span class="variable">$x1</span></span><br></pre></td></tr></table></figure>
-<p>此时可以看到输出符合预期，即内核开始执行我们编写的程序。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
