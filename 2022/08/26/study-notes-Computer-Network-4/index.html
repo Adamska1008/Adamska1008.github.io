@@ -28,7 +28,7 @@
 <meta property="og:description" content="计算机网络-传输层知识点">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-26T08:48:48.000Z">
-<meta property="article:modified_time" content="2022-08-30T09:15:11.106Z">
+<meta property="article:modified_time" content="2022-09-01T09:17:52.288Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
@@ -123,7 +123,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E7%BD%91%E7%BB%9Cvirtual-circuits"><span class="nav-number">1.</span> <span class="nav-text"> 虚电路网络（Virtual circuits）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vc-%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text"> VC 的具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E4%BF%A1%E4%BB%A4%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.2.</span> <span class="nav-text"> 虚电路信令协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="nav-number">2.</span> <span class="nav-text"> 数据报网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ipv4%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.</span> <span class="nav-text"> IPv4协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ip%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text"> IP数据报结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ip%E5%88%86%E7%89%87"><span class="nav-number">3.2.</span> <span class="nav-text"> IP分片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ip%E7%BC%96%E5%9D%80"><span class="nav-number">3.3.</span> <span class="nav-text"> IP编址</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E7%BD%91%E7%BB%9Cvirtual-circuits"><span class="nav-number">1.</span> <span class="nav-text"> 虚电路网络（Virtual circuits）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vc-%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text"> VC 的具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E4%BF%A1%E4%BB%A4%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.2.</span> <span class="nav-text"> 虚电路信令协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="nav-number">2.</span> <span class="nav-text"> 数据报网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ipv4%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.</span> <span class="nav-text"> IPv4协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ip%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text"> IP数据报结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ip%E5%88%86%E7%89%87"><span class="nav-number">3.2.</span> <span class="nav-text"> IP分片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ip%E7%BC%96%E5%9D%80"><span class="nav-number">3.3.</span> <span class="nav-text"> IP编址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%B1%BBip%E5%9C%B0%E5%9D%80"><span class="nav-number">3.4.</span> <span class="nav-text"> 有类IP地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ip%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E4%B8%8E%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="nav-number">3.5.</span> <span class="nav-text"> IP子网划分与子网掩码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cidr%E4%B8%8E%E8%B7%AF%E7%94%B1%E8%81%9A%E5%90%88"><span class="nav-number">4.</span> <span class="nav-text"> CIDR与路由聚合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dhcp"><span class="nav-number">5.</span> <span class="nav-text"> DHCP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2nat"><span class="nav-number">6.</span> <span class="nav-text"> 网络地址转换（NAT）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nat%E7%A9%BF%E9%80%8F%E9%97%AE%E9%A2%98"><span class="nav-number">6.1.</span> <span class="nav-text"> NAT穿透问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E6%8E%A7%E5%88%B6%E6%8A%A5%E6%96%87%E5%8D%8F%E8%AE%AEicmp"><span class="nav-number">7.</span> <span class="nav-text"> 互联网控制报文协议ICMP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ipv6"><span class="nav-number">8.</span> <span class="nav-text"> IPv6</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -220,7 +220,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-08-30 17:15:11" itemprop="dateModified" datetime="2022-08-30T17:15:11+08:00">2022-08-30</time>
+        <time title="修改时间：2022-09-01 17:17:52" itemprop="dateModified" datetime="2022-09-01T17:17:52+08:00">2022-09-01</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -344,6 +344,203 @@ MF=0：是最后一片，或未被分片</li>
 <h3 id="ip编址"><a class="markdownIt-Anchor" href="#ip编址"></a> IP编址</h3>
 <p>需要编制的内容：实现网络层功能的接口。使用IP地址（32bit，IPv4）编号标识主机、路由器的接口。</p>
 <p>IP地址高比特部分称为网络号，低比特部分称为主机号。相同网络端口IP的网络号是相同的，主机号是不同的。具有相同网络号的集合构成<strong>IP子网（Subnets）</strong>。IP子网还有一个特点：不跨越路由器可以彼此物理联通。</p>
+<h3 id="有类ip地址"><a class="markdownIt-Anchor" href="#有类ip地址"></a> 有类IP地址</h3>
+<p>有类编址采用二分法。</p>
+<p>定义50%的IP地址为A类地址，规定第一个8位组为网络号，最高位比特固定是0，后24位是主机号。0.0.0.0~127.255.255.255</p>
+<p>剩余50%中，最高比特位为1，次高比特位为0的是B类定制，占剩余的50%，前16bit为网络号，后16比特为主机号。128.0.0.0~191.255.255.255</p>
+<p>再剩余的50%中，前三位为110，前24位为网络号，后8位为主机号。192.0.0~223.255.255.255。</p>
+<p>继续二分D类地址，不再区分网络号与主机号，前四位为1110。剩余为E类地址，前四位为1111。D类地址为多播地址。E类地址保留，作为研究使用。</p>
+<p>A、B、C类地址可以用于标记互联网中的端口。</p>
+<p>特殊地址：</p>
+<table>
+<thead>
+<tr>
+<th>NetID</th>
+<th>HostID</th>
+<th>作为IP分组源地址</th>
+<th>作为IP分组目的地址</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全0</td>
+<td>全0</td>
+<td>可以</td>
+<td>不可以</td>
+<td>在本网范围内表示本机</td>
+</tr>
+<tr>
+<td>全0</td>
+<td>特定值</td>
+<td>不可以</td>
+<td>可以</td>
+<td>本网内某个特定主机</td>
+</tr>
+<tr>
+<td>全1</td>
+<td>全1</td>
+<td>不可以</td>
+<td>可以</td>
+<td>本网广播地址（路由器不转发）</td>
+</tr>
+<tr>
+<td>特定值</td>
+<td>全0</td>
+<td>不可以</td>
+<td>不可以</td>
+<td>网络地址，表示一个网络</td>
+</tr>
+<tr>
+<td>特定值</td>
+<td>全1</td>
+<td>不可以</td>
+<td>可以</td>
+<td>直接广播地址，对特定网络上所有主机进行广播</td>
+</tr>
+<tr>
+<td>127</td>
+<td>非全0非全1</td>
+<td>可以</td>
+<td>可以</td>
+<td>用于本地软件环回测试，称为环回地址</td>
+</tr>
+</tbody>
+</table>
+<p><strong>私有IP地址</strong></p>
+<p>在公共互联网上无效，只能在内部网络使用。</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>NetIDs</th>
+<th>Blocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>10</td>
+<td>1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>172.16 to 172.31</td>
+<td>16</td>
+</tr>
+<tr>
+<td>C</td>
+<td>192.168.0 to 192.168.255</td>
+<td>256</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ip子网划分与子网掩码"><a class="markdownIt-Anchor" href="#ip子网划分与子网掩码"></a> IP子网划分与子网掩码</h3>
+<p>子网号（SubID）是原网络主机号部分比特。将通信流量进行有效隔离。</p>
+<p>子网掩码形如IP地址，其中NetID、SubID位全部取1，HostID位全部取零。使用子网掩码即可辨别是否使用子网划分。</p>
+<p>子网掩码还用于确定应该将分组转发到哪个子网。将目的IP地址与子网掩码按位与运算即可得到子网地址。</p>
+<h2 id="cidr与路由聚合"><a class="markdownIt-Anchor" href="#cidr与路由聚合"></a> CIDR与路由聚合</h2>
+<p><strong>无类域间路由（CIDR:Classless InterDomain Routing）</strong> 消除传统的A类、B类、C类地址界限，网络前缀可以为任何长度。融合子网地址与子网掩码，方便子网划分。</p>
+<p>格式：a.b.c.d/x，其中前半部分为点分式IP地址，x为前缀长度。</p>
+<p>优点：</p>
+<ul>
+<li>提高IPv4地址空间分配效率</li>
+<li>提高路由效率
+<ul>
+<li>将多个子网聚合为一个较大的子网</li>
+<li>构造超网（supernetting）</li>
+</ul>
+</li>
+</ul>
+<h2 id="dhcp"><a class="markdownIt-Anchor" href="#dhcp"></a> DHCP</h2>
+<p>主机可以通过静态配置获得主机的IP地址。默认网关：路由器接入子网的IP地址。子网中的主机通过默认网关传输数据到路由器。</p>
+<p>除了静态获取之外，还可以动态配置。<strong>动态主机配置协议（Dynamic Host Configuration Protocol）</strong> 从服务器动态获取IP地址、子网掩码、默认网关地址、DNS服务器名称与IP地址。“即插即用”并支持地址重用。当主机不进行网络通信时，可以归还地址。支持移动用户加入网络。</p>
+<p><strong>协议内容</strong></p>
+<ul>
+<li>主机广播“DHCP discover”（发现报文）</li>
+<li>DHCP服务器利用“DHCP offer”（提供报文）进行响应</li>
+<li>主机请求IP地址（广播）：“DHCP request”（请求报文）</li>
+<li>DHCP服务器分配IP地址：“DHCP ack”（确认报文）</li>
+</ul>
+<p>应用层实现：</p>
+<ul>
+<li>封装到UDP数据报</li>
+<li>IP广播</li>
+<li>链路层广播</li>
+</ul>
+<h2 id="网络地址转换nat"><a class="markdownIt-Anchor" href="#网络地址转换nat"></a> 网络地址转换（NAT）</h2>
+<p>本地网络使用私有IP，对外界网络，所有主机使用相同IP地址，用端口号对不同主机加以区分。</p>
+<p>优势：</p>
+<ul>
+<li>只需/能从ISP申请一个IP地址</li>
+<li>本地网络设备IP地址的变更无需通告外界网络</li>
+<li>变更ISP时，无需修改内部网络设备IP地址</li>
+<li>内部网络设备对外界网络不可见，不可直接寻址（安全）</li>
+</ul>
+<p>实现：</p>
+<ul>
+<li>替换：利用（NAT IP地址，新端口号）替换每个外出IP数据报的（源IP地址，源端口号）</li>
+<li>记录；将没对替换信息存储到NAT转换表中</li>
+<li>替换：利用转换表，将外网信息修正为内网信息</li>
+</ul>
+<p>争议：</p>
+<ul>
+<li>处理了第三层以上的内容</li>
+<li>违背端到端通信原则，使得应用开发者必须考虑到NAT的存在</li>
+<li>地址短缺问题应该由IPv6来解决</li>
+</ul>
+<h3 id="nat穿透问题"><a class="markdownIt-Anchor" href="#nat穿透问题"></a> NAT穿透问题</h3>
+<p>外部主机可能希望主动访问内部主机</p>
+<p>解决方案：</p>
+<ul>
+<li>静态配置NAT，将特定端口的连接请求转发给服务器</li>
+<li>利用UPnP互联网网关设备协议自动配置：内网主机学习公共IP地址，在NAT转换表中增删端口映射</li>
+<li>中继：内部客户与中继服务器建立连接，外部客户也与中继服务器建立连接，中继服务器桥接两个连接的分组</li>
+</ul>
+<h2 id="互联网控制报文协议icmp"><a class="markdownIt-Anchor" href="#互联网控制报文协议icmp"></a> 互联网控制报文协议ICMP</h2>
+<p>ICMP支持主机或路由器</p>
+<ul>
+<li>差错（或异常）报告</li>
+<li>网络查询</li>
+</ul>
+<p>两类报文：</p>
+<ul>
+<li>差错报告报文（5种）
+<ul>
+<li>目的不可达</li>
+<li>源抑制（Source Quench）（缓存已满）</li>
+<li>超时/超期</li>
+<li>参数问题</li>
+<li>重定向（Redirect）</li>
+</ul>
+</li>
+<li>网络探询报文（2组）
+<ul>
+<li>回声（Echo）请求与应答报文（Reply）</li>
+<li>时间戳请求与应答报文</li>
+</ul>
+</li>
+</ul>
+<p>不发送差错报文的情况：</p>
+<ul>
+<li>对ICMP差错报文不再发送ICMP差错报告报文</li>
+<li>除第一个IP数据分片以外，对后续分片均不发送ICMP差错报告报文</li>
+<li>对多播IP数据报不发送</li>
+<li>对特殊地址（127.0.0.0，0.0.0.0）不再发送</li>
+</ul>
+<p><strong>格式：</strong><br />
+ICMP报文封装到IP数据报中传输（数据部分）：</p>
+<ul>
+<li>类型（8bit）、代码（8bit）、检验和（16bit）</li>
+<li>四字节取决于类型</li>
+<li>数据部分（长度取决于类型）</li>
+</ul>
+<h2 id="ipv6"><a class="markdownIt-Anchor" href="#ipv6"></a> IPv6</h2>
+<p>格式：</p>
+<ul>
+<li>固定长度40字节的基本首部</li>
+<li>不允许分片</li>
+</ul>
 
     </div>
 
