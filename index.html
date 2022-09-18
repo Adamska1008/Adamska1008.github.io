@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,127 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/09/18/software-engineering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/18/software-engineering/" class="post-title-link" itemprop="url">软件工程导论</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-18 16:16:41 / 修改时间：17:22:01" itemprop="dateCreated datePublished" datetime="2022-09-18T16:16:41+08:00">2022-09-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="软件需求分析"><a class="markdownIt-Anchor" href="#软件需求分析"></a> 软件需求分析</h2>
+<h3 id="需求的层次"><a class="markdownIt-Anchor" href="#需求的层次"></a> 需求的层次</h3>
+<p>现代软件工程需求包括：</p>
+<ol>
+<li>业务需求：
+<ul>
+<li>反映<strong>客户组织/用户</strong>对系统和产品<strong>高层次的业务目标要求</strong></li>
+<li>通过<strong>项目前景和项目范围文档</strong>予以陈述（前者为远景，后者为近期目标）</li>
+</ul>
+</li>
+<li>用户需求：
+<ul>
+<li>站在<strong>用户角度</strong>描述的产品功能和性能<strong>概要</strong></li>
+<li>通过<strong>用例（User case）文档</strong>予以陈述</li>
+</ul>
+</li>
+<li>系统需求：
+<ul>
+<li>站在<strong>软件开发和测试人员角度</strong>产品应当做什么的<strong>详细阐述</strong></li>
+<li>系统需求是用户需求的详细版本，实现用户世界到软件世界的转换，是系统软件设计的起点</li>
+<li>通过<strong>系统需求规格说明</strong>予以陈述</li>
+</ul>
+</li>
+</ol>
+<h4 id="具体案例"><a class="markdownIt-Anchor" href="#具体案例"></a> 具体案例：</h4>
+<p>业务需求：IE4.0</p>
+<ul>
+<li>项目前景：成为主流浏览器软件</li>
+<li>项目范围：高速、稳定、总体成本最低，有效集成Office</li>
+</ul>
+<p>用户需求：Mentcare</p>
+<ul>
+<li>生成月度管理报告，显示药品成本</li>
+</ul>
+<p>系统需求：Mentcare</p>
+<ul>
+<li>实现目标细节（服务时间、具体报告内容、权限控制等）</li>
+</ul>
+<h4 id="三个层次的关系以航空公司业务系统为例"><a class="markdownIt-Anchor" href="#三个层次的关系以航空公司业务系统为例"></a> 三个层次的关系：（以航空公司业务系统为例）</h4>
+<p>通过满足低层次的需求实现上一层次的目标</p>
+<pre class="mermaid">graph TD;
+    A-->B-->C
+    A[业务需求: 把机场的工作人员成本降低25%]
+    B[用户需求: 通过网站或自助检票机办理登机手续]
+    C[系统需求: 乘客能够随时打印登机牌, 若无座位偏好则应自动分配座位]</pre>
+<p>需求分层体现了从问题空间到求解空间的自然转化过程，从高层需求获取低层需求，通过解决低层需求解决高层需求。</p>
+<p>需求分层也是现代软件工程发展和融合的产物（统一工程RUP，微软开发过程MSF）</p>
+<h4 id="需求的类型"><a class="markdownIt-Anchor" href="#需求的类型"></a> 需求的类型</h4>
+<p>包含两大类型：</p>
+<ul>
+<li>功能性需求<br />
+描述系统应该做什么，即为用户和其他系统完成的功能，提供的服务</li>
+<li>非功能性需求<br />
+必须遵循的标准，外部界面的细节，实现的约束条件，质量属性等等</li>
+</ul>
+<h4 id="需求层次与分类两者的关系"><a class="markdownIt-Anchor" href="#需求层次与分类两者的关系"></a> 需求层次与分类两者的关系</h4>
+<p><img src="https://i.postimg.cc/6QSqhjmQ/Snipaste-2022-09-18-17-16-26.png" alt="Snipaste-2022-09-18-17-16-26.png" /></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -904,86 +1025,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/07/11/algorithm-dynamic-programming-practise/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/07/11/algorithm-dynamic-programming-practise/" class="post-title-link" itemprop="url">算法-DP-专题练习</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-11 09:52:29" itemprop="dateCreated datePublished" datetime="2022-07-11T09:52:29+08:00">2022-07-11</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-08-05 17:51:40" itemprop="dateModified" datetime="2022-08-05T17:51:40+08:00">2022-08-05</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>目前共计 16 道题</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/07/11/algorithm-dynamic-programming-practise/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
