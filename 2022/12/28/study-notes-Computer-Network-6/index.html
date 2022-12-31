@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="计算机网络-链路层知识点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络笔记（六）- 链路层">
+<meta property="og:url" content="https://adamska1008.github.io/2022/12/28/study-notes-Computer-Network-6/index.html">
+<meta property="og:site_name" content="Adamska&#39;s Blog">
+<meta property="og:description" content="计算机网络-链路层知识点。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-28T06:45:13.000Z">
+<meta property="article:modified_time" content="2022-12-29T09:55:07.018Z">
+<meta property="article:author" content="Adamska">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://adamska1008.github.io/2022/12/28/study-notes-Computer-Network-6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2022/12/28/study-notes-Computer-Network-6/","path":"2022/12/28/study-notes-Computer-Network-6/","title":"计算机网络笔记（六）- 链路层"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机网络笔记（六）- 链路层 | Adamska's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Adamska's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text"> 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E4%BF%A1%E9%81%93%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text"> 链路层信道类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.2.</span> <span class="nav-text"> 链路层服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B%E4%B8%8E%E7%BA%A0%E9%94%99"><span class="nav-number">2.</span> <span class="nav-text"> 差错检测与纠错</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.1.</span> <span class="nav-text"> 奇偶校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%A1%E9%AA%8C%E5%92%8C%E6%A3%80%E6%9F%A5%E5%92%8C"><span class="nav-number">2.2.</span> <span class="nav-text"> 校验和（检查和）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E7%A0%81%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.3.</span> <span class="nav-text"> 循环冗余码校验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A12%E8%BF%90%E7%AE%97"><span class="nav-number">2.3.1.</span> <span class="nav-text"> 模2运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97r"><span class="nav-number">2.3.2.</span> <span class="nav-text"> 计算R</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%B7%AF%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AEmac"><span class="nav-number">3.</span> <span class="nav-text"> 多路访问协议（MAC）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Adamska</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/12/28/study-notes-Computer-Network-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络笔记（六）- 链路层
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-28 14:45:13" itemprop="dateCreated datePublished" datetime="2022-12-28T14:45:13+08:00">2022-12-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-12-29 17:55:07" itemprop="dateModified" datetime="2022-12-29T17:55:07+08:00">2022-12-29</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">《计算机网络：自顶向下方法》学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>计算机网络-链路层知识点。</p>
+<span id="more"></span>
+<h2 id="概述"><a class="markdownIt-Anchor" href="#概述"></a> 概述</h2>
+<p>链路层和网络层的关系：</p>
+<ul>
+<li>网络层：将传输层报文从源主机传递到目的主机
+<ul>
+<li>能够在各段链路层提供异构服务的情况下，完成端到端的工作</li>
+</ul>
+</li>
+<li>链路层：将网络层数据报从一个节点  传送到下一个节点（单段链路）
+<ul>
+<li>不同的链路采用不同的链路层协议，提供的服务不同。</li>
+</ul>
+</li>
+</ul>
+<p>节点：主机和路由器<br />
+链路：连接沿通信路径的相邻节点的路径是链路，分为有线和无线<br />
+帧：第二层分组的命名，封装数据报</p>
+<h3 id="链路层信道类型"><a class="markdownIt-Anchor" href="#链路层信道类型"></a> 链路层信道类型</h3>
+<p>分为<strong>广播链路</strong>和<strong>点对点通信链路</strong>两种。</p>
+<p>广播链路：许多主机被连接到相同的通信信道，需要<strong>媒体访问协议（MAC）</strong> 来协调传输和避免“碰撞”（冲突）。</p>
+<ul>
+<li>传统的以太网</li>
+<li>802.11无线局域网</li>
+<li>卫星网</li>
+</ul>
+<p>点对点通信链路：直线链接两个节点的链路，每一端有一个节点。访问控制简单，主要解决问题：成帧，可靠数据传输、差错检测和流量控制。</p>
+<h3 id="链路层服务"><a class="markdownIt-Anchor" href="#链路层服务"></a> 链路层服务</h3>
+<ul>
+<li>成帧，链路访问;
+<ul>
+<li>将数据报封装进<strong>帧</strong>，加上<strong>首部</strong>和<strong>尾部</strong>。</li>
+<li>如果共享媒体，<strong>媒体访问控制（MAC）协议</strong>协调多路访问</li>
+<li>位于帧首部的<strong>MAC地址</strong>表示源、目的地（不同于IP）</li>
+</ul>
+</li>
+<li>相连节点间的可靠交付
+<ul>
+<li>在比特差错低的链路很少使用（光纤，双绞线）</li>
+<li>无线链路（高差错率）：差错检测，纠错</li>
+</ul>
+</li>
+<li>流量控制：
+<ul>
+<li>相邻发送和接收节点间的步调一致</li>
+</ul>
+</li>
+<li>差错检测：
+<ul>
+<li>差错由信号衰减、噪声所致</li>
+<li>接收方检测差错的存在
+<ul>
+<li>信号发送方负责重传</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>纠错：
+<ul>
+<li>接收方识别和纠正比特差错，而不采取重传</li>
+</ul>
+</li>
+<li>半/全双工</li>
+</ul>
+<h2 id="差错检测与纠错"><a class="markdownIt-Anchor" href="#差错检测与纠错"></a> 差错检测与纠错</h2>
+<p>发送方发送数据帧+冗余数据（EDC，差错检测和纠正比特），接收方检查信息数据和冗余数据的关系，发现差错。</p>
+<h3 id="奇偶校验"><a class="markdownIt-Anchor" href="#奇偶校验"></a> 奇偶校验</h3>
+<p>设置一个奇偶校验位，使得数据中<code>1</code>的个数为奇数或偶数。</p>
+<ul>
+<li>单比特奇偶校验：在数据末尾添加<code>0</code>或<code>1</code>，错误率50%</li>
+<li>二维比特奇偶校验：数据D被划分为i行j列，对每行每列计算奇偶值，产生i+j+1奇偶比特</li>
+</ul>
+<h3 id="校验和检查和"><a class="markdownIt-Anchor" href="#校验和检查和"></a> 校验和（检查和）</h3>
+<p>发送方：</p>
+<ul>
+<li>将段内容作为16比特整数序列来处理</li>
+<li>校验和：段内容相加（求和，回卷，求反）</li>
+<li>将校验和的值放入UDP校验和字段</li>
+</ul>
+<p>接收方：</p>
+<ul>
+<li>计算接收到段的检查和</li>
+<li>检查是否各段之和全为1：
+<ul>
+<li>NO-检测到差错</li>
+<li>YES-没有检测到差错（依然可能有错）</li>
+</ul>
+</li>
+</ul>
+<h3 id="循环冗余码校验"><a class="markdownIt-Anchor" href="#循环冗余码校验"></a> 循环冗余码校验</h3>
+<p>收发双方约定一个r+1比特的生成多项式G(x)，如<code>100000111</code>表示x<sup>8</sup>+x<sup>2</sup>+x<sup>1</sup>+1（CRC-8标准）。</p>
+<p>发送方用位串D和G(x)运算得到r比特的校验和R，在帧的末尾加上校验和，使带校验和的DR能被G(x)模2运算整除。</p>
+<p>接收方之后用G(x)除以多项式，若有余数则传输出错。</p>
+<h4 id="模2运算"><a class="markdownIt-Anchor" href="#模2运算"></a> 模2运算</h4>
+<p>加法不进位，减法不借位，加减法即是按位异或。乘除法中涉及加减的部分不进位。</p>
+<h4 id="计算r"><a class="markdownIt-Anchor" href="#计算r"></a> 计算R</h4>
+<p>我们需要计算得到R，使得DR能被G(x)整除，即：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>D</mi><mo>×</mo><msup><mn>2</mn><mi>r</mi></msup><mi>X</mi><mi>O</mi><mi>R</mi><mtext> </mtext><mi>R</mi><mo>=</mo><mi>n</mi><mi>G</mi><mspace linebreak="newline"></mspace><mi>D</mi><mo>×</mo><msup><mn>2</mn><mi>r</mi></msup><mo>=</mo><mi>n</mi><mi>G</mi><mtext> </mtext><mi>X</mi><mi>O</mi><mi>R</mi><mtext> </mtext><mi>R</mi></mrow><annotation encoding="application/x-tex">D\times 2^r XOR\ R = nG \\
+D\times 2^r  = nG\ XOR\ R
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.7143919999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace"> </span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">G</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.7143919999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">G</span><span class="mspace"> </span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace"> </span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span></span></span></span></span></p>
+<p>考虑到有 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>G</mi><mo>&gt;</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">G&gt;R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">G</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span></span></span></span>，等价于</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>D</mi><mo>×</mo><msup><mn>2</mn><mi>r</mi></msup><mo>=</mo><mi>n</mi><mi>G</mi><mo>+</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">D\times 2^r  = nG+R
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.7143919999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">G</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span></span></span></span></span></p>
+<p>即</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>D</mi><mo>×</mo><msup><mn>2</mn><mi>r</mi></msup><mspace></mspace><mspace width="1em"/><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">d</mi></mrow><mtext> </mtext><mtext> </mtext><mi>G</mi><mo>=</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">D\times 2^r\mod G=R
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.7143919999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mspace allowbreak"></span><span class="mspace" style="margin-right:1em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">m</span><span class="mord mathrm">o</span><span class="mord mathrm">d</span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">G</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span></span></span></span></span></p>
+<p>所以计算R的方式就是求<code>(D &lt;&lt; r) % G</code>。</p>
+<h2 id="多路访问协议mac"><a class="markdownIt-Anchor" href="#多路访问协议mac"></a> 多路访问协议（MAC）</h2>
+<p>多路访问协议是决定节点怎样共享信道的分布式算法。</p>
+<p>理想的多路访问协议有如下特点：<br />
+对于一个速率R的信道</p>
+<ul>
+<li>效率：当一个节点要传输，它能够以速率R发送</li>
+<li>公平：当M节点要传输，每个能以平均速率R/M发送</li>
+<li>全分散：
+<ul>
+<li>无特殊节点来协调传输</li>
+<li>无同步时钟、时隙</li>
+</ul>
+</li>
+<li>简单</li>
+</ul>
+<p>MAC协议可以分为三大类：</p>
+<ul>
+<li>信道划分：
+<ul>
+<li>将信道划分为较小的“段”（时隙、频率、编码），为节点分配一部分专用</li>
+</ul>
+</li>
+<li>随机访问：
+<ul>
+<li>不划分信道，允许碰撞</li>
+<li>从“碰撞”恢复</li>
+</ul>
+</li>
+<li>轮流协议：
+<ul>
+<li>节点轮流，无碰撞</li>
+<li>兼顾效率和公平</li>
+<li>单点失效，轮流时延</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Adamska
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://adamska1008.github.io/2022/12/28/study-notes-Computer-Network-6/" title="计算机网络笔记（六）- 链路层">https://adamska1008.github.io/2022/12/28/study-notes-Computer-Network-6/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/12/26/study-notes-Computer-Network-5/" rel="prev" title="计算机网络笔记（五）- 网络层-控制平面">
+                  <i class="fa fa-chevron-left"></i> 计算机网络笔记（五）- 网络层-控制平面
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adamska</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.2/dist/mermaid.min.js","integrity":"sha256-UIQPVkGifpwMvDH5yGgORJ9sSTDq38zz6BGU6dNaKhM="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css" integrity="sha256-M6KFoDq9eUpmogkDgw6+3R3ZgUPSuFXnQyr8tskSfQs=" crossorigin="anonymous">
+
+
+
+</body>
+</html>
