@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -142,7 +142,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -174,6 +174,772 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/05/17/study-notes-CSAPP-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/17/study-notes-CSAPP-2/" class="post-title-link" itemprop="url">CSAPP笔记（二）—— 程序的机器级表示</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-17 12:45:59" itemprop="dateCreated datePublished" datetime="2022-05-17T12:45:59+08:00">2022-05-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-06-14 16:04:45" itemprop="dateModified" datetime="2022-06-14T16:04:45+08:00">2022-06-14</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CSAPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">CSAPP学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="程序编码"><a class="markdownIt-Anchor" href="#程序编码"></a> 程序编码</h2>
+<p>对于如下编译指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Og -o p p1.c p2.c</span><br></pre></td></tr></table></figure>
+<p>首先，<strong>C预处理器</strong>扩展源代码，插入所有用<code>#include</code>命令指定的<strong>文件</strong>，并扩展所有用<code>#define</code>声明指定的<strong>宏</strong>。</p>
+<p>其次，<strong>编译器</strong>产生两个源文件的<strong>汇编代码</strong>，名字分别为<code>p1.s</code> 和 <code>p2.s</code>。接下来，<strong>汇编器</strong>会将汇编代码转化成二进制<strong>目标代码</strong>文件<code>p1.o</code>和<code>p2.o</code>。目标代码是机器代码的一种形式，它包含所有指令的二进制表示，但是还没有填入全局值的地址。最后，<strong>链接器</strong>将两个目标代码文件与实现库函数（例如<code>printf</code>）的代码合并，并产生最终的<strong>可执行文件</strong><code>p</code>。</p>
+<h3 id="机器级代码"><a class="markdownIt-Anchor" href="#机器级代码"></a> 机器级代码</h3>
+<p>机器级编程着重于两种抽象：</p>
+<ol>
+<li>由 <strong>指令集架构（Instruction Set Architecture, ISA）</strong> 来定义机器级程序的格式和行为，它定义了处理器状态、指令的格式，以及每条指令对状态的影响。大多数ISA指令为顺序执行，但实际上由CPU并发执行。</li>
+<li>机器级程序使用的内存地址是 <strong>虚拟地址</strong>，提供的内存模型看上去是一个非常大的字节数组。</li>
+</ol>
+<p>汇编代码用可读性更好的文本格式表示机器级代码。一些隐藏的处理器状态对于汇编代码是可见的：</p>
+<ul>
+<li><strong>程序计数器（Program Counter，PC，%rip in x86_64）</strong> 给出将要执行的下一条指令在内存中的地址。</li>
+<li><strong>整数寄存器</strong> 用于存储地址或整数数据、记录程序状态、保存临时数据（例如过程的参数和局部变量，函数的返回值）。</li>
+<li><strong>条件码寄存器</strong> 保存最近执行的算数或逻辑指令的状态信息，实现条件变化，如 <code>if</code> 和 <code>while</code>。</li>
+<li><strong>向量寄存器</strong>，存放多个整数或浮点数值。</li>
+</ul>
+<p>机器级代码将内存看为按字节寻址的数组，数据用连续的字节来表示，汇编代码不区分有符号或无符号整数，不区分各类型的指针，也不区分整数和指针。</p>
+<p><strong>反汇编器（disassembler）</strong></p>
+<p>可以使用例如<code>objdump</code>的反汇编器来获取机器代码文件的内容。（举例略）</p>
+<p>反汇编的特性：</p>
+<ul>
+<li>x86_64的指令长度从1到15个字节不等。</li>
+<li>设计指令格式的方式是，从某个给定位置开始，可以将字节唯一地解码成机器指令。例如只有<code>pushq %rbx</code>是以字节值 53 开头的。</li>
+<li>反汇编器不需要访问该程序的源代码或汇编代码。</li>
+<li>反汇编器与GCC生成的汇编代码有些微差异。</li>
+</ul>
+<p>在汇编代码中，部分以<code>.</code>开头的代码为指导汇编器和链接器工作的伪指令，可以暂时忽略。</p>
+<h2 id="数据格式"><a class="markdownIt-Anchor" href="#数据格式"></a> 数据格式</h2>
+<p>Intel用术语 <strong>字(word)</strong> 表示16位数据类型，称32位数为 <strong>双字(double words)</strong>，称64位数为 <strong>四字(quad words)</strong> 。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">C声明</th>
+<th style="text-align:center">Intel数据类型</th>
+<th style="text-align:center">汇编代码后缀</th>
+<th style="text-align:center">大小（字节）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">char</td>
+<td style="text-align:center">字节</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">short</td>
+<td style="text-align:center">字</td>
+<td style="text-align:center">w</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">int</td>
+<td style="text-align:center">双字</td>
+<td style="text-align:center">l</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">long</td>
+<td style="text-align:center">四字</td>
+<td style="text-align:center">q</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:center">char*</td>
+<td style="text-align:center">四字</td>
+<td style="text-align:center">q</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:center">float</td>
+<td style="text-align:center">单精度</td>
+<td style="text-align:center">s</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">double</td>
+<td style="text-align:center">双精度</td>
+<td style="text-align:center">l</td>
+<td style="text-align:center">8</td>
+</tr>
+</tbody>
+</table>
+<p>大多数GCC生成的汇编代码指令都有一个字符的后缀，表明操作数的大小。例如，数据传送指令有四个变种：<code>movb</code>、<code>movw</code>、<code>movl</code>、<code>movq</code>。</p>
+<h2 id="访问信息"><a class="markdownIt-Anchor" href="#访问信息"></a> 访问信息</h2>
+<p>一个x86-64的中央处理单元（CPU）包含一组16个存储64位值的 <strong>通用目的寄存器</strong> 。这些寄存器用来存储整数数据和指针。</p>
+<table>
+<thead>
+<tr>
+<th>63</th>
+<th>31</th>
+<th>15</th>
+<th>7</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%rax</td>
+<td>%eax</td>
+<td>%ax</td>
+<td>%al</td>
+<td>返回值</td>
+</tr>
+<tr>
+<td>%rbx</td>
+<td>%ebx</td>
+<td>%bx</td>
+<td>%bl</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%rcx</td>
+<td>%ecx</td>
+<td>%cx</td>
+<td>%cl</td>
+<td>第4个参数</td>
+</tr>
+<tr>
+<td>%rdx</td>
+<td>%edx</td>
+<td>%dx</td>
+<td>%dl</td>
+<td>第3个参数</td>
+</tr>
+<tr>
+<td>%rsi</td>
+<td>%esi</td>
+<td>%si</td>
+<td>%sil</td>
+<td>第2个参数</td>
+</tr>
+<tr>
+<td>%rdi</td>
+<td>%edi</td>
+<td>%di</td>
+<td>%dil</td>
+<td>第1个参数</td>
+</tr>
+<tr>
+<td>%rbp</td>
+<td>%ebp</td>
+<td>%bp</td>
+<td>%bpl</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%rsp</td>
+<td>%esp</td>
+<td>%sp</td>
+<td>%spl</td>
+<td>栈指针</td>
+</tr>
+<tr>
+<td>%r8</td>
+<td>%r8d</td>
+<td>%r8w</td>
+<td>%r8b</td>
+<td>第5个参数</td>
+</tr>
+<tr>
+<td>%r9</td>
+<td>%r9d</td>
+<td>%r9w</td>
+<td>%r9b</td>
+<td>第6个参数</td>
+</tr>
+<tr>
+<td>%r10</td>
+<td>%r10d</td>
+<td>%r10w</td>
+<td>%r10b</td>
+<td>调用者保存</td>
+</tr>
+<tr>
+<td>%r11</td>
+<td>%r11d</td>
+<td>%r11w</td>
+<td>%r11b</td>
+<td>调用者保存</td>
+</tr>
+<tr>
+<td>%r12</td>
+<td>%r12d</td>
+<td>%r12w</td>
+<td>%r12b</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%r13</td>
+<td>%r13d</td>
+<td>%r13w</td>
+<td>%r13b</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%r14</td>
+<td>%r14d</td>
+<td>%r14w</td>
+<td>%r14b</td>
+<td>被调用者保存</td>
+</tr>
+<tr>
+<td>%r15</td>
+<td>%r15d</td>
+<td>%r15w</td>
+<td>%r15b</td>
+<td>被调用者保存</td>
+</tr>
+</tbody>
+</table>
+<p>其中最特别的是栈指针，用来指明运行时栈的结束位置。</p>
+<h3 id="操作数指示符"><a class="markdownIt-Anchor" href="#操作数指示符"></a> 操作数指示符</h3>
+<p>大多数指令有一个或多个 <strong>操作数(operand)</strong>，指示出执行一个操作中要使用的源数据值，以及放置结果的目的位置。源数据值可以以常数形式给出，或从寄存器或内存中读出。结果可以存放在寄存器或内存中。</p>
+<p>各种不同的操作数可以分为三种类型：</p>
+<ol>
+<li><strong>立即数(immediate)</strong>，用来表示常数值，如<code>$0x1F</code>。</li>
+<li><strong>寄存器(register)</strong>，表示某个寄存器的内容。我们用符号 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>r</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">r_a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 表示任意寄存器 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span>，用引用 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>a</mi></msub><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">R[r_a]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span> 来表示它的值，这是将寄存器集合看成一个数组，用寄存器标识符作为索引。</li>
+<li><strong>内存引用</strong>，我们用符号 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>M</mi><mi>b</mi></msub><mo stretchy="false">[</mo><mi>A</mi><mi>d</mi><mi>d</mi><mi>r</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M_b[Addr]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathdefault">A</span><span class="mord mathdefault">d</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mclose">]</span></span></span></span> 来表示对存储在内存中从地址 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>A</mi><mi>d</mi><mi>d</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">Addr</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">A</span><span class="mord mathdefault">d</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span></span></span></span> 开始的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span> 个字节值的引用，为了简便，通常省去下标 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span> 。</li>
+</ol>
+<p>有多种不同的 <strong>寻址模式</strong>，允许不同形式的的内存引用。<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi><mo stretchy="false">(</mo><msub><mi>r</mi><mi>b</mi></msub><mi mathvariant="normal">，</mi><msub><mi>r</mi><mi>i</mi></msub><mi mathvariant="normal">，</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Imm(r_b，r_i，s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord cjk_fallback">，</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord cjk_fallback">，</span><span class="mord mathdefault">s</span><span class="mclose">)</span></span></span></span> 表示的是最常用的形式：立即数偏移地址 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">Imm</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span></span></span></span>，基址寄存器 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>r</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">r_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，变址寄存器 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>r</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">r_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 和一个比例因子 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>，且 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mn>4</mn><mo separator="true">,</mo><mn>8</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">s \in \{1, 2, 4, 8\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">8</span><span class="mclose">}</span></span></span></span> 。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">格式</th>
+<th style="text-align:center">操作数值</th>
+<th style="text-align:center">名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">立即数</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">$</mi><mi>I</mi><mi>m</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">\$Imm</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.80556em;vertical-align:-0.05556em;"></span><span class="mord">$</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">Imm</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span></span></span></span></td>
+<td style="text-align:center">立即数寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">寄存器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>r</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">r_a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>a</mi></msub><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">R[r_a]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">寄存器寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">存储器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">Imm</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo stretchy="false">[</mo><mi>I</mi><mi>m</mi><mi>m</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M[Imm]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">绝对寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">存储器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">(</mo><msub><mi>r</mi><mi>a</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(r_a)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo stretchy="false">[</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>a</mi></msub><mo stretchy="false">]</mo><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M[R[r_a]]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">间接寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">存储器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi><mo stretchy="false">(</mo><msub><mi>r</mi><mi>b</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Imm(r_b)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo stretchy="false">[</mo><mi>I</mi><mi>m</mi><mi>m</mi><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>b</mi></msub><mo stretchy="false">]</mo><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M[Imm+R[r_b]]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">（基址+偏移量）寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">存储器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">(</mo><msub><mi>r</mi><mi>b</mi></msub><mo separator="true">,</mo><msub><mi>r</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(r_b,r_i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo stretchy="false">[</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>b</mi></msub><mo stretchy="false">]</mo><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>i</mi></msub><mo stretchy="false">]</mo><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M[R[r_b]+R[r_i]]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">变址寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">存储器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi><mo stretchy="false">(</mo><msub><mi>r</mi><mi>b</mi></msub><mo separator="true">,</mo><msub><mi>r</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Imm(r_b, r_i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo stretchy="false">[</mo><mi>I</mi><mi>m</mi><mi>m</mi><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><mi>b</mi><mo stretchy="false">]</mo><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M[Imm+R[b]+R[i]]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord mathdefault">b</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">变址寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">存储器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">(</mo><mo separator="true">,</mo><msub><mi>r</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(,r_i,s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo stretchy="false">[</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>b</mi></msub><mo stretchy="false">]</mo><mo separator="true">⋅</mo><mi>s</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M[R[r_b]·s]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">比例变址寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">存储器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi><mo stretchy="false">(</mo><mo separator="true">,</mo><msub><mi>r</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Imm(,r_i,s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mopen">(</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo stretchy="false">[</mo><mi>I</mi><mi>m</mi><mi>m</mi><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>b</mi></msub><mo stretchy="false">]</mo><mo separator="true">⋅</mo><mi>s</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M[Imm+R[r_b]·s]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">比例变址寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">存储器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">(</mo><msub><mi>r</mi><mi>b</mi></msub><mo separator="true">,</mo><msub><mi>r</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(r_b,r_i,s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo stretchy="false">[</mo><mo stretchy="false">[</mo><msub><mi>R</mi><mi>i</mi></msub><mo stretchy="false">]</mo><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>b</mi></msub><mo stretchy="false">]</mo><mo separator="true">⋅</mo><mi>s</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M[[R_i]+R[r_b]·s]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mopen">[</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">比例变址寻址</td>
+</tr>
+<tr>
+<td style="text-align:center">存储器</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>I</mi><mi>m</mi><mi>m</mi><mo stretchy="false">(</mo><msub><mi>r</mi><mi>b</mi></msub><mo separator="true">,</mo><msub><mi>r</mi><mi>i</mi></msub><mo separator="true">,</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Imm(r_b,r_i,s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>M</mi><mo stretchy="false">[</mo><mi>I</mi><mi>m</mi><mi>m</mi><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>b</mi></msub><mo stretchy="false">]</mo><mo>+</mo><mi>R</mi><mo stretchy="false">[</mo><msub><mi>r</mi><mi>i</mi></msub><mo stretchy="false">]</mo><mo separator="true">⋅</mo><mi>s</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">M[Imm+R[r_b]+R[r_i]·s]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">m</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mclose">]</span></span></span></span></td>
+<td style="text-align:center">比例变址寻址</td>
+</tr>
+</tbody>
+</table>
+<h3 id="数据传送指令"><a class="markdownIt-Anchor" href="#数据传送指令"></a> 数据传送指令</h3>
+<p>数据传输指令将数据从一个位置传送到另一个位置。典型为MOV类，把数据从源位置移动到目的位置，不做任何变化。MOV类指令由四条指令组成：<code>movb</code>、<code>movw</code>、<code>movl</code>和<code>movq</code>。</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果     </th>
+<th>描述   </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MOV      S, D</td>
+<td> S-&gt;D </td>
+<td>传送</td>
+</tr>
+<tr>
+<td><code>movb</code><br><code>movw</code><br><code>movl</code><br><code>movq</code><br><code>movabsq</code>     I, R</td>
+<td><br><br><br><br> I-&gt;R </td>
+<td>传送字节<br>传送字<br>传送双字<br>传送四字<br>传送绝对的四字</td>
+</tr>
+</tbody>
+</table>
+<p>源操作数指定的值是一个立即数，存储在寄存器或内存中。目的操作数指定一个位置，寄存器或内存地址。x86_64中不允许两个操作数都指向内存位置。</p>
+<p>MOVZ类中的指令把目的中剩余的字节填充为<code>0</code>，而MOVS类中的指令通过符号扩展来填充，把源操作数的最高位进行复制。指令名字最后两个字符，第一个指示源的大小，第二个指示目的的大小，只考虑目的大于等于原的情况。</p>
+<p>特别的，<code>cltq</code>指令没有操作数，总是以<code>%eax</code>作为源，<code>%rax</code>作为符号扩展结果，等价于<code>movslq %eax, %rax</code>。</p>
+<p><code>push</code>用于把数据压入栈，而<code>pop</code>从栈中弹出数据。弹出的值永远最近被压入且仍然在栈中的值。</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pushq    S</td>
+<td>R[%rsp] &lt;- R[%rsp] - 8;<br>M[R[%rsp]] &lt;- S</td>
+<td>将四字压入栈</td>
+</tr>
+<tr>
+<td>popq     D</td>
+<td>D&lt;-M[R[%rsp]];<br>R[%rsp]&lt;-R[%rsp]+8</td>
+<td>将四字弹出栈</td>
+</tr>
+</tbody>
+</table>
+<p>基本上来说，<code>pushq %rbp</code>（一般使用rbp作为帧指针）的行为等价于</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">subq $<span class="number">8</span>,%rsp</span><br><span class="line">movq %rbp,(%rsp)</span><br></pre></td></tr></table></figure>
+<p>也就是让栈指针下降，并用帧指针的值更新栈指针指向的虚拟内存位置，使得当时栈指针指向的内存处，存放帧指针的值。前者明显节约了指令字节数。</p>
+<p>而<code>popq %rax</code>（一般用rax作为存储返回值的寄存器）基本等价于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">movq (%rsp),%rax</span><br><span class="line">addq $8,%rsp</span><br></pre></td></tr></table></figure>
+<p>也就是，将当时栈指针指向的内存的值传送给%rax，并将栈指针归位。</p>
+<h2 id="算数和逻辑操作"><a class="markdownIt-Anchor" href="#算数和逻辑操作"></a> 算数和逻辑操作</h2>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>leaq</code>    S, D</td>
+<td>D &lt;- &amp;S </td>
+<td>加载有效地址</td>
+</tr>
+<tr>
+<td><code>INC</code>    D<br><code>DEC</code>    D<br><code>NEG</code>    D<br><code>NOT</code>    D<br></td>
+<td>D &lt;- D + 1<br>D &lt;- D - 1<br>D &lt;- -D<br>D &lt;- ~D</td>
+<td>加1<br>减1<br>取负<br>取补</td>
+</tr>
+<tr>
+<td><code>ADD</code>    S, D<br><code>SUB</code>    S, D<br><code>IMUL</code>    S, D<br><code>XOR</code>    S, D<br><code>OR</code>      S, D<br><code>AND</code>    S, D</td>
+<td>D &lt;- D + S<br>D &lt;- D - S<br>D &lt;- D * S<br>D &lt;- D ^ S<br>D &lt;- D | S<br>D &lt;- D &amp; S</td>
+<td>加<br>减<br>乘<br>异或<br>或<br>与</td>
+</tr>
+<tr>
+<td><code>SAL</code>    k, D<br><code>SHL</code>    k, D<br><code>SAR</code>    k, D<br><code>SHR</code>    k, D<br></td>
+<td>D &lt;- D &lt;&lt; k<br>D &lt;- D &lt;&lt; k<br>D &lt;- D &gt;&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mrow></mrow><mi>A</mi></msub></mrow><annotation encoding="application/x-tex">_{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.47833099999999995em;vertical-align:-0.15em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">A</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> k<br>D &lt;- D &gt;&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mrow></mrow><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">_{L}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.47833099999999995em;vertical-align:-0.15em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> k</td>
+<td>左移<br>左移（等同于SAL）<br>算术右移<br>逻辑右移</td>
+</tr>
+</tbody>
+</table>
+<h3 id="加载有效地址"><a class="markdownIt-Anchor" href="#加载有效地址"></a> 加载有效地址</h3>
+<p><strong>加载有效地址（load effective address）</strong> 指令<code>leaq</code>从内存读数据到寄存器，将有效地址写入到目的操作数，对于源操作数，等价于<code>&amp;S</code>。可用于描述普通的算术操作，例如<code>leaq 7(%rdx, %rdx, 4), %rax</code> ，若记<code>%rdx</code>值为<code>x</code>，有<code>%rax</code>的值为<code>5 * x + 7</code>。</p>
+<h3 id="一元操作和二元操作"><a class="markdownIt-Anchor" href="#一元操作和二元操作"></a> 一元操作和二元操作</h3>
+<p>第二组的操作是一元操作，只有一个操作数，既是源又是目的。可以是一个寄存器，也可以是一个内存位置，类似于<code>++</code>。</p>
+<p>第三组是二元操作，其中第二个数既是源又是目的，类似于<code>+=</code>。第一个操作数可以是立即数、寄存器或内存位置。</p>
+<h3 id="移位操作"><a class="markdownIt-Anchor" href="#移位操作"></a> 移位操作</h3>
+<p>移位量可以是一个立即数，或放且只放在单字节寄存器<code>%cl</code>中。移位操作对 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span></span></span></span> 位长的数据值进行操作，移位量由<code>%cl</code>寄存器的低 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span></span></span></span> 位决定，这里 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mi>m</mi></msup><mo>=</mo><mi>w</mi></mrow><annotation encoding="application/x-tex">2^m=w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.664392em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">m</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span></span></span></span> 。高位会被忽略 。例如，当<code>%cl</code>值为<code>0xFF</code>时，指令<code>salb</code>会移<code>7</code>位，<code>salw</code>会移<code>15</code>位，<code>sall</code>会移<code>31</code>位，而<code>salq</code>会移<code>63</code>位。</p>
+<p>左移的两个指令，效果是一样的。而<code>SAR</code>执行算术移位（填上符号位），<code>SHR</code>执行逻辑移位（填上<code>0</code>）。移位操作的目的操作数可以是一个寄存器或是一个内存位置。</p>
+<p>大多数指令是无符号、有符号数通用的，只有右移指令需要做出区分。</p>
+<h3 id="特殊的算数操作"><a class="markdownIt-Anchor" href="#特殊的算数操作"></a> 特殊的算数操作</h3>
+<p>首先，两个64位无符号或有符号乘法，需要128位来表示。x86_64指令集对128位数的操作提供有限支持。Intel把16字节的数称作八字（oct word）。</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>效果</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>imulq    S<br>mulq     S</td>
+<td>R[%rdx]：R[%rax]&lt;-S × R[%rax]<br>R[%rdx]：R[%rax]&lt;-S × R[%rax]</td>
+<td>有符号全乘法<br>无符号全乘法</td>
+</tr>
+<tr>
+<td>clto</td>
+<td>R[%rdx]：R[%rax]&lt;-符号扩展（R[%rax]）</td>
+<td>转换为八字</td>
+</tr>
+<tr>
+<td>idivq    S</td>
+<td>R[%rdx]&lt;-R[%rdx]：R[%rax] mod S<br>R[%rdx]&lt;-R[%rdx]：R[%rax] ÷ S</td>
+<td>有符号除法</td>
+</tr>
+<tr>
+<td>divq    S</td>
+<td>R[%rdx]&lt;-R[%rdx]：R[%rax] mod S<br>R[%rdx]&lt;-R[%rdx]：R[%rax] ÷ S</td>
+<td>无符号除法</td>
+</tr>
+</tbody>
+</table>
+<p>在上文中有<code>imul S, D</code>，这种形式的指令是一个双操作数乘法指令。但这里的<code>imulq</code>与<code>mulq</code>，作为单操作数指令，可以计算两个64位的全128位乘积。</p>
+<p>这两个指令要求一个参数必须在寄存器<code>%rax</code>中，而另一个作为源操作数。然后乘积存放在<code>%rdx</code>（高64位）和<code>%rax</code>（低64位）中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;inttypes.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> __int128 <span class="keyword">uint128_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">store_uprod</span><span class="params">(<span class="keyword">uint128_t</span> *dest, <span class="keyword">uint64_t</span> x, <span class="keyword">uint64_t</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    *dest = x * (<span class="keyword">uint128_t</span>) y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># void store_uprod</span><br><span class="line"># dest int %rdi, x in %rsi, y in %rdx</span><br><span class="line">store_uprod:</span><br><span class="line">    movq    %rsi, %rax      # Copy x to multiplicand</span><br><span class="line">    mulq    %rdx            # Multiply by y</span><br><span class="line">    movq    %rax, (%rdi)    # Store lower 8 bytes at dest</span><br><span class="line">    movq    %rdx, 8(%rdi)   # Store upper 8 bytes at dest+8</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
+<p>除法和取模操作是由单操作数指令提供的。有符号除法指令<code>idivl</code>将寄存器<code>%rdx</code>（高64位）和<code>%rax</code>（低64位）中的128位数作为被除数，而除数作为指令的操作数。指令将商存储在寄存器<code>%rax</code>中，将余数存储在寄存器<code>%rdx</code>中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remdiv</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> y, <span class="keyword">long</span> *qp, <span class="keyword">long</span> *rp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> q = x / y;</span><br><span class="line">    <span class="keyword">long</span> r = x % y;</span><br><span class="line">    *qp = q;</span><br><span class="line">    *rp = r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># remdiv</span><br><span class="line"># x in %rdi, y in %rsi, qp in %rdx, rp in %rcx</span><br><span class="line">remdiv:</span><br><span class="line">    movq    %rdx, %r8       # Copy qp</span><br><span class="line">    movq    %rdi, %rax      # Move x to lower 8 bytes of dividend </span><br><span class="line">    cqto                    # Sign-extend to upper 8 bytes of dividend</span><br><span class="line">    idivq   %rsi            # Divide by y</span><br><span class="line">    movq    %rax, (%r8)     # Store quotient at qp</span><br><span class="line">    movq    %rdx, (%rcx)    # Store remainder at rp</span><br></pre></td></tr></table></figure>
+<h2 id="控制"><a class="markdownIt-Anchor" href="#控制"></a> 控制</h2>
+<p>与数据相关的控制流是hi先有条件行为的常见方法。</p>
+<h3 id="条件码"><a class="markdownIt-Anchor" href="#条件码"></a> 条件码</h3>
+<ul>
+<li>CF: 进位标志。最近的操作使得最高位产生了进位。可用来检查无符号操作的溢出。</li>
+<li>ZF：零标志。最近的操作得出的结果为 0 。</li>
+<li>SF：符号标志。最近的操作得到的结果为负数。</li>
+<li>OF：溢出标志。最近的操作导致一个补码溢出——正溢出或负溢出。</li>
+</ul>
+<p>假设<code>t=a+b</code>，数值对应条件码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CF  (unsigned) t &lt; (unsigned) a     无符号溢出</span><br><span class="line">ZF  (t == 0)                        零</span><br><span class="line">SF  (t &lt; 0)                         负数</span><br><span class="line">OF  (a&lt;0==b&lt;0) &amp;&amp; (t&lt;0!=a&lt;0)        有符号溢出                </span><br></pre></td></tr></table></figure>
+<p><code>leaq</code>指令不改变条件码。因为它是用来进行地址计算的。除此之外的算数和逻辑操作均可能设置条件码。对于逻辑操作，例如<code>XOR</code>，进位标志和溢出标志会被设置为0。对于移位操作，进位标志将设置为最后一个被移出的位，而溢出标志设置为0。<code>INC</code>和<code>DEC</code>指令会设置溢出和零标志，但是不会改变进位标志。</p>
+<p>两类指令，<code>cmp</code> 与 <code>test</code> 会设置条件码，且不改变任何其他寄存器。<code>cmp</code>类似于<code>sub</code>，而<code>test</code>类似于<code>AND</code>，其后缀同样有<code>bwlq</code>之分。例如，用<code>cmpq %rsi, %rdi</code>，计算<code>%rdi - %rsi</code>，若<code>%rdi &lt; %rsi</code>，则SF为1。</p>
+<h3 id="访问条件码"><a class="markdownIt-Anchor" href="#访问条件码"></a> 访问条件码</h3>
+<p>条件码的常见使用方法有三种</p>
+<ol>
+<li>根据条件码的某种组合，将一个字节设置为0或1</li>
+<li>条件跳转</li>
+<li>有条件地传输数据</li>
+</ol>
+<p>对于第一种情况，有<code>SET</code>指令。其后缀与操作数大小无关，而是考虑不同组合。一条<code>SET</code>指令的目的操作数是低位单字节寄存器元素之一，或单字节内存位置。</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>同义名</th>
+<th>效果</th>
+<th>设置条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sete</code>   D<br><code>setne</code>  D</td>
+<td><code>setz</code><br><code>setnz</code></td>
+<td>D&lt;-ZF<br>D&lt;- -ZF</td>
+<td>相等/零<br>不相等/非零</td>
+</tr>
+<tr>
+<td><code>sets</code>    D<br><code>setns</code>   D</td>
+<td><code>sets</code><br><code>setns</code></td>
+<td>D&lt;-SF<br>D&lt;- -SF</td>
+<td>负数<br>非负数</td>
+</tr>
+<tr>
+<td><code>setg</code>    D<br><code>setge</code>  D<br><code>setl</code>    D<br><code>setle</code>  D</td>
+<td><code>setnle</code><br><code>setnl</code><br><code>setnge</code><br><code>setng</code></td>
+<td>D&lt;- ~(SF ^ OF) &amp; -ZF<br>D&lt;- ~(SF ^ OF)<br>D&lt;- SF ^ OF<br>D&lt;- (SF ^ OF) | ZF</td>
+<td>大于（有符号&gt;）<br> 大于等于（有符号 ≥）<br>小于（有符号&lt;）<br> 小于等于（有符号 ≤）</td>
+</tr>
+<tr>
+<td><code>seta</code>    D<br><code>setae</code>  D<br><code>setb</code>     D<br><code>setbe</code>  D</td>
+<td><code>setnbe</code><br><code>setnb</code><br><code>setnae</code><br><code>setna</code></td>
+<td>D&lt;- ~CF &amp; ~ZF<br>D&lt;- ~CF<br>D&lt;- CF<br>D&lt;- CF | ZF</td>
+<td>超过（无符号&gt;）<br>超过或相等（无符号 ≥）<br>低于（无符号&lt;）<br>低于或相等（无符号≤）</td>
+</tr>
+</tbody>
+</table>
+<p>如下演示了 <code>a &lt; b</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># a in %rdi, b in %rsi</span><br><span class="line">comp:</span><br><span class="line">    cmpq    %rsi, %rdi</span><br><span class="line">    setl    %al</span><br><span class="line">    movzbl  %al, %eax</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
+<h3 id="跳转指令"><a class="markdownIt-Anchor" href="#跳转指令"></a> 跳转指令</h3>
+<p>跳转（jump）指令改变程序执行的顺序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    movq    $0, %rax</span><br><span class="line">    jmp     .L1</span><br><span class="line">    movq    (%rax), %rdx</span><br><span class="line">.L1</span><br><span class="line">    popq    %rdx</span><br></pre></td></tr></table></figure>
+<p>指令<code>jmp .L1</code>会跳转到标号<code>.L1</code>处继续执行。在产生目标代码文件时，汇编器会确定所有带标号指令的地址，并将<strong>跳转目标</strong>（目的指令地址）编码为跳转指令的一部分。</p>
+<p>跳转可以是<strong>直接跳转</strong>，即跳转目标是作为指令一部分编码；也可以是<strong>间接跳转</strong>，即跳转目标是从寄存器或内存位置中读出的。直接跳转以标号，例如<code>.L1</code>为目标跳转。而间接跳转使用<code>*</code>+操作数指示符作为目标，例如<code>jmp %rax</code>将寄存器<code>%rax</code>的值作为目标，<code>jmp (%rax)</code>将地址<code>(%rax)</code>作为目标。</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>同义名</th>
+<th>跳转条件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jmp</code>  Label<br><code>jmp</code>  *Operand</td>
+<td></td>
+<td>1<br>1</td>
+<td>直接跳转<br>间接跳转</td>
+</tr>
+<tr>
+<td><code>je</code>   Label<br><code>jne</code>  Label</td>
+<td><code>jz</code><br><code>jnz</code></td>
+<td>ZF<br>~ZF</td>
+<td>相等/零<br>不相等/非零</td>
+</tr>
+<tr>
+<td><code>js</code>   Label<br><code>jns</code>  Label</td>
+<td></td>
+<td>SF<br>~SF</td>
+<td>负数<br>非负数</td>
+</tr>
+<tr>
+<td><code>jg</code>   Label<br><code>jge</code>  Label<br><code>jl</code>   Label<br><code>jle</code>  Label</td>
+<td><code>jnle</code><br><code>jnl</code><br><code>jnge</code><br><code>jng</code></td>
+<td>~(SF ^ OF) &amp; ~ZF<br> ~(SF ^ OF)<br> SF ^ OF<br>(SF ^ OF) | ZF</td>
+<td>大于（有符号&gt;）<br>大于或等于（有符号 ≥）<br> 小于（有符号）<br> 小于或等于（有符号≤）</td>
+</tr>
+<tr>
+<td><code>ja</code>    Label<br><code>jae</code>  Label<br><code>jb</code>    Label<br><code>jbe</code>   Label</td>
+<td><code>jnbe</code><br><code>jnb</code><br><code>jnae</code><br><code>jna</code></td>
+<td>~CF &amp; ~ZF<br> ~CF<br>CF <br>CF | ZF</td>
+<td>超过（无符号 &gt;）<br>超过或相等（无符号 ≥）<br>低于（无符号&lt;）<br>低于或相等（无符号 ≤）</td>
+</tr>
+</tbody>
+</table>
+<p>这些跳转条件与<code>SET</code>指令的名字和设置条件是相匹配的，而条件跳转只能是直接跳转。</p>
+<p>跳转基于相对寻址。它们会将目标指令的地址与紧跟在跳转指令后面的那条指令的地址之间的差作为编码。</p>
+<p>如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    movq    %rdi, %rax</span><br><span class="line">    jmp     .L2</span><br><span class="line">.L3:</span><br><span class="line">    sarq    %rax</span><br><span class="line">.L2:</span><br><span class="line">    testq   %rax, %rax</span><br><span class="line">    jg      .L3</span><br><span class="line">    rep; ret</span><br></pre></td></tr></table></figure>
+<p>汇编器产生的反汇编版本为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0:  48 89 f8        mov     %rdi, %rax</span><br><span class="line">3:  eb 03           jmp     8 &lt;loop+0x8&gt;    # 注意到jmp指令后操作数为0x03</span><br><span class="line">5:  48 d1 f8        sar     %rax</span><br><span class="line">8:  48 85 c0        test    %rax, %rax</span><br><span class="line">b:  7f f8           jg      5 &lt;loop+0x5&gt;    # 注意到jmp指令后操作数为0xf8 = -8</span><br><span class="line">d:  f3 c3           repz retq</span><br></pre></td></tr></table></figure>
+<p>注意到<code>0x8=0x3+0x5</code>且<code>0x-8+0xd=0x5</code>，得到结论：相对寻址时，PC的值是跳转指令后面那条指令的值，加上操作数得到跳转地址。</p>
+<h3 id="用条件控制实现条件分支"><a class="markdownIt-Anchor" href="#用条件控制实现条件分支"></a> 用条件控制实现条件分支</h3>
+<p>例如基于此实现一个取绝对值的函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># long absdiff(long x, y)</span><br><span class="line"># x in %rdi, y in %rsi</span><br><span class="line">absdiff:</span><br><span class="line">    cmpq    %rsi, %rdi      # Compare x:y</span><br><span class="line">    jge     .L2             # If &gt;= goto x_ge_y</span><br><span class="line">    movq    %rsi, %rax</span><br><span class="line">    subq    %rdi, %rax      # result = y - x</span><br><span class="line">    ret</span><br><span class="line">.L2:</span><br><span class="line">    movq    %rdi, %rax</span><br><span class="line">    subq    %rsi, %rax      # result = x - y</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
+<p>对于C中的<code>if-else</code>语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (test-expr)</span><br><span class="line">    then-statement</span><br><span class="line">else</span><br><span class="line">    else-statement</span><br></pre></td></tr></table></figure>
+<p>汇编实现类似于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    t = test-expr;</span><br><span class="line">    if (!t)</span><br><span class="line">        goto false;</span><br><span class="line">    then-statement</span><br><span class="line">    goto done;</span><br><span class="line">false:</span><br><span class="line">    else-statement</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<h3 id="用条件传送实现条件分支"><a class="markdownIt-Anchor" href="#用条件传送实现条件分支"></a> 用条件传送实现条件分支</h3>
+<p>上一条方法在现代处理器上可能会略显低效。使用条件传送指令可以实现如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># long absdiff(long x, y)</span><br><span class="line"># x in %rdi, y in %rsi</span><br><span class="line">absdiff:</span><br><span class="line">    movq    %rsi, %rax</span><br><span class="line">    subq    %rdi, %rax</span><br><span class="line">    movq    %rdi, %rdx</span><br><span class="line">    subq    %rsi, %rdx</span><br><span class="line">    cmpq    %rsi, %rdi</span><br><span class="line">    cmovge  %rdx, %rax</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
+<p><code>CMOV</code>类指令类似于<code>SET</code>与<code>JMP</code>，后缀字母同样表示条件。<code>CMOV S, R</code>表示满足条件的情况下，使得<code>S -&gt; R</code>。</p>
+<p>对于下式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v = test-expr ? then-expr : else-expr;</span><br></pre></td></tr></table></figure>
+<p>条件控制转移的方法，编译为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    if (!test-expr)</span><br><span class="line">        goto false;</span><br><span class="line">    v = then-expr;</span><br><span class="line">    goto done;</span><br><span class="line">false:</span><br><span class="line">    v = else-expr;</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<p>而条件跳转类似于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v = then-expr;</span><br><span class="line">ve = else-expr;</span><br><span class="line">t = test-expr;</span><br><span class="line">if (!t) v = ve;</span><br></pre></td></tr></table></figure>
+<p>但是条件跳转是具有限制的，具体略。</p>
+<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
+<p>C语言提供了三种循环结构，<code>do-while</code>、<code>while</code>、<code>for</code>。</p>
+<h4 id="do-while"><a class="markdownIt-Anchor" href="#do-while"></a> do-while</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span></span><br><span class="line">    body-<span class="function">statement</span></span><br><span class="line"><span class="function">    <span class="title">while</span><span class="params">(test-expr)</span></span></span><br></pre></td></tr></table></figure>
+<p>显然可以用<code>goto</code>表示为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">loop:</span><br><span class="line">    body-statement</span><br><span class="line">    t = test-expr</span><br><span class="line">    if (t)</span><br><span class="line">        goto loop;</span><br></pre></td></tr></table></figure>
+<p>例如，使用汇编编写一段求阶乘的函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># long fact_do(long n)</span><br><span class="line"># n in %rdi</span><br><span class="line">fact_do:</span><br><span class="line">    movl    $1, eax     # set result = 1</span><br><span class="line">.L2:</span><br><span class="line">    imulq   %rdi, %rax  # Compute result *= n;</span><br><span class="line">    subq    $1, %rdi    # Decrement n</span><br><span class="line">    cmpq    $1, %rdi    # Compare n:1</span><br><span class="line">    jg      .L2         # If n &gt; 1, back to loop</span><br><span class="line">    rep; ret</span><br></pre></td></tr></table></figure>
+<h4 id="while"><a class="markdownIt-Anchor" href="#while"></a> while</h4>
+<p><code>while</code>是一种较为简单的循环语句</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (test-expr)</span><br><span class="line">    body-statement</span><br></pre></td></tr></table></figure>
+<p>与<code>do-while</code>的不同之处在于，在第一次<code>body-statement</code>之前，会对<code>test-expr</code>求值。有两种方法编译<code>while</code>，第一种是 <strong>跳转到中间（jump to middle）</strong> ，执行一个无条件跳转到循坏结尾，以执行初始的测试。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">goto</span> test;</span><br><span class="line">loop:</span><br><span class="line">    body-statement</span><br><span class="line">test:</span><br><span class="line">    t = test-expr;</span><br><span class="line">    <span class="keyword">if</span> (t)</span><br><span class="line">        <span class="keyword">goto</span> loop;</span><br></pre></td></tr></table></figure>
+<p>依旧编写一个阶乘函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># long fact(long n)</span><br><span class="line"># n in %rdi</span><br><span class="line">fact:</span><br><span class="line">    movl    $1, %eax    # set result = 1</span><br><span class="line">    jmp     .L5         # goto test</span><br><span class="line">.L6                     # loop:</span><br><span class="line">    imulq   %rdi, %rax  # compute result *= n</span><br><span class="line">    subq    $1, %rdi    # decrement n</span><br><span class="line">.L5                     # test:</span><br><span class="line">    cmpq    $1, %rdi    # compare n:1</span><br><span class="line">    jg      .L6         # if &gt;, goto loop</span><br><span class="line">    rep; ret            # return</span><br></pre></td></tr></table></figure>
+<p>第二种方法为<strong>guarded-do</strong>，首先使用条件分支，如果不成立就更换为<code>do-while</code>循环。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">t = test-expr</span><br><span class="line"><span class="keyword">if</span> (!t)</span><br><span class="line">    <span class="keyword">goto</span> done;</span><br><span class="line">loop:</span><br><span class="line">    body-statement</span><br><span class="line">    t = test-expr;</span><br><span class="line">    <span class="keyword">if</span> (!t)</span><br><span class="line">        <span class="keyword">goto</span> loop;</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># long fact(long n)</span><br><span class="line">fact:</span><br><span class="line">    cmpq    $1, %rdi    #compare n:1</span><br><span class="line">    jle     .L7         # if &lt;=, goto done</span><br><span class="line">    movl    $1, %eax    # set result = 1</span><br><span class="line">.L6                     # loop:</span><br><span class="line">    imulq   %rdi, %rax  # compute result *= n</span><br><span class="line">    subq    $1, %rdi    # decrement n</span><br><span class="line">    cmpq    $1, %rdi    # compare n:1</span><br><span class="line">    jne     .L6         # if !=, goto loop</span><br><span class="line">    rep; ret            # return</span><br><span class="line">.L7                     # done:</span><br><span class="line">    movl    $1, %eax    # compute result = 1</span><br><span class="line">    ret                 # return</span><br></pre></td></tr></table></figure>
+<h4 id="for"><a class="markdownIt-Anchor" href="#for"></a> for</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (init-expr; test-expr; update-expr)</span><br><span class="line">    body-statement</span><br></pre></td></tr></table></figure>
+<p>转化为<code>while</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">init-expr;</span><br><span class="line"><span class="keyword">while</span> (test-expr)</span><br><span class="line">&#123;</span><br><span class="line">    body-statement</span><br><span class="line">    update-expr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下同<code>while</code>。</p>
+<h3 id="switch"><a class="markdownIt-Anchor" href="#switch"></a> switch</h3>
+<p><code>switch</code>语句可以进行多重分支（multiway branching），且使用 <strong>跳转表（jump table）</strong> 提升效率。</p>
+<h2 id="过程"><a class="markdownIt-Anchor" href="#过程"></a> 过程</h2>
+<p>过程在不同的编程语言中可以是 <strong>函数（function）</strong>、<strong>方法（method）</strong>、<strong>子例程（subroutine）</strong>、<strong>处理函数（handler）</strong> 。</p>
+<p>假设过程P调用过程Q，Q执行后返回到P，这些动作包括下面一个或多个机制。</p>
+<ul>
+<li><em>传递控制</em>。在进入过程Q的时候，PC必须被设置为Q的代码的起始地址，然后返回时，要把PC设置为P中调用Q后面那条指令的地址。</li>
+<li><em>传递数据</em>。P必须能够向Q提供一个或多个参数，Q必须能够向P返回一个值。</li>
+<li><em>分配和释放内存</em>。在开始时，Q可能需要为局部变量分配空间，而在返回时前，又必须释放这些存储空间。</li>
+</ul>
+<h3 id="运行时栈"><a class="markdownIt-Anchor" href="#运行时栈"></a> 运行时栈</h3>
+<p>在过程P调用Q时，P以及向上的所有调用链都被暂时挂起。当Q运行时，只需要为局部变量分配新的存储空间。当Q返回时，所有栈上空间都被释放。</p>
+<p>x86-64的栈向低地址方向增长。而栈指针<code>%rsp</code>指向栈顶元素。用<code>pushq</code>和<code>popq</code>指令将数据存入栈中或是从栈中取出。将栈指针减小一个适当的量可以为没有指定初始值的数据在栈上分配空间。类似地，可以通过增加栈指针来释放空间。</p>
+<p>当x86-64过程所需要的存储空间超出寄存器能够存放的大小时，就会在栈上分配空间。这个部分称为过程的<strong>栈帧（stack frame）</strong>。<br />
+<img src="https://s2.loli.net/2022/05/29/5NIPuQAy9Xwao7W.png" alt="stack.png" /></p>
+<p>当P调用Q时，会把返回地址压入栈中，指明当Q返回时，要从P程序的哪个位置继续执行。我们把这个返回地址当做P的栈帧的一部分，因为它存放的是与P相关的状态。Q的代码会扩展当前栈的边界。大多数栈帧是定长的。有一些简单函数（有时称为叶子过程）不需要栈帧。</p>
+<h3 id="转移控制"><a class="markdownIt-Anchor" href="#转移控制"></a> 转移控制</h3>
+<p>将控制从P转移到Q只需要把PC设置为Q代码的起始位置。但当Q返回时，CPU必须记录好需要继续执行的P的代码的位置。</p>
+<p><code>call Q</code>指令记录该地址。该指令将地址A压入栈中，并将PC设置为Q的起始地址。压入的地址A被称为返回地址。</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>call</code>     Label</td>
+<td>过程调用</td>
+</tr>
+<tr>
+<td><code>call</code>     *Operand</td>
+<td>过程调用</td>
+</tr>
+<tr>
+<td><code>ret</code></td>
+<td>从过程调用中返回</td>
+</tr>
+</tbody>
+</table>
+<p><code>call</code>指令的操作数为被调用过程起始的指令地址。<code>ret</code>指令返回这次调用后面的那条指令。</p>
+<h3 id="数据传送"><a class="markdownIt-Anchor" href="#数据传送"></a> 数据传送</h3>
+<p>x86-64中，大部分过程间的数据传送是通过寄存器实现的。当P调用Q时，P的代码必须首先把参数复制到适当的寄存器中。类似地，当Q返回P时，P的代码可以访问<code>%rax</code>的返回值。</p>
+<p>x86-64中，可以通过寄存器最多传送6个整型参数。如果函数有大于六个参数，超出部分就需要通过栈来传递。通过栈传递参数时，所有数据大小都向8的倍数对齐。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># void proc(a1, a1p, a2, a2p, a3, a3p, a4, a4p)</span><br><span class="line"># argument passed as follows:</span><br><span class="line">#   a1  in %rdi</span><br><span class="line">#   a1p in %rsi</span><br><span class="line">#   a2  in %edx</span><br><span class="line">#   a2p in %rcx</span><br><span class="line">#   a3  in %r8w</span><br><span class="line">#   a3p in %r9</span><br><span class="line">#   a4  at %rsp+8</span><br><span class="line">#   a4p at %rsp+16</span><br></pre></td></tr></table></figure>
+<h3 id="栈上的局部存储"><a class="markdownIt-Anchor" href="#栈上的局部存储"></a> 栈上的局部存储</h3>
+<p>有些时候，数据必须存放在栈上</p>
+<ul>
+<li>寄存器不足够存放所有的本地数据</li>
+<li>对一个局部变量使用地址运算符<code>&amp;</code>，因此必须能够为它产生一个地址</li>
+<li>某些局部变量是数组或结构，因此必须能够通过数组或结构引用被访问到。</li>
+</ul>
+<p>以两个函数为例</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">swap_add</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> *yp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> x = *xp;</span><br><span class="line">    <span class="keyword">long</span> y = *yp;</span><br><span class="line">    *xp = y;</span><br><span class="line">    *yp = x;</span><br><span class="line">    <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">caller</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> arg1 = <span class="number">534</span>;</span><br><span class="line">    <span class="keyword">long</span> arg2 = <span class="number">1057</span>;</span><br><span class="line">    <span class="keyword">long</span> sum = swap_add(&amp;arg1, &amp;arg2);</span><br><span class="line">    <span class="keyword">long</span> diff = arg1 - arg2;</span><br><span class="line">    <span class="keyword">return</span> sum * diff;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">caller:</span><br><span class="line">    subq    $16, %rsp       # allocate 16 bytes for stack frame</span><br><span class="line">    movq    $534, (%rsp)    # store 534 in arg1</span><br><span class="line">    movq    $1057, 8(%rsp)  # store 1057 in arg2</span><br><span class="line">    leaq    8(%rsp), %rsi   # compute &amp;arg2 as second argument</span><br><span class="line">    movq    %rsp, %rdi      # compute &amp;arg1 as first argument</span><br><span class="line">    call    swap_add        # call swap_add(&amp;arg1, &amp;arg2)</span><br><span class="line">    movq    (%rsp), %rdx    # get arg1</span><br><span class="line">    subq    8(%rsp), %rdx   # compute diff = arg1 - arg2</span><br><span class="line">    imulq   %rdx, %rax      # compute sum * diff</span><br><span class="line">    addq    $16, %rsp       # deallocate stack frame</span><br><span class="line">    ret                     # return</span><br></pre></td></tr></table></figure>
+<h3 id="递归过程"><a class="markdownIt-Anchor" href="#递归过程"></a> 递归过程</h3>
+<p>以阶乘为例</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">rfact</span><span class="params">(<span class="keyword">long</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> result;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">1</span>)</span><br><span class="line">        result = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        result = n * rfact(n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># long rfact(long n)</span><br><span class="line"># n in %rdi</span><br><span class="line">rfact:</span><br><span class="line">    pushq   %rbx</span><br><span class="line">    movq    %rdi, %rbx</span><br><span class="line">    movl    $1, %eax</span><br><span class="line">    cmpq    $1, %rdi</span><br><span class="line">    jle     .L35</span><br><span class="line">    leaq    -1(%rdi), %rdi</span><br><span class="line">    call    rfact</span><br><span class="line">    imulq   %rbx, %rax</span><br><span class="line">.L35</span><br><span class="line">    popq    %rbx</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
+<h2 id="数组分配和访问"><a class="markdownIt-Anchor" href="#数组分配和访问"></a> 数组分配和访问</h2>
+<p>C语言实现数组的方式很简单。对于<code>T A[N]</code>，它在内存中分配一个L × N字节的连续区域。</p>
+<p>例如</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span>    A[<span class="number">12</span>];</span><br><span class="line"><span class="keyword">char</span>   *B[<span class="number">8</span>];</span><br><span class="line"><span class="keyword">int</span>     C[<span class="number">6</span>];</span><br><span class="line"><span class="keyword">double</span> *D[<span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+<p>即为</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数组</th>
+<th style="text-align:center">元素大小</th>
+<th style="text-align:center">总的大小</th>
+<th style="text-align:center">起始地址</th>
+<th style="text-align:center">元素i</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">A<br>B<br>C<br>D</td>
+<td style="text-align:center">1<br>8<br>4<br>8</td>
+<td style="text-align:center">12<br>64<br>24<br>40</td>
+<td style="text-align:center">x<sub>A</sub><br>x<sub>B</sub><br>x<sub>C</sub><br>x<sub>D</sub></td>
+<td style="text-align:center">x<sub>A</sub>+i<br>x<sub>B</sub>+8i<br>x<sub>C</sub>+4i<br>x<sub>D</sub>+8i</td>
+</tr>
+</tbody>
+</table>
+<p>x86-64的内存引用指令可以用来简化数组访问。例如获取int数组第i个地址，为<code>movl (%rdx, rcx, 4), %eax</code>，其中<code>%rdx</code>为首地址，<code>rcx</code>为<code>i</code>。</p>
+<p>同时，在C语言中，可以直接通过指针访问数组元素。<code>A[i]</code>等价于<code>*(A + i)</code>。对于嵌套数组或二维数组<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi><mtext>  </mtext><mi>D</mi><mo stretchy="false">[</mo><mi>R</mi><mo stretchy="false">]</mo><mo stretchy="false">[</mo><mi>C</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">T \ \ D[R][C]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace"> </span><span class="mspace"> </span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mclose">]</span></span></span></span>，取值方式为：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">&amp;</mi><mi>A</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo stretchy="false">[</mo><mi>j</mi><mo stretchy="false">]</mo><mo>=</mo><msub><mi>x</mi><mi>A</mi></msub><mo>+</mo><mi>L</mi><mo stretchy="false">(</mo><mi>C</mi><mo>×</mo><mi>i</mi><mo>+</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\&amp;A[i][j]=x_A+L(C \times i + j)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">&amp;</span><span class="mord mathdefault">A</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">)</span></span></span></span>。</p>
+<p>GCC对于定长数组有很多优化，而变长数组需要额外性能开销。</p>
+<h2 id="异质数据结构"><a class="markdownIt-Anchor" href="#异质数据结构"></a> 异质数据结构</h2>
+<p>主要为<code>struct</code>和<code>union</code>。</p>
+<p><strong>struct</strong><br />
+结构允许不同类型对象的聚合，其内存模型是连续的。指向结构的指针就是结构第一个字节的地址。编译器通过对应的字节偏移获取元素内容。</p>
+<p><strong>union</strong><br />
+联合允许以多种类型来引用一个对象。联合声明的语法与结构的语法一样，但它们是用不同的字段来引用相同的内存块。</p>
+<h3 id="数据对齐"><a class="markdownIt-Anchor" href="#数据对齐"></a> 数据对齐</h3>
+<p>许多计算机系统要求某种类型的地址必须是某个值 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>K</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>2</mn><mo separator="true">,</mo><mn>4</mn><mo separator="true">,</mo><mn>8</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">K \in \{2, 4, 8\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">8</span><span class="mclose">}</span></span></span></span> 的倍数。无论是否对齐，x86-64都能工作，但是对齐后性能更好。</p>
+<p>例如汇编声明中的<code>.align 8</code>命令要求后面的数据起始地址是8的倍数。对于包含结构的代码，编译器可能会在字段的分配中插入间隙，以保证每个元素都满足它的对齐要求。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
