@@ -26,14 +26,14 @@
 <meta property="og:site_name" content="Adamska&#39;s Blog">
 <meta property="og:description" content="在Windows上开发C++必须解决环境配置的问题。要么选择MS体系下的C++开发环境，要么使用诸如Cygwin，MinGW等环境。MSYS2是一个基于Cygwin与Mingw-w64的开发平台。除了直接使用MSYS2提供的终端进行开发，MSYS2还主要用于管理开发工具。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://adamska1008.github.io/.io//01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-08_21-33-34.png">
+<meta property="og:image" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-08_21-33-34.png">
 <meta property="article:published_time" content="2023-01-08T08:38:13.000Z">
-<meta property="article:modified_time" content="2023-01-08T14:03:50.868Z">
+<meta property="article:modified_time" content="2023-01-08T14:55:38.650Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="MYSY2">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://adamska1008.github.io/.io//01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-08_21-33-34.png">
+<meta name="twitter:image" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-08_21-33-34.png">
 
 
 <link rel="canonical" href="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/">
@@ -205,7 +205,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-01-08 16:38:13 / 修改时间：22:03:50" itemprop="dateCreated datePublished" datetime="2023-01-08T16:38:13+08:00">2023-01-08</time>
+      <time title="创建时间：2023-01-08 16:38:13 / 修改时间：22:55:38" itemprop="dateCreated datePublished" datetime="2023-01-08T16:38:13+08:00">2023-01-08</time>
     </span>
 
   
@@ -258,7 +258,7 @@
 <h1 id="通过windows-terminal启动msys2"><a class="markdownIt-Anchor" href="#通过windows-terminal启动msys2"></a> 通过Windows Terminal启动MSYS2</h1>
 <p>和Git Bash一样，MSYS2使用MinTTY作为默认终端。为了更方便的操作，更好的视觉效果，我们可以使用Windows Terminal启动MSYS2。</p>
 <p>在Windows Terminal的设置中添加新配置文件。当配置可执行文件时，使用<code>msys2_shell.cmd</code>作为可执行文件。需要加上参数<code>-ucrt64 -defterm -here -no-start -use-full-path</code>，它们分别表示：使用<code>UCRT64</code>环境，启动bash，<code>set CHERE_INVOKING=1</code>，不通过<code>start</code>命令来启动（否则会新建窗口）。</p>
-<p><img src="/.io//01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-08_21-33-34.png" alt></p>
+<p><img src="Snipaste_2023-01-08_21-33-34.png" alt></p>
 
     </div>
 
