@@ -21,29 +21,32 @@
 
     <meta name="description" content="在Windows上开发C++必须解决环境配置的问题。要么选择MS体系下的C++开发环境，要么使用诸如Cygwin，MinGW等环境。MSYS2是一个基于Cygwin与Mingw-w64的开发平台。除了直接使用MSYS2提供的终端进行开发，MSYS2还主要用于管理开发工具。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用MYSY2管理C++工具链">
+<meta property="og:title" content="使用MYSY2管理C++工具链（以vscode为例）">
 <meta property="og:url" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/index.html">
 <meta property="og:site_name" content="Adamska&#39;s Blog">
 <meta property="og:description" content="在Windows上开发C++必须解决环境配置的问题。要么选择MS体系下的C++开发环境，要么使用诸如Cygwin，MinGW等环境。MSYS2是一个基于Cygwin与Mingw-w64的开发平台。除了直接使用MSYS2提供的终端进行开发，MSYS2还主要用于管理开发工具。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-08_21-33-34.png">
+<meta property="og:image" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-08_23-53-48.png">
+<meta property="og:image" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-09_00-09-44.png">
+<meta property="og:image" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-09_00-11-37.png">
+<meta property="og:image" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-09_00-14-23.png">
 <meta property="article:published_time" content="2023-01-08T08:38:13.000Z">
-<meta property="article:modified_time" content="2023-01-08T14:55:38.650Z">
+<meta property="article:modified_time" content="2023-01-08T16:14:42.437Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="MYSY2">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-08_21-33-34.png">
+<meta name="twitter:image" content="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/Snipaste_2023-01-08_23-53-48.png">
 
 
 <link rel="canonical" href="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/","path":"2023/01/08/use-mysy2-to-manage-cpp-toolchain/","title":"使用MYSY2管理C++工具链"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/","path":"2023/01/08/use-mysy2-to-manage-cpp-toolchain/","title":"使用MYSY2管理C++工具链（以vscode为例）"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>使用MYSY2管理C++工具链 | Adamska's Blog</title>
+<title>使用MYSY2管理C++工具链（以vscode为例） | Adamska's Blog</title>
   
 
 
@@ -188,12 +191,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="使用MYSY2管理C++工具链 | Adamska's Blog">
+      <meta itemprop="name" content="使用MYSY2管理C++工具链（以vscode为例） | Adamska's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          使用MYSY2管理C++工具链
+          使用MYSY2管理C++工具链（以vscode为例）
         </h1>
 
         <div class="post-meta-container">
@@ -203,9 +206,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-01-08 16:38:13 / 修改时间：22:55:38" itemprop="dateCreated datePublished" datetime="2023-01-08T16:38:13+08:00">2023-01-08</time>
+      <time title="创建时间：2023-01-08 16:38:13" itemprop="dateCreated datePublished" datetime="2023-01-08T16:38:13+08:00">2023-01-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-09 00:14:42" itemprop="dateModified" datetime="2023-01-09T00:14:42+08:00">2023-01-09</time>
     </span>
 
   
@@ -222,43 +231,67 @@
 <span id="more"></span>
 <h1 id="安装msys2"><a class="markdownIt-Anchor" href="#安装msys2"></a> 安装MSYS2</h1>
 <p>参照MSYS2<a target="_blank" rel="noopener" href="https://www.msys2.org/">官网首页</a>进行基本的安装配置。</p>
-<p>MSYS2提供了多个不同的环境配置。本文使用最新出现的UCRT64环境。环境的区别见<a target="_blank" rel="noopener" href="https://www.msys2.org/docs/environments/">官方文档</a>。</p>
-<p>不同于Cygwin，MSYS2需要手动通过pacman包管理器安装自己需要的工具链。官方首页上的<code>pacman -S mingw-w64-ucrt-x86_64-gcc</code>命令作用是安装<code>ucrt</code>环境下的gcc。要安装其他工具，例如<code>gdb</code>，需要自行手动安装：<code>pacman -S mingw-w64-ucrt-x86_64-gcc</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">pacman -S mingw-w64-ucrt-x86_64-gdb</span><br><span class="line">resolving dependencies...</span><br><span class="line">looking <span class="keyword">for</span> conflicting packages...</span><br><span class="line"></span><br><span class="line">Packages (22) mingw-w64-ucrt-x86_64-bzip2-1.0.8-2  mingw-w64-ucrt-x86_64-ca-certificates-20211016-3</span><br><span class="line">              mingw-w64-ucrt-x86_64-expat-2.5.0-1  mingw-w64-ucrt-x86_64-gettext-0.21-3</span><br><span class="line">              mingw-w64-ucrt-x86_64-libffi-3.4.4-1  mingw-w64-ucrt-x86_64-libsystre-1.0.1-4</span><br><span class="line">              mingw-w64-ucrt-x86_64-libtasn1-4.19.0-1</span><br><span class="line">              mingw-w64-ucrt-x86_64-libtre-git-r128.6fb7206-2</span><br><span class="line">              mingw-w64-ucrt-x86_64-mpdecimal-2.5.1-1  mingw-w64-ucrt-x86_64-ncurses-6.3-6</span><br><span class="line">              mingw-w64-ucrt-x86_64-openssl-1.1.1.s-1  mingw-w64-ucrt-x86_64-p11-kit-0.24.1-3</span><br><span class="line">              mingw-w64-ucrt-x86_64-python-3.10.9-1  mingw-w64-ucrt-x86_64-readline-8.2.001-5</span><br><span class="line">              mingw-w64-ucrt-x86_64-sqlite3-3.40.0-1  mingw-w64-ucrt-x86_64-tcl-8.6.12-1</span><br><span class="line">              mingw-w64-ucrt-x86_64-termcap-1.3.1-6  mingw-w64-ucrt-x86_64-tk-8.6.12-1</span><br><span class="line">              mingw-w64-ucrt-x86_64-tzdata-2022g-1  mingw-w64-ucrt-x86_64-xxhash-0.8.1-2</span><br><span class="line">              mingw-w64-ucrt-x86_64-xz-5.2.9-1  mingw-w64-ucrt-x86_64-gdb-12.1-5</span><br><span class="line"></span><br><span class="line">Total Download Size:    40.95 MiB</span><br><span class="line">Total Installed Size:  275.01 MiB</span><br><span class="line"></span><br><span class="line">:: Proceed with installation? [Y/n] Y</span><br><span class="line">:: Retrieving packages...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>MSYS2提供了多个不同的环境配置。本文使用最新的UCRT64环境。环境的区别见<a target="_blank" rel="noopener" href="https://www.msys2.org/docs/environments/">官方文档</a>。</p>
+<p>不同于Cygwin，MSYS2需要手动通过pacman包管理器安装自己需要的工具链。</p>
+<p>官网首页使用<code>pacman -S mingw-w64-ucrt-x86_64-gcc</code>命令安装<code>ucrt</code>环境下的gcc。要安装其他工具，例如<code>gdb</code>，需要自行手动安装：<code>pacman -S mingw-w64-ucrt-x86_64-gcc</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S mingw-w64-ucrt-x86_64-gdb</span><br></pre></td></tr></table></figure>
+<p>具体开发环境可以按个人需求进行定制。</p>
 <h1 id="使用msys2安装的工具"><a class="markdownIt-Anchor" href="#使用msys2安装的工具"></a> 使用MSYS2安装的工具</h1>
-<p>在对应终端可以直接使用安装的工具进行开发，不过一般我们只使用其安装的工具，在自己的编辑器中配置开发环境。</p>
+<p>MSYS2的工具可以直接在自带终端中使用，但我们一般需要在自己的编辑器或IDE中使用。此时需要获取安装目录下各类工具的路径。</p>
 <p>MSYS2中安装的工具在软件目录下的对应位置。假如MSYS2安装在<code>C:\msys64</code>，那么我们安装的<code>gcc.exe</code>、<code>g++.exe</code> 与 <code>gdb.exe</code>均在<code>C:\msys64\ucrt64</code>的<code>bin</code>目录下。如果希望在IDE中使用MSYS2的工具链，需要自行配置路径。</p>
-<p>为了直接在windows终端中调用工具，需要配置环境变量。将<code>C:\msys64\ucrt64\bin</code>加入到环境变量中的<code>PATH</code>下。之后可以在Windows Terminal中直接调用<code>g++</code>等工具。</p>
+<p>为了直接在windows终端中调用工具，需要配置环境变量。将<code>C:\msys64\ucrt64\bin</code>加入到环境变量中的<code>PATH</code>下。之后可以在Windows Terminal中直接调用<code>g++</code>等工具。<br>
+<img src="Snipaste_2023-01-08_23-53-48.png" alt></p>
+<p>直接在Windows Terminal中调用<code>g++</code>，可以正常运行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ --version</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">g++.exe (Rev6, Built by MSYS2 project) 12.2.0</span><br><span class="line"><span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<p>配置编辑器或IDE环境，以vscode为例。vscode配置C++环境比较复杂，一般来说能在vscode中成功配置，在其他编辑器中也没有问题。</p>
+<p>具体vscode配置C++环境并不是文章重点，不再赘述。假定已经有了可以正常运行C++的vscode，只需替换环境配置。首先在<code>c_cpp_properties.json</code>中添加编译器路径与头文件路径，使得语言插件可以正常运行。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="attr">&quot;includePath&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="string">&quot;$&#123;workspaceFolder&#125;/**&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;C:/msys64/ucrt64/include/**&quot;</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="attr">&quot;compilerPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C:/msys64/ucrt64/bin/g++.exe&quot;</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>在<code>launch.json</code>中配置调试器路径。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="attr">&quot;miDebuggerPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C:\\msys64\\ucrt64\\bin\\gdb.exe&quot;</span><span class="punctuation">,</span> </span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+<p>编写Hello world程序，可以正常编译运行。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Hello world!&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
 <h1 id="自由使用pacman安装工具"><a class="markdownIt-Anchor" href="#自由使用pacman安装工具"></a> 自由使用pacman安装工具</h1>
 <p>pacman是一个包管理器，一开始我们使用pacman安装了开发必要工具，接下来我们同样可以使用pacman安装其他工具。[<a target="_blank" rel="noopener" href="https://www.msys2.org/docs/package-management/">官方文档</a>]。</p>
 <p>例如，我们希望安装<code>makefile</code>，可以先使用<code>pacman -Ss make</code>命令进行搜索：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ucrt64/mingw-w64-ucrt-x86_64-libmicrohttpd 0.9.75-2</span><br><span class="line">    GNU libmicrohttpd is a small C library that is supposed to make it easy to run an HTTP server as</span><br><span class="line">    part of another application (mingw-w64)</span><br><span class="line">ucrt64/mingw-w64-ucrt-x86_64-make 4.4-2 (mingw-w64-ucrt-x86_64-toolchain)</span><br><span class="line">    GNU make utility to maintain <span class="built_in">groups</span> of programs (mingw-w64)</span><br><span class="line">ucrt64/mingw-w64-ucrt-x86_64-perl 5.32.1-5</span><br><span class="line">    A highly capable, feature-rich programming language (mingw-w64)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ucrt64/mingw-w64-ucrt-x86_64-make 4.4-2 (mingw-w64-ucrt-x86_64-toolchain)</span><br><span class="line">    GNU make utility to maintain <span class="built_in">groups</span> of programs (mingw-w64)</span><br></pre></td></tr></table></figure>
 <p>发现需要的软件包后使用<code>pacman -S</code>命令进行安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">pacman -S mingw-w64-ucrt-x86_64-make</span><br><span class="line">resolving dependencies...</span><br><span class="line">looking <span class="keyword">for</span> conflicting packages...</span><br><span class="line"></span><br><span class="line">Packages (1) mingw-w64-ucrt-x86_64-make-4.4-2</span><br><span class="line"></span><br><span class="line">Total Download Size:   0.13 MiB</span><br><span class="line">Total Installed Size:  0.28 MiB</span><br><span class="line"></span><br><span class="line">:: Proceed with installation? [Y/n] Y</span><br><span class="line">:: Retrieving packages...</span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line">(1/1) installing mingw-w64-ucrt-x86_64-make                  [<span class="comment">###############################] 100%</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S mingw-w64-ucrt-x86_64-make</span><br></pre></td></tr></table></figure>
 <p>回到<code>bin</code>目录下，搜索<code>make</code>，发现已经安装了<code>mingw32-make.exe</code>，根据个人的使用习惯可以将程序改名为<code>makefile.exe</code>。</p>
 <p>现在，在MSYS2终端或Windows上的其他终端上都可以使用<code>makefile</code>了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">makefile -v</span><br><span class="line"></span><br><span class="line">GNU Make 4.4</span><br><span class="line">Built <span class="keyword">for</span> Windows32</span><br><span class="line">Copyright (C) 1988-2022 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;https://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">makefile -v</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GNU Make 4.4</span><br><span class="line"><span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
 <p>除了<code>-Ss</code>与<code>-S</code>以外，pacman的常用命令还有</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看已安装软件/库</span></span><br><span class="line">pacman -Qg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除已安装软件/库</span></span><br><span class="line">pacman -R &lt;package name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从服务器下载新的软件包数据库</span></span><br><span class="line">pacman -Sy </span><br><span class="line"></span><br><span class="line"><span class="comment"># 升级所有已安装的软件包</span></span><br><span class="line">pacman -Su</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面两个命令的结合</span></span><br><span class="line">pacman -Syu</span><br></pre></td></tr></table></figure>
+<p>使用pacman安装诸如<code>grep</code>等工具，非常方便。</p>
 <h1 id="使用pacman管理库"><a class="markdownIt-Anchor" href="#使用pacman管理库"></a> 使用pacman管理库</h1>
 <p>以fmt库为例，首先使用pacman搜索fmt库</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Ss <span class="built_in">fmt</span></span><br></pre></td></tr></table></figure>
-<p>选择安装<code>mingw-w64-ucrt-x86_64-jsoncpp</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mingw32/mingw-w64-i686-fmt 9.1.0-1</span><br><span class="line">    A modern formatting library <span class="keyword">for</span> C++ (mingw-w64)</span><br><span class="line">mingw64/mingw-w64-x86_64-fmt 9.1.0-1</span><br><span class="line">    A modern formatting library <span class="keyword">for</span> C++ (mingw-w64)</span><br><span class="line">ucrt64/mingw-w64-ucrt-x86_64-fmt 9.1.0-1 [installed]</span><br><span class="line">    A modern formatting library <span class="keyword">for</span> C++ (mingw-w64)</span><br><span class="line">clang32/mingw-w64-clang-i686-fmt 9.1.0-1</span><br><span class="line">    A modern formatting library <span class="keyword">for</span> C++ (mingw-w64)</span><br><span class="line">clang64/mingw-w64-clang-x86_64-fmt 9.1.0-1</span><br><span class="line">    A modern formatting library <span class="keyword">for</span> C++ (mingw-w64)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S mingw-w64-ucrt-x86_64-fmt</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ucrt64/mingw-w64-ucrt-x86_64-fmt 9.1.0-1 [installed]</span><br><span class="line">    A modern formatting library <span class="keyword">for</span> C++ (mingw-w64)</span><br></pre></td></tr></table></figure>
+<p>选择安装<code>mingw-w64-ucrt-x86_64-fmt</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S mingw-w64-ucrt-x86_64-fmt</span><br></pre></td></tr></table></figure>
 <p>此时在<code>./ucrt64/include</code>目录与<code>./ucrt64/lib</code>下即可看到<code>fmt</code>对应文件。配置好相关编辑器或IDE的路径，即可调用该库。</p>
-<p>以vscode为例，首先在语言插件的设置中添加<code>include</code>路径：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;includePath&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;$&#123;workspaceFolder&#125;/**&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;C:/msys64/ucrt64/include/**&quot;</span></span><br><span class="line"><span class="punctuation">]</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
-<p>要使用标准库的头文件，同样需要在这里添加项目。</p>
-<p>该配置文件只负责解析语法，不负责编译项目。要使项目链接第三方库，需配置<code>tasks.json</code>，修改传递给编译器的参数。</p>
+<p>要使项目链接第三方库，需配置<code>tasks.json</code>，修改传递给编译器的参数，包括头文件目录，静态链接库目录，以及链接库本身。</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;args&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="string">&quot;-I&#x27;C:\\msys64\\ucrt64\\include&#x27;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;-L&#x27;C:\\msys64\\ucrt64\\lib&#x27;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;-lfmt&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
-<p>完成配置之后，即可正常使用库。</p>
+<p>前两者固定，后者可以在<code>lib</code>目录下检阅<code>.a</code>文件名。看到<code>libfmt.a</code>，替换为参数<code>-lfmt</code>即可。</p>
+<p>完成配置之后，即可正常使用库，如下所示。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fmt/format.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; fmt::format(<span class="string">&quot;&#123;0&#125;, &#123;1&#125;!&quot;</span>, <span class="string">&quot;Hello&quot;</span>, <span class="string">&quot;world&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello, world!</span><br></pre></td></tr></table></figure>
 <h1 id="通过windows-terminal启动msys2"><a class="markdownIt-Anchor" href="#通过windows-terminal启动msys2"></a> 通过Windows Terminal启动MSYS2</h1>
 <p>和Git Bash一样，MSYS2使用MinTTY作为默认终端。为了更方便的操作，更好的视觉效果，我们可以使用Windows Terminal启动MSYS2。</p>
-<p>在Windows Terminal的设置中添加新配置文件。当配置可执行文件时，使用<code>msys2_shell.cmd</code>作为可执行文件。需要加上参数<code>-ucrt64 -defterm -here -no-start -use-full-path</code>，它们分别表示：使用<code>UCRT64</code>环境，启动bash，<code>set CHERE_INVOKING=1</code>，不通过<code>start</code>命令来启动（否则会新建窗口）。</p>
-<p><img src="Snipaste_2023-01-08_21-33-34.png" alt></p>
+<p>在Windows Terminal的设置中添加新配置文件。</p>
+<p><img src="Snipaste_2023-01-09_00-09-44.png" alt></p>
+<p>当配置可执行文件时，使用<code>msys2_shell.cmd</code>作为可执行文件。需要加上参数<code>-ucrt64 -defterm -here -no-start -use-full-path</code>，它们分别表示：</p>
+<ul>
+<li>使用<code>UCRT64</code>环境</li>
+<li>启动bash</li>
+<li><code>set CHERE_INVOKING=1</code></li>
+<li>不通过<code>start</code>命令来启动（否则会新建窗口）</li>
+</ul>
+<p><img src="Snipaste_2023-01-09_00-11-37.png" alt></p>
+<p>在下拉框中选中MSYS2 UCRT64即可在终端中打开MSYS2。</p>
+<p><img src="Snipaste_2023-01-09_00-14-23.png" alt></p>
 
     </div>
 
@@ -276,7 +309,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/" title="使用MYSY2管理C++工具链">https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/</a>
+      <a href="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/" title="使用MYSY2管理C++工具链（以vscode为例）">https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
