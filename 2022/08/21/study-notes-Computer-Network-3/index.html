@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.1">
-
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -16,11 +14,12 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="计算机网络-传输层知识点">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="计算机网络-传输层知识点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络笔记（三）- 传输层">
 <meta property="og:url" content="https://adamska1008.github.io/2022/08/21/study-notes-Computer-Network-3/index.html">
@@ -75,6 +74,12 @@
 
 
 
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
@@ -88,8 +93,8 @@
   <div class="headband"></div>
 
   <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
@@ -102,13 +107,13 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Adamska's Blog</h1>
+      <p class="site-title">Adamska's Blog</p>
       <i class="logo-line"></i>
     </a>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
     </div>
   </div>
 </div>
@@ -116,26 +121,16 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
   </ul>
 </nav>
 
 
 
 
-</div>
+</header>
         
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
   <aside class="sidebar">
 
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
@@ -156,11 +151,11 @@
         <!--/noindex-->
 
         <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Adamska</p>
   <div class="site-description" itemprop="description"></div>
 </div>
-<div class="site-state-wrap site-overview-item animated">
+<div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
@@ -180,31 +175,19 @@
       </div>
   </nav>
 </div>
-  <div class="cc-license site-overview-item animated" itemprop="license">
+  <div class="cc-license animated" itemprop="license">
     <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
   </div>
-
-
 
         </div>
       </div>
     </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
 
     
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
+  </aside>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
 
+    </div>
 
     <div class="main-inner post posts-expand">
 
@@ -222,11 +205,16 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算机网络笔记（三）- 传输层 | Adamska's Blog">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -243,13 +231,13 @@
 
       <time title="创建时间：2022-08-21 18:34:40" itemprop="dateCreated datePublished" datetime="2022-08-21T18:34:40+08:00">2022-08-21</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-11-04 14:49:54" itemprop="dateModified" datetime="2022-11-04T14:49:54+08:00">2022-11-04</time>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
       </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-04 14:49:54" itemprop="dateModified" datetime="2022-11-04T14:49:54+08:00">2022-11-04</time>
+    </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -286,7 +274,7 @@
 <li>TCP拥塞控制</li>
 </ul>
 <p>传输层协议提供面向端系统上运行的应用的逻辑通信机制。这代表从应用的角度上看，端系统直接互相连接。运输层协议将应用层信息拆分为小块，在每小块前添加头部信息，构成运输层段。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TransportLayer.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TransportLayer.png" alt></p>
 <p>端系统运行传输层协议：</p>
 <ul>
 <li>发送方：将应用递交的消息分成一个或多个Segment向下传给网络层。</li>
@@ -319,15 +307,15 @@
 <p>在发送主机复用：从多个套接字接收数据，从首部封装数据。</p>
 <p>接收端进行多路分用：传输层依据头部信息将收到的Segment交给正确的Socket，即不同的进程。</p>
 <p>从多个Socket接收数据，为每块数据分装上头部信息，生成Segment，交给网络层。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Multiplexing&amp;Demultiplexing.png" alt="" /></p>
-<p><strong>分解工作方式</strong><br />
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Multiplexing&amp;Demultiplexing.png" alt></p>
+<p><strong>分解工作方式</strong><br>
 主机接收到IP数据报（datagram），每个数据报携带源IP地址、目的IP地址，一个传输层的段。每个段携带源端口号和目的端口号。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Segment.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Segment.png" alt></p>
 <p>主机收到Segment后，传输层协议提取IP地址和端口号信息，将Segment导向相应的Socket。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Inversion.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Inversion.png" alt></p>
 <h4 id="无连接分解"><a class="markdownIt-Anchor" href="#无连接分解"></a> 无连接分解</h4>
 <p>UDP的Socket用二元组（目的IP地址，目的端口号）标识，主机收到UDP段后检查段中的目的端口号，将UDP段导向绑定在该端口号的Socket。来自不同源IP地址和/或源端口号的IP数据包被导向同一个Socket。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP.png" alt></p>
 <h4 id="面向连接的分解"><a class="markdownIt-Anchor" href="#面向连接的分解"></a> 面向连接的分解</h4>
 <p>TCP的Socket用四元组标识（源IP地址，源端口号，目的IP地址，目的端口号），接收端利用所有四个值将Segment导向Socket，服务器可能支持多个TCP Socket。</p>
 <h3 id="udp协议"><a class="markdownIt-Anchor" href="#udp协议"></a> UDP协议</h3>
@@ -351,8 +339,8 @@
 <li>长度，错误校验和（共32字节）</li>
 <li>数据</li>
 </ol>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-UDP-Segment.png" alt="" /></p>
-<p><strong>校验和（check sum）</strong><br />
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-UDP-Segment.png" alt></p>
+<p><strong>校验和（check sum）</strong><br>
 目的：检测UDP段在传输中是否发生错误（如位翻转）</p>
 <p>发送方</p>
 <ul>
@@ -360,7 +348,7 @@
 <li>校验和计算：计算所有整数的和，进位加在和的后面，将得到的值按位求反，得到校验和</li>
 <li>放入校验和字段</li>
 </ul>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Checksum.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Checksum.png" alt></p>
 <p>接收方</p>
 <ul>
 <li>计算所收到的段的校验和</li>
@@ -376,7 +364,7 @@
 <h4 id="rdt-10可靠信道上的可靠数据传输"><a class="markdownIt-Anchor" href="#rdt-10可靠信道上的可靠数据传输"></a> Rdt 1.0：可靠信道上的可靠数据传输</h4>
 <p>假设底层信道完全可靠：不会发生错误、不会丢弃分组。发送方和接收方的FSM独立。</p>
 <p>发送方只有一个状态，等待上层调用，对于rdt调用，打包后直接进行udt_send。接收方只有一个状态，等待下层的调用，对于一个数据包直接解包并向上层deliver_data。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT1.png" alt="Rdt1.0 FSM" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT1.png" alt="Rdt1.0 FSM"></p>
 <h4 id="rdt-20产生位错误的信道"><a class="markdownIt-Anchor" href="#rdt-20产生位错误的信道"></a> Rdt 2.0：产生位错误的信道</h4>
 <p>底层信道可能翻转分组中的位：利用校验和检测位错误。</p>
 <p>如何错误中恢复？</p>
@@ -389,17 +377,17 @@
 <p>发送方状态机有两种状态。第一个状态等待调用，打包并发送后进入状态二，等待对方控制消息，若NAK则重传，若ACK等待上层下一次调用。</p>
 <p>接收方状态机有一种状态，等待下层调用。若发现有错误，反馈NAK，否则反馈ACK并解包deliver_data。</p>
 <p>缺陷：确认消息可能被破坏。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.png" alt="Rdt2.0 FSM" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.png" alt="Rdt2.0 FSM"></p>
 <h4 id="rdt-21和22"><a class="markdownIt-Anchor" href="#rdt-21和22"></a> Rdt 2.1和2.2</h4>
 <p>Rdt2.1：应对ACK/NAK破坏，状态需要记住序列号，导致状态翻倍。</p>
 <p>发送方：使用序列号0、1标记分组。当接收到ACK时，翻转序列号并发送下一个分组。否则重传。</p>
 <p>接收方：分别等待0、1分组的数据，若分组损坏或序列号错误，损坏时发NAK；错误时发ACK，但是不上传错误序列号的数据。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.1-Sender.png" alt="Rdt2.1 FSM" /><br />
-<img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.1-Receiver.png" alt="Rdt2.1 FSM" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.1-Sender.png" alt="Rdt2.1 FSM"><br>
+<img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.1-Receiver.png" alt="Rdt2.1 FSM"></p>
 <p>Rdt2.2：无NAK消息协议。</p>
 <p>接收方通过ACK告知最后一个被正确接收的分组。在ACK消息中显式加入序列号。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.2-Sender.png" alt="Rdt2.2 FSM" /><br />
-<img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.2-Receiver.png" alt="Rdt2.2 FSM" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.2-Sender.png" alt="Rdt2.2 FSM"><br>
+<img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-RDT2.2-Receiver.png" alt="Rdt2.2 FSM"></p>
 <h4 id="rdt-30"><a class="markdownIt-Anchor" href="#rdt-30"></a> Rdt 3.0</h4>
 <p>假定信道既可能发生错误，也可能丢失分组。</p>
 <p>方法：发送方等待合理时间</p>
@@ -421,14 +409,14 @@
 <li>延迟过长，接收方发送两次ACK，依据序列号删除重复分组</li>
 </ul>
 <p>Rdt 3.0能够正确工作，但性能很差。</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/d076370afd24d4ada1b1a7ef17fb9bfc.png" alt="Rdt3.0 FSM" /></p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d076370afd24d4ada1b1a7ef17fb9bfc.png" alt="Rdt3.0 FSM"></p>
 <h3 id="流水线机制与滑动窗口协议"><a class="markdownIt-Anchor" href="#流水线机制与滑动窗口协议"></a> 流水线机制与滑动窗口协议</h3>
 <p>允许发送方在收到ACK之前连续发送多个分组</p>
 <ul>
 <li>更大的序列号范围</li>
 <li>发送方和/或接收方需要更多缓存</li>
 </ul>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Pipelined-Compare.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-Pipelined-Compare.png" alt></p>
 <p>实现流水线机制需要滑动窗口协议</p>
 <p>窗口：</p>
 <ul>
@@ -457,7 +445,7 @@
 <li>next_seq_num：最小未使用序号</li>
 <li>分组序号k比特，序号范围[0,2<sup>k</sup>-1]</li>
 </ul>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-GBN-Window.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-GBN-Window.png" alt></p>
 <ul>
 <li>发送窗口尺寸为<strong>N</strong>，接收窗口尺寸为<strong>1</strong>。</li>
 <li>特征：累计ACK，全部重传</li>
@@ -476,10 +464,10 @@
 <li>为最小序号分组设置定时器</li>
 <li>Timeout(n)事件：重传所有已发送但未确认的分组。</li>
 </ul>
-<p>发送方扩展FSM：只有一个状态。<br />
-<img src="https://img-blog.csdn.net/20170727184244495" alt="" /></p>
-<p>接收方FSM:<br />
-<img src="https://img-blog.csdn.net/20170727184357967" alt="" /></p>
+<p>发送方扩展FSM：只有一个状态。<br>
+<img src="https://img-blog.csdn.net/20170727184244495" alt></p>
+<p>接收方FSM:<br>
+<img src="https://img-blog.csdn.net/20170727184357967" alt></p>
 <ul>
 <li>发送方：
 <ul>
@@ -495,7 +483,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-GBN-Operation.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-GBN-Operation.png" alt></p>
 <h4 id="sr"><a class="markdownIt-Anchor" href="#sr"></a> SR</h4>
 <p>Selective Repeat协议，选择性重传。</p>
 <p>GBN会重传所有ACK(n)之后的分组，影响性能。SR协议单独确认分组，不丢弃乱序分组，设置缓存机制。</p>
@@ -509,7 +497,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-SR-Window.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-SR-Window.png" alt></p>
 <p>发送方只重传没有收到ACK的分组，为每个分组设置定时器</p>
 <p>接收方同样需要维护窗口，两个窗口不同步。</p>
 <p>发送方：</p>
@@ -537,7 +525,7 @@
 </ul>
 <p>缺陷：重用序列号时，不一定能够分辨相同序列号对应的包是否为同一个。</p>
 <p><strong>序列号与窗口限制：</strong> 要求双方窗口的尺寸之和小于等于序列号范围。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-SR-NewOrRetransmit.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-SR-NewOrRetransmit.png" alt></p>
 <h3 id="tcp协议"><a class="markdownIt-Anchor" href="#tcp协议"></a> TCP协议</h3>
 <p>特点：</p>
 <ul>
@@ -578,7 +566,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-Telnet.png" alt="tcp传输中Seq与ACK变化示意图" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-Telnet.png" alt="tcp传输中Seq与ACK变化示意图"></p>
 <h4 id="段结构"><a class="markdownIt-Anchor" href="#段结构"></a> 段结构</h4>
 <ul>
 <li>源端口号、目的端口号</li>
@@ -591,7 +579,7 @@
 </li>
 <li>校验和</li>
 </ul>
-<p><img src="https://www.gatevidyalay.com/wp-content/uploads/2018/09/TCP-Header-Format.png" alt="" /></p>
+<p><img src="https://www.gatevidyalay.com/wp-content/uploads/2018/09/TCP-Header-Format.png" alt></p>
 <h4 id="可靠数据传输-2"><a class="markdownIt-Anchor" href="#可靠数据传输-2"></a> 可靠数据传输</h4>
 <ul>
 <li>流水线机制</li>
@@ -606,17 +594,17 @@
 <h5 id="rtt与超时"><a class="markdownIt-Anchor" href="#rtt与超时"></a> RTT与超时</h5>
 <p>定时器重传时间大于RTT。</p>
 <p>如何计算估计RTT值？记已有的RTT估计值为EstimateRTT，使用SampleRTT标记测量出的RTT。用S_RTT更新E_RTT。</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false">)</mo><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mi>α</mi><mi>S</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">E\_RTT = (1-\alpha)E\_RTT+\alpha S\_RTT
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mclose">)</span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span></span></span></p>
-<p>典型 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.125</mn></mrow><annotation encoding="application/x-tex">\alpha=0.125</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">1</span><span class="mord">2</span><span class="mord">5</span></span></span></span>。</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false">)</mo><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mi>α</mi><mi>S</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">E\_RTT = (1-\alpha)E\_RTT+\alpha S\_RTT
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span></span></p>
+<p>典型 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.125</mn></mrow><annotation encoding="application/x-tex">\alpha=0.125</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">1</span><span class="mord">2</span><span class="mord">5</span></span></span></span>。</p>
 <p><strong>超时时间的设置</strong>：E_RTT+安全边界。</p>
 <p>变化大则设置较大的边界。变化由两RTT的差值DevRTT决定：</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>β</mi><mo stretchy="false">)</mo><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mi>β</mi><mi mathvariant="normal">∣</mi><mi>S</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>−</mo><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">DevRTT = (1-\beta)DevRTT+\beta|S\_RTT-E\_RTT|
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="mclose">)</span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord">∣</span></span></span></span></span></p>
-<p>典型 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>β</mi><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">\beta=0.25</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">2</span><span class="mord">5</span></span></span></span>。</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>β</mi><mo stretchy="false">)</mo><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mi>β</mi><mi mathvariant="normal">∣</mi><mi>S</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>−</mo><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">DevRTT = (1-\beta)DevRTT+\beta|S\_RTT-E\_RTT|
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord">∣</span></span></span></span></span></p>
+<p>典型 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">\beta=0.25</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">2</span><span class="mord">5</span></span></span></span>。</p>
 <p>然后估算超时值</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi><mi>o</mi><mi>u</mi><mi>t</mi><mi>I</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>v</mi><mi>a</mi><mi>l</mi><mo>=</mo><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mn>4</mn><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">TimeoutInterval=E\_RTT+4DevRTT
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">i</span><span class="mord mathdefault">m</span><span class="mord mathdefault">e</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">n</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">4</span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span></span></span></p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi><mi>o</mi><mi>u</mi><mi>t</mi><mi>I</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>v</mi><mi>a</mi><mi>l</mi><mo>=</mo><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mn>4</mn><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">TimeoutInterval=E\_RTT+4DevRTT
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">i</span><span class="mord mathnormal">m</span><span class="mord mathnormal">e</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span></span></p>
 <h5 id="tcp发送方事件"><a class="markdownIt-Anchor" href="#tcp发送方事件"></a> TCP发送方事件</h5>
 <ul>
 <li>
@@ -625,7 +613,7 @@
 <li>创建报文段</li>
 <li>开启计时器
 <ul>
-<li>超时间隔：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi><mi>o</mi><mi>u</mi><mi>t</mi><mi>I</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>v</mi><mi>a</mi><mi>l</mi><mo>=</mo><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mn>4</mn><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">TimeoutInterval=E\_RTT+4DevRTT</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">i</span><span class="mord mathdefault">m</span><span class="mord mathdefault">e</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mord mathdefault">n</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">4</span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span></span></li>
+<li>超时间隔：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi><mi>o</mi><mi>u</mi><mi>t</mi><mi>I</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>v</mi><mi>a</mi><mi>l</mi><mo>=</mo><mi>E</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>T</mi><mi>T</mi><mo>+</mo><mn>4</mn><mi>D</mi><mi>e</mi><mi>v</mi><mi>R</mi><mi>T</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">TimeoutInterval=E\_RTT+4DevRTT</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">i</span><span class="mord mathnormal">m</span><span class="mord mathnormal">e</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span></li>
 </ul>
 </li>
 </ul>
@@ -649,11 +637,11 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-Timeout.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-Timeout.png" alt></p>
 <h5 id="快速重传"><a class="markdownIt-Anchor" href="#快速重传"></a> 快速重传</h5>
 <p>在定时器超时之前重传。</p>
 <p>如果中间报文段丢失，将收到很多重复ACK。如果对相同数据，发送方收到三个冗余ACK，假定ACK报文段之后的报文段丢失，进行重传。</p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-Retransmit.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-Retransmit.png" alt></p>
 <h5 id="tcp与gnb-sr对比"><a class="markdownIt-Anchor" href="#tcp与gnb-sr对比"></a> TCP与GNB、SR对比</h5>
 <ul>
 <li>TCP使用累计计数，与GBN类似</li>
@@ -666,12 +654,12 @@
 <li>LastByteRead：最后一个交付给应用层字节的序号</li>
 <li>LastByteRecd：最后一个从网络字节流中接收并存放在接收方缓存器中的字节序号。</li>
 </ul>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>r</mi><mi>w</mi><mi>n</mi><mi>d</mi><mo>=</mo><mi>R</mi><mi>c</mi><mi>v</mi><mi>B</mi><mi>u</mi><mi>f</mi><mi>f</mi><mi>e</mi><mi>r</mi><mo>−</mo><mo stretchy="false">[</mo><mi>L</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>B</mi><mi>y</mi><mi>t</mi><mi>e</mi><mi>R</mi><mi>c</mi><mi>v</mi><mi>d</mi><mo>−</mo><mi>L</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>B</mi><mi>y</mi><mi>t</mi><mi>e</mi><mi>R</mi><mi>e</mi><mi>a</mi><mi>d</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">rwnd=RcvBuffer-[LastByteRcvd-LastByteRead]
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault">u</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathdefault">L</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">L</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault">e</span><span class="mord mathdefault">a</span><span class="mord mathdefault">d</span><span class="mclose">]</span></span></span></span></span></p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>r</mi><mi>w</mi><mi>n</mi><mi>d</mi><mo>=</mo><mi>R</mi><mi>c</mi><mi>v</mi><mi>B</mi><mi>u</mi><mi>f</mi><mi>f</mi><mi>e</mi><mi>r</mi><mo>−</mo><mo stretchy="false">[</mo><mi>L</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>B</mi><mi>y</mi><mi>t</mi><mi>e</mi><mi>R</mi><mi>c</mi><mi>v</mi><mi>d</mi><mo>−</mo><mi>L</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>B</mi><mi>y</mi><mi>t</mi><mi>e</mi><mi>R</mi><mi>e</mi><mi>a</mi><mi>d</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">rwnd=RcvBuffer-[LastByteRcvd-LastByteRead]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal">c</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal">u</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal">L</span><span class="mord mathnormal">a</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal">c</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">a</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal">e</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mclose">]</span></span></span></span></span></p>
 <p>接收方通过在段中的头部字段将RcvWindow(rwnd)告诉Sender，发送方限制自己已经发送但还未接收的数据不超过接收方RcvWindow尺寸。</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>L</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>B</mi><mi>y</mi><mi>t</mi><mi>e</mi><mi>S</mi><mi>e</mi><mi>n</mi><mi>d</mi><mo>−</mo><mi>L</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>B</mi><mi>y</mi><mi>t</mi><mi>e</mi><mi>A</mi><mi>c</mi><mi>k</mi><mi>e</mi><mi>d</mi><mo>≤</mo><mi>r</mi><mi>w</mi><mi>n</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">LastByteSend-LastByteAcked\le rwnd
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">L</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault">e</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">L</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault">A</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mord mathdefault">e</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span></span></span></span></span></p>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-RevBuffer.png" alt="" /></p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>B</mi><mi>y</mi><mi>t</mi><mi>e</mi><mi>S</mi><mi>e</mi><mi>n</mi><mi>d</mi><mo>−</mo><mi>L</mi><mi>a</mi><mi>s</mi><mi>t</mi><mi>B</mi><mi>y</mi><mi>t</mi><mi>e</mi><mi>A</mi><mi>c</mi><mi>k</mi><mi>e</mi><mi>d</mi><mo>≤</mo><mi>r</mi><mi>w</mi><mi>n</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">LastByteSend-LastByteAcked\le rwnd
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">a</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">a</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal">A</span><span class="mord mathnormal">c</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span></span></span></span></span></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-RevBuffer.png" alt></p>
 <h4 id="连接管理"><a class="markdownIt-Anchor" href="#连接管理"></a> 连接管理</h4>
 <h5 id="建立连接三次握手"><a class="markdownIt-Anchor" href="#建立连接三次握手"></a> 建立连接（三次握手）</h5>
 <p>传输前需要建立连接。</p>
@@ -692,7 +680,7 @@
 </li>
 <li><strong>服务器收到ACK</strong>，连接关闭</li>
 </ol>
-<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-ACK-FourWayWave.png" alt="" /></p>
+<p><img src="https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-TCP-ACK-FourWayWave.png" alt></p>
 <h4 id="拥塞控制原理"><a class="markdownIt-Anchor" href="#拥塞控制原理"></a> 拥塞控制原理</h4>
 <p>非正式定义：太多主机发送了太多数据或发送速度太快，以至于网络无法处理</p>
 <p>表现</p>
@@ -716,7 +704,7 @@
 </ul>
 </li>
 </ul>
-<p>案例：ATM ABR 拥塞控制<br />
+<p>案例：ATM ABR 拥塞控制<br>
 如果发送方不拥塞，使用可用带宽；如果发送方路径拥塞，将发送速率降低到最低速率。交换机设置RM（资源管理） cell位，NI bit：rate不许增长；CI bit：拥塞指示。RM cell由接收方返回给发送方。</p>
 <h4 id="tcp拥塞控制"><a class="markdownIt-Anchor" href="#tcp拥塞控制"></a> TCP拥塞控制</h4>
 <p>发送方限定发送速率，假定拥塞窗口大小CongWin，LastSent-LastAcked &lt;= CongWin。rate = CongWin/RTT。</p>
@@ -734,11 +722,11 @@
 </ul>
 </li>
 </ul>
-<p>Loss 事件处理：<br />
+<p>Loss 事件处理：<br>
 3个重复ACKs：</p>
 <ul>
 <li>CongWin切到一半</li>
-<li>线性增长<br />
+<li>线性增长<br>
 Timeout：</li>
 <li>CongWin设置为1个MSS</li>
 <li>开始时指数增长，设置Threshold值</li>
@@ -818,13 +806,23 @@ Timeout：</li>
   </footer>
 
   
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
-
-  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.2/dist/mermaid.min.js","integrity":"sha256-UIQPVkGifpwMvDH5yGgORJ9sSTDq38zz6BGU6dNaKhM="}}</script>
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@9.3.0/dist/mermaid.min.js","integrity":"sha256-QdTG1YTLLTwD3b95jLqFxpQX9uYuJMNAtVZgwKX4oYU="}}</script>
   <script src="/js/third-party/tags/mermaid.js"></script>
 
 
@@ -836,7 +834,7 @@ Timeout：</li>
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css" integrity="sha256-M6KFoDq9eUpmogkDgw6+3R3ZgUPSuFXnQyr8tskSfQs=" crossorigin="anonymous">
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
 
 
 

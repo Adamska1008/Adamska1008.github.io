@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.1">
-
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
@@ -16,11 +14,12 @@
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="内容包括：智能指针与allocator。">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="内容包括：智能指针与allocator。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++中的动态内存">
 <meta property="og:url" content="https://adamska1008.github.io/2022/08/29/dynamic-allocate-in-cpp/index.html">
@@ -47,6 +46,12 @@
 
 
 
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
@@ -60,8 +65,8 @@
   <div class="headband"></div>
 
   <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏" role="button">
         <span class="toggle-line"></span>
@@ -74,13 +79,13 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Adamska's Blog</h1>
+      <p class="site-title">Adamska's Blog</p>
       <i class="logo-line"></i>
     </a>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
     </div>
   </div>
 </div>
@@ -88,26 +93,16 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
   </ul>
 </nav>
 
 
 
 
-</div>
+</header>
         
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
   <aside class="sidebar">
 
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
@@ -128,11 +123,11 @@
         <!--/noindex-->
 
         <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Adamska</p>
   <div class="site-description" itemprop="description"></div>
 </div>
-<div class="site-state-wrap site-overview-item animated">
+<div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
@@ -152,31 +147,19 @@
       </div>
   </nav>
 </div>
-  <div class="cc-license site-overview-item animated" itemprop="license">
+  <div class="cc-license animated" itemprop="license">
     <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
   </div>
-
-
 
         </div>
       </div>
     </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
 
     
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
+  </aside>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
 
+    </div>
 
     <div class="main-inner post posts-expand">
 
@@ -194,11 +177,16 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Adamska">
-      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C++中的动态内存 | Adamska's Blog">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -215,13 +203,13 @@
 
       <time title="创建时间：2022-08-29 10:24:37" itemprop="dateCreated datePublished" datetime="2022-08-29T10:24:37+08:00">2022-08-29</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-08-30 15:10:39" itemprop="dateModified" datetime="2022-08-30T15:10:39+08:00">2022-08-30</time>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
       </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-30 15:10:39" itemprop="dateModified" datetime="2022-08-30T15:10:39+08:00">2022-08-30</time>
+    </span>
 
   
 </div>
@@ -240,12 +228,12 @@
 <p>为了更容易且安全的使用动态内存，C++11标准库提供了<strong>智能指针（smart pointer）</strong> 来管理动态对象。<code>shared_ptr</code>允许多个指针指向同一个对象，<code>unique_ptr</code>独占所指向的对象。<code>weak_ptr</code>是弱引用，指向<code>shared_ptr</code>管理的对象。</p>
 <h3 id="shared_ptr"><a class="markdownIt-Anchor" href="#shared_ptr"></a> <code>shared_ptr</code></h3>
 <p>使用模板指定指针可以指向的类型。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; p;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="type">int</span>&gt; p;</span><br></pre></td></tr></table></figure>
 <p>智能指针的行为与基本指针一致。</p>
 <p>使用<code>make_shared</code>函数安全地分配和使用动态内存。由于<code>make_shared</code>是一个模板函数，我们同样可以使用<code>auto</code>关键字保存返回的智能指针。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = make_shared&lt;string&gt;(<span class="number">10</span>, <span class="string">&#x27;9&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<p>每个<code>shared_ptr</code>都有一个关联的计数器，通常称其为<strong>引用计数（reference count）</strong>。拷贝一个<code>shared_ptr</code>，计数器将递增，例如拷贝初始化、作为参数传递给函数或作为函数的返回值。当我们给<code>shared_ptr</code>赋予新值或销毁，例如离开作用域，计数器就会递减。当计数器为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>，就会自动释放自己管理的对象。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">1</span>), r = make_shared&lt;<span class="keyword">int</span>&gt;(<span class="number">2</span>);</span><br><span class="line">p = r; <span class="comment">// 递增 r 对象的计数器</span></span><br><span class="line">       <span class="comment">// 递减 p 对象的计数器</span></span><br><span class="line">       <span class="comment">// p 计数器为 0，释放为其分配的内存</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = <span class="built_in">make_shared</span>&lt;string&gt;(<span class="number">10</span>, <span class="string">&#x27;9&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>每个<code>shared_ptr</code>都有一个关联的计数器，通常称其为<strong>引用计数（reference count）</strong>。拷贝一个<code>shared_ptr</code>，计数器将递增，例如拷贝初始化、作为参数传递给函数或作为函数的返回值。当我们给<code>shared_ptr</code>赋予新值或销毁，例如离开作用域，计数器就会递减。当计数器为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>，就会自动释放自己管理的对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = <span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">1</span>), r = <span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">2</span>);</span><br><span class="line">p = r; <span class="comment">// 递增 r 对象的计数器</span></span><br><span class="line">       <span class="comment">// 递减 p 对象的计数器</span></span><br><span class="line">       <span class="comment">// p 计数器为 0，释放为其分配的内存</span></span><br></pre></td></tr></table></figure>
 <p>动态内存常用于一下三种情况：</p>
 <ol>
 <li>程序不知道自己需要使用多少对象</li>
@@ -256,7 +244,7 @@
 <h3 id="直接管理内存"><a class="markdownIt-Anchor" href="#直接管理内存"></a> 直接管理内存</h3>
 <p>C++定义了两个运算符来分配和释放内存。<code>new</code>分配内存，<code>delete</code>释放内存。</p>
 <p><code>new</code>返回指向对象的指针。<code>new</code>初始化对象可以用多种初始化方式。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">string *ps = <span class="keyword">new</span> string;</span><br><span class="line"><span class="keyword">int</span> *pi = <span class="built_in"><span class="keyword">new</span></span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">auto</span> p = <span class="keyword">new</span> <span class="built_in"><span class="keyword">auto</span></span>(obj);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以分配const的数据</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* pci = <span class="keyword">new</span> <span class="keyword">const</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">0</span>);</span><br><span class="line"><span class="comment">// (*pci)是只读的，不能修改</span></span><br><span class="line"><span class="comment">// new const int 中的 const 可以省略</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">string *ps = <span class="keyword">new</span> string;</span><br><span class="line"><span class="type">int</span> *pi = <span class="built_in">new</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">auto</span> p = <span class="keyword">new</span> <span class="built_in">auto</span>(obj);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以分配const的数据</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span>* pci = <span class="keyword">new</span> <span class="type">const</span> <span class="built_in">int</span>(<span class="number">0</span>);</span><br><span class="line"><span class="comment">// (*pci)是只读的，不能修改</span></span><br><span class="line"><span class="comment">// new const int 中的 const 可以省略</span></span><br></pre></td></tr></table></figure>
 <p>若分配失败，<code>new</code>抛出<code>std::bad_alloc</code>。可以使用<code>new (nothrow)</code>语法使分配失败时不抛出异常，而是返回空指针。</p>
 <p>通过<code>delete</code>释放动态内存。释放非<code>new</code>分配的内存和释放多次都是未定义行为。</p>
 <p>一旦在指针的生存期内没有释放其指向的内存，就会造成内存泄漏。</p>
@@ -264,10 +252,10 @@
 <p>动态内存的一个基本问题是多个指针可能指向一个相同内存。释放一个内存可能造成多个空悬指针。</p>
 <h3 id="结合使用shared_ptr和new"><a class="markdownIt-Anchor" href="#结合使用shared_ptr和new"></a> 结合使用<code>shared_ptr</code>和<code>new</code></h3>
 <p>可以使用<code>new</code>返回的指针来显示地初始化智能指针（不允许隐式转换）。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">42</span>))</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="type">int</span>&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> <span class="type">int</span>(<span class="number">42</span>))</span></span>;</span><br></pre></td></tr></table></figure>
 <p>要在非初始化时使用<code>new</code>为智能指针赋值，需要使用<code>reset</code>函数。</p>
 <p>混用<code>new</code>和<code>shared_ptr</code>可能导致严重后果。<code>shared_ptr</code>的引用计数仅限于自身的拷贝，不包括原始指针。<code>当</code>shared_ptr`销毁对象时。原始指针将成为空悬指针，而这是无法检测的。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">(shared_ptr&lt;<span class="keyword">int</span>&gt; ptr)</span></span>;</span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line"><span class="built_in">process</span>(shared_ptr&lt;<span class="keyword">int</span>&gt;(p));</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">process</span><span class="params">(shared_ptr&lt;<span class="type">int</span>&gt; ptr)</span></span>;</span><br><span class="line"><span class="type">int</span> *p = <span class="keyword">new</span> <span class="type">int</span>;</span><br><span class="line"><span class="built_in">process</span>(<span class="built_in">shared_ptr</span>&lt;<span class="type">int</span>&gt;(p));</span><br></pre></td></tr></table></figure>
 <p>不难发现，在<code>process</code>函数返回时引用计数清零，销毁内存数据，此时<code>p</code>成为空悬指针。</p>
 <p>智能指针具有<code>get</code>方法，返回一个内置指针。这一函数的作用是适配需要转递内置指针的代码。不应当使用其初始另一个智能指针，或释放该内置指针。</p>
 <p><code>unique</code>函数指示该指针是否是唯一指向该对象的指针。</p>
@@ -275,13 +263,13 @@
 <p>一个<code>unique_ptr</code>“拥有”它所指向的对象。某个时刻只能有一个<code>unique_ptr</code>指向一个指定对象。</p>
 <p><code>unique_ptr</code>没有类似<code>make_shared</code>的函数，必须绑定到一个<code>new</code>返回的指针上。<code>unique_ptr</code>不支持普通的拷贝或赋值操作。</p>
 <p>通过调用<code>release</code>或<code>reset</code>可以将指针的所有权从一个（非<code>const</code>）<code>unique_ptr</code>转移给另一个。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">p1</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">10</span>))</span></span>;</span><br><span class="line"><span class="function">unique_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">p2</span><span class="params">(p1.release())</span></span>;</span><br><span class="line">unique_ptr&lt;<span class="keyword">int</span>&gt; p3;</span><br><span class="line">p3.<span class="built_in">reset</span>(p2.<span class="built_in">release</span>());</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;<span class="type">int</span>&gt; <span class="title">p1</span><span class="params">(<span class="keyword">new</span> <span class="type">int</span>(<span class="number">10</span>))</span></span>;</span><br><span class="line"><span class="function">unique_ptr&lt;<span class="type">int</span>&gt; <span class="title">p2</span><span class="params">(p1.release())</span></span>;</span><br><span class="line">unique_ptr&lt;<span class="type">int</span>&gt; p3;</span><br><span class="line">p3.<span class="built_in">reset</span>(p2.<span class="built_in">release</span>());</span><br></pre></td></tr></table></figure>
 <p>如果不用智能指针来保存<code>release</code>返回的指针，就必须负责该指针的释放。</p>
 <p>不能拷贝<code>unique_ptr</code>的例外是，可以从函数中返回一个<code>unique_ptr</code>。</p>
 <h3 id="weak_ptr"><a class="markdownIt-Anchor" href="#weak_ptr"></a> <code>weak_ptr</code></h3>
 <p><code>weak_ptr</code>是一种不控制所指向对象生存期的智能指针，它指向一个<code>shared_ptr</code>管理的对象。将一个<code>weak_ptr</code>绑定到<code>shared_ptr</code>不会影响其引用计数。当<code>shared_ptr</code>释放对象时，可能有<code>weak_ptr</code>指向该对象。</p>
 <p>创建<code>weak_ptr</code>需要用一个<code>shared_ptr</code>来初始化。由于对象可能不存在，我们不能用<code>weak_ptr</code>直接访问对象。<code>lock</code>函数返回一个指向共享对象的<code>shared_ptr</code>，例如</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (share_ptr&lt;<span class="keyword">int</span>&gt; np = wp.<span class="built_in">lock</span>())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (share_ptr&lt;<span class="type">int</span>&gt; np = wp.<span class="built_in">lock</span>())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="动态数组"><a class="markdownIt-Anchor" href="#动态数组"></a> 动态数组</h2>
 <p><code>new</code>和<code>delete</code>一次分配/释放一个对象。C++语言和标准库提供了一次分配多个对象的方法：<code>new[]</code>和<code>allocator</code>类。通常若需要使用可变数量的对象，应当优先考虑<code>vector</code>。</p>
 <h3 id="new和数组"><a class="markdownIt-Anchor" href="#new和数组"></a> <code>new</code>和数组</h3>
@@ -291,11 +279,11 @@
 <p>可以分配长度为0的数组，但指针不能解引用。</p>
 <p>释放动态数组时，在指针前加上空方括号。</p>
 <p>标准库提供了一个可以管理<code>new</code>分配的数组的<code>unique_ptr</code>。对象类型后面需要跟一对方括号。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;<span class="keyword">int</span>[]&gt; <span class="title">up</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;<span class="type">int</span>[]&gt; <span class="title">up</span><span class="params">(<span class="keyword">new</span> <span class="type">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></table></figure>
 <p><code>&lt;int[]&gt;</code>表明<code>up</code>指向一个<code>int</code>数组而不是<code>int</code>。当<code>up</code>销毁它管理的指针时，会自动使用<code>delete[]</code>。</p>
 <p>当<code>unique_ptr</code>指向一个数组时，无法使用点和箭头运算符，而是使用下标运算符访问数组中的元素。</p>
 <p><code>shared_ptr</code>不支持管理动态数组。如果希望使用，则需要提供自己定义的删除器。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">sp</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>], [](<span class="keyword">int</span> *p) &#123; <span class="keyword">delete</span>[] p; &#125;)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="type">int</span>&gt; <span class="title">sp</span><span class="params">(<span class="keyword">new</span> <span class="type">int</span>[<span class="number">10</span>], [](<span class="type">int</span> *p) &#123; <span class="keyword">delete</span>[] p; &#125;)</span></span></span><br></pre></td></tr></table></figure>
 <p>如果不提供删除器， <code>shared_ptr</code>将使用<code>delete</code>销毁指定的对象，产生UB。</p>
 <p><code>shared_ptr</code>访问数组中的元素，只能通过访问内置指针的方式。</p>
 <h3 id="allocator类"><a class="markdownIt-Anchor" href="#allocator类"></a> allocator类</h3>
@@ -377,13 +365,23 @@
   </footer>
 
   
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
-
-  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.2/dist/mermaid.min.js","integrity":"sha256-UIQPVkGifpwMvDH5yGgORJ9sSTDq38zz6BGU6dNaKhM="}}</script>
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@9.3.0/dist/mermaid.min.js","integrity":"sha256-QdTG1YTLLTwD3b95jLqFxpQX9uYuJMNAtVZgwKX4oYU="}}</script>
   <script src="/js/third-party/tags/mermaid.js"></script>
 
 
@@ -395,7 +393,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css" integrity="sha256-M6KFoDq9eUpmogkDgw6+3R3ZgUPSuFXnQyr8tskSfQs=" crossorigin="anonymous">
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
 
 
 
