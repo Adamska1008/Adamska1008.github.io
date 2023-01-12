@@ -19,24 +19,29 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Adamska&#39;s Blog">
-<meta property="og:url" content="https://adamska1008.github.io/tags/MYSY2/index.html">
+    <meta name="description" content="本文整理了本科课程中的一些较为复杂的数据结构与算法。不是竞赛层面的内容，与竞赛内容差异较大。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本科课程中的算法与数据结构">
+<meta property="og:url" content="https://adamska1008.github.io/2023/01/09/algorithms-in-courses/index.html">
 <meta property="og:site_name" content="Adamska&#39;s Blog">
+<meta property="og:description" content="本文整理了本科课程中的一些较为复杂的数据结构与算法。不是竞赛层面的内容，与竞赛内容差异较大。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-08T16:40:52.000Z">
+<meta property="article:modified_time" content="2023-01-08T16:46:01.749Z">
 <meta property="article:author" content="Adamska">
-<meta property="article:tag" content="算法竞赛, Modern C++, JVM, Kotlin, GoLang, Rust, Basic CS knowledge">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://adamska1008.github.io/tags/MYSY2/">
+<link rel="canonical" href="https://adamska1008.github.io/2023/01/09/algorithms-in-courses/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/MYSY2/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2023/01/09/algorithms-in-courses/","path":"2023/01/09/algorithms-in-courses/","title":"本科课程中的算法与数据结构"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签: MYSY2 | Adamska's Blog</title>
+<title>本科课程中的算法与数据结构 | Adamska's Blog</title>
   
 
 
@@ -101,7 +106,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -114,6 +119,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text"> 数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91"><span class="nav-number">1.1.</span> <span class="nav-text"> 树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 二叉搜索树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E6%A0%91"><span class="nav-number">1.1.2.</span> <span class="nav-text"> 平衡树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-number">1.1.3.</span> <span class="nav-text"> 红黑树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#b%E6%A0%91"><span class="nav-number">1.1.4.</span> <span class="nav-text"> B树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="nav-number">1.2.</span> <span class="nav-text"> 哈希表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%B3%E8%A1%A8"><span class="nav-number">1.3.</span> <span class="nav-text"> 跳表</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -156,50 +162,122 @@
 
     </div>
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
+
+
+<div class="post-block">
   
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h1 class="collection-header">MYSY2
-          <small>标签</small>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/01/09/algorithms-in-courses/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="本科课程中的算法与数据结构 | Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          本科课程中的算法与数据结构
         </h1>
-      </div>
 
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2023</span>
+
+      <time title="创建时间：2023-01-09 00:40:52 / 修改时间：00:46:01" itemprop="dateCreated datePublished" datetime="2023-01-09T00:40:52+08:00">2023-01-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文整理了本科课程中的一些较为复杂的数据结构与算法。不是竞赛层面的内容，与竞赛内容差异较大。</p>
+<span id="more"></span>
+<h1 id="数据结构"><a class="markdownIt-Anchor" href="#数据结构"></a> 数据结构</h1>
+<h2 id="树"><a class="markdownIt-Anchor" href="#树"></a> 树</h2>
+<h3 id="二叉搜索树"><a class="markdownIt-Anchor" href="#二叉搜索树"></a> 二叉搜索树</h3>
+<h3 id="平衡树"><a class="markdownIt-Anchor" href="#平衡树"></a> 平衡树</h3>
+<h3 id="红黑树"><a class="markdownIt-Anchor" href="#红黑树"></a> 红黑树</h3>
+<h3 id="b树"><a class="markdownIt-Anchor" href="#b树"></a> B树</h3>
+<h2 id="哈希表"><a class="markdownIt-Anchor" href="#哈希表"></a> 哈希表</h2>
+<h2 id="跳表"><a class="markdownIt-Anchor" href="#跳表"></a> 跳表</h2>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2023-01-08T16:38:13+08:00"
-              content="2023-01-08">
-          01-08
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/01/08/use-mysy2-to-manage-cpp-toolchain/" itemprop="url">
-            <span itemprop="name">使用MYSY2管理C++工具链（以vscode为例）</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          
 
-      
-    </header>
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Adamska
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://adamska1008.github.io/2023/01/09/algorithms-in-courses/" title="本科课程中的算法与数据结构">https://adamska1008.github.io/2023/01/09/algorithms-in-courses/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/01/08/use-mysy2-to-manage-cpp-toolchain/" rel="prev" title="使用MYSY2管理C++工具链（以vscode为例）">
+                  <i class="fa fa-chevron-left"></i> 使用MYSY2管理C++工具链（以vscode为例）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/01/09/write-a-kv-database-1/" rel="next" title="使用Rust编写一个KV数据库-一">
+                  使用Rust编写一个KV数据库-一 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
+</div>
 
-    </div>
-  </div>
-  
-  
-  
+
+
+
+
 
 </div>
   </main>
