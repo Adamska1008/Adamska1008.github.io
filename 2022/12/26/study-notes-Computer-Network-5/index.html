@@ -27,8 +27,9 @@
 <meta property="og:description" content="计算机网络-传输层-控制平面知识点">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://adamska1008.github.io/2022/12/26/study-notes-Computer-Network-5/Snipaste_2023-01-18_18-40-43.png">
+<meta property="og:image" content="https://www.noction.com/wp-content/uploads/2012/03/bgp-diag.jpg">
 <meta property="article:published_time" content="2022-12-26T13:49:17.000Z">
-<meta property="article:modified_time" content="2023-01-18T11:40:03.107Z">
+<meta property="article:modified_time" content="2023-01-25T07:51:06.360Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
@@ -133,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -144,7 +145,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -210,7 +211,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-18 19:40:03" itemprop="dateModified" datetime="2023-01-18T19:40:03+08:00">2023-01-18</time>
+      <time title="修改时间：2023-01-25 15:51:06" itemprop="dateModified" datetime="2023-01-25T15:51:06+08:00">2023-01-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -491,7 +492,7 @@
 </li>
 </ul>
 <h3 id="rip选路信息协议"><a class="markdownIt-Anchor" href="#rip选路信息协议"></a> RIP（选路信息协议）</h3>
-<p>RIP是一种基于距离向量（DV算法）的路由选择协议。距离度量：跳的数量。跳：从源路由器到目的子网的最短路径所经过子网的数量。</p>
+<p>RIP是<strong>内部网关协议</strong>中最先广泛使用的协议。它是一种基于距离向量（DV算法）的路由选择协议。<strong>距离度量</strong>：跳的数量（最大15跳）。<strong>跳</strong>：从源路由器到目的子网的最短路径所经过子网的数量。</p>
 <p>特点：</p>
 <ul>
 <li>仅和相邻路由器交换路由选择信息：目的子网，下一台路由器，跳数，例子：</li>
@@ -535,13 +536,12 @@
 <h4 id="rip中的路由向量算法"><a class="markdownIt-Anchor" href="#rip中的路由向量算法"></a> RIP中的路由向量算法</h4>
 <p>收到一个来自x的RIP报文后：</p>
 <ol>
-<li>首先修改该报文中的所有项目：将“下一条”字段的地址修改为x，并把距离加1</li>
+<li>首先修改该报文中的所有项目：将“下一跳”字段的地址修改为x，并把距离加1</li>
 <li>对修改后报文中的每个项目：
 <ol>
 <li>如果项目中的目的网络<strong>不在</strong>路由表中，则添加该项目到路由表</li>
-<li>否则，若“下一条”字段的地址相同，将收到的项目替换原表中的项目</li>
+<li>否则，若“下一跳”字段的地址相同，将收到的项目替换原表中的项目</li>
 <li>否则，若收到项目的距离小于路由器表中的距离，则更新</li>
-<li>否则，什么也不做</li>
 </ol>
 </li>
 <li>若一段时间（例如3分钟）后，还没有收到相邻路由表的更新路由表，则将此路由器标记为不可到达的路由器（设置距离为16）。新的通告发送给邻居。使用<strong>毒性逆转</strong>防止回路。</li>
@@ -577,48 +577,36 @@
 <td>E</td>
 <td>5</td>
 </tr>
+</tbody>
+</table>
+<p>收到来自B的RIP报文：</p>
+<table>
+<thead>
 <tr>
-<td>收到来自B的RIP报文：</td>
-<td></td>
-<td></td>
+<th>目的子网</th>
+<th>距离</th>
 </tr>
-<tr>
-<td>目的子网</td>
-<td>距离</td>
-<td></td>
-</tr>
-<tr>
-<td>-</td>
-<td>-</td>
-<td></td>
-</tr>
+</thead>
+<tbody>
 <tr>
 <td>z</td>
 <td>3</td>
-<td></td>
 </tr>
 <tr>
 <td>y</td>
 <td>7</td>
-<td></td>
 </tr>
 <tr>
 <td>x</td>
 <td>4</td>
-<td></td>
 </tr>
 <tr>
 <td>h</td>
 <td>7</td>
-<td></td>
-</tr>
-<tr>
-<td>首先对于每个项目，其距离都需要加一，对于每个报文：</td>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table>
+<p>首先对于每个项目，其距离都需要加一，对于每个报文：</p>
 <ol>
 <li>没有目的子网z，直接加到路由表中</li>
 <li>下一跳路由器相同，直接替换</li>
@@ -665,7 +653,7 @@
 <h4 id="rip表处理"><a class="markdownIt-Anchor" href="#rip表处理"></a> RIP表处理</h4>
 <ul>
 <li>RIP选路表由称为&quot;routed-d&quot;（守护进程）的<strong>应用级</strong>进程管理。</li>
-<li>通告在UDP分组中</li>
+<li>通告在<strong>UDP</strong>分组中</li>
 </ul>
 <h4 id="rip协议的优缺点"><a class="markdownIt-Anchor" href="#rip协议的优缺点"></a> RIP协议的优缺点</h4>
 <ol>
@@ -679,7 +667,7 @@
 <li>无穷计算问题：当网络出现故障时，要经过比较长的时间才能将此信息传送到所有路由器</li>
 </ol>
 <h3 id="ospf协议"><a class="markdownIt-Anchor" href="#ospf协议"></a> OSPF协议</h3>
-<p><strong>开放最短路径优先(OSPF)</strong> 协议是目前IGP中应用最广，性能最好的协议</p>
+<p><strong>开放最短路径优先(OSPF)</strong> 协议是目前<strong>IGP</strong>中应用最广，性能最好的协议</p>
 <ul>
 <li>使用链路状态算法
 <ul>
@@ -688,16 +676,16 @@
 <li>利用Diskjtra算法构造路由</li>
 </ul>
 </li>
-<li>可适应大规模网络-层次OSPF</li>
+<li>可适应大规模网络-<strong>层次OSPF</strong></li>
 <li>路由变化收敛速度快</li>
 </ul>
 <h4 id="工作方式"><a class="markdownIt-Anchor" href="#工作方式"></a> 工作方式</h4>
 <ul>
-<li>每个路由器通过“HELLO”与邻居节点形成和维持邻居关系</li>
-<li>路由器节点在与邻居的交互中掌握本区域网络互补，使用Dijkstra算法完成本节点路由计算</li>
+<li>每个路由器通过<strong>HELLO</strong>与邻居节点形成和维持邻居关系</li>
+<li>路由器节点在与邻居的交互中掌握本区域网络互补，使用<strong>Dijkstra</strong>算法完成本节点路由计算</li>
 <li>邻居或链路状态发生变化时，将信息通过洪泛算法散布到整个区域
 <ul>
-<li>OSPF报文直接封装在IP中</li>
+<li>OSPF报文直接封装在<strong>IP</strong>中</li>
 </ul>
 </li>
 </ul>
@@ -708,7 +696,7 @@
 <li>一个AS有一个主干区域，包含了区域边界路由器，为AS内其他区域之间提供路由</li>
 </ul>
 <h3 id="bgp协议"><a class="markdownIt-Anchor" href="#bgp协议"></a> BGP协议</h3>
-<p>AS间路由协议，因特网“粘合剂”</p>
+<p>边界网关协议BGP是AS间路由协议，因特网“粘合剂”</p>
 <p>BGP为每个AS提供了一种手段</p>
 <ol>
 <li>从相邻AS获得子网可达性信息</li>
@@ -717,12 +705,17 @@
 </ol>
 <h4 id="bgp基础"><a class="markdownIt-Anchor" href="#bgp基础"></a> BGP基础</h4>
 <p>BGP通过<strong>TCP</strong>连接<strong>BGP会话（iBGP、eBGP）</strong> 来分发路由信息。对每条连接，位于该连接端点的两台路由器称为<strong>BGP对等方</strong>。</p>
-<p>BGP会话不对应物理网络。</p>
+<p>BGP会话不对应物理网络。<br>
+<img src="https://www.noction.com/wp-content/uploads/2012/03/bgp-diag.jpg" alt></p>
 <h4 id="分发可达性信息"><a class="markdownIt-Anchor" href="#分发可达性信息"></a> 分发可达性信息</h4>
-<p>在子网之前存在eBGP会话，一个AS向另一个AS发送前缀可达性信息（前缀表示一个子网/子网集合）。边缘路由器使用iBGP向AS内的所有路由器分发新的可达性信息。当连接另一个子网的边缘路由器收到这个可达性信息时，会继续通告。当路由器知道了一个新前缀，会在转发表中为该前缀创建表项。</p>
+<ul>
+<li>AS之间：在子网之前存在<strong>eBGP</strong>会话，一个AS向另一个AS发送前缀可达性信息（前缀表示一个子网/子网集合）。</li>
+<li>AS内：边缘路由器使用iBGP向AS内的所有路由器分发新的可达性信息。</li>
+<li>消息传播：当连接另一个子网的边缘路由器收到这个可达性信息时，会继续通告。当路由器知道了一个新前缀，会在转发表中为该前缀创建表项。</li>
+</ul>
 <h4 id="路径属性-bgp路径"><a class="markdownIt-Anchor" href="#路径属性-bgp路径"></a> 路径属性 &amp; BGP路径</h4>
 <ul>
-<li>当通告一个前缀（可达子网），通告中包括了BGP属性，前缀+属性=路由</li>
+<li>当通告一个前缀（<strong>可达子网</strong>）时，通告中包括了BGP<strong>属性</strong>：前缀+属性=路由</li>
 <li>两个重要的属性：
 <ul>
 <li>AS-PATH：包含了传递前缀的通告所经过的AS
@@ -736,7 +729,7 @@
 </li>
 </ul>
 <h4 id="基于策略通告信息"><a class="markdownIt-Anchor" href="#基于策略通告信息"></a> 基于策略通告信息</h4>
-<p>一个ISP可以只承载其客户的流量，不承载其他ISP的流量</p>
+<p>例如，一个ISP可以只承载其客户的流量，不承载其他ISP的流量。</p>
 <h4 id="bgp路径选择"><a class="markdownIt-Anchor" href="#bgp路径选择"></a> BGP路径选择</h4>
 <p>选择路由由策略决定</p>
 <ul>
