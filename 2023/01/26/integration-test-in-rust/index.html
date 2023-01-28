@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="集成测试是一种独立于代码的测试方式，进行集成测试时，相当于从外部调用库或运行程序，它常用于测试项目整体，而非独立的单元。 集成测试的代码放在根目录下的tests目录中，目录下的每个文件都是独立的包，这意味着测试项目时，就好像使用外部的包一样，需要独立导入，且每个测试文件之间也是独立的。  准备 一些库经常在集成测试中使用，在cargo.toml中加入这些开发依赖： 1234[dev-depende">
+    <meta name="description" content="集成测试是一种独立于代码的测试方式，进行集成测试时，相当于从外部调用库或运行程序，它常用于测试项目整体，而非独立的单元。 集成测试的代码放在根目录下的tests目录中，目录下的每个文件都是独立的包，这意味着测试项目时，就好像使用外部的包一样，需要独立导入，且每个测试文件之间也是独立的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在Rust中进行集成测试">
 <meta property="og:url" content="https://adamska1008.github.io/2023/01/26/integration-test-in-rust/index.html">
 <meta property="og:site_name" content="Adamska&#39;s Blog">
-<meta property="og:description" content="集成测试是一种独立于代码的测试方式，进行集成测试时，相当于从外部调用库或运行程序，它常用于测试项目整体，而非独立的单元。 集成测试的代码放在根目录下的tests目录中，目录下的每个文件都是独立的包，这意味着测试项目时，就好像使用外部的包一样，需要独立导入，且每个测试文件之间也是独立的。  准备 一些库经常在集成测试中使用，在cargo.toml中加入这些开发依赖： 1234[dev-depende">
+<meta property="og:description" content="集成测试是一种独立于代码的测试方式，进行集成测试时，相当于从外部调用库或运行程序，它常用于测试项目整体，而非独立的单元。 集成测试的代码放在根目录下的tests目录中，目录下的每个文件都是独立的包，这意味着测试项目时，就好像使用外部的包一样，需要独立导入，且每个测试文件之间也是独立的。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-26T12:53:26.000Z">
-<meta property="article:modified_time" content="2023-01-26T13:50:11.927Z">
+<meta property="article:modified_time" content="2023-01-28T14:21:26.797Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="Rust">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text"> 准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8tempfile%E5%88%9B%E5%BB%BA%E4%B8%B4%E6%97%B6%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text"> 使用tempfile创建临时目录和文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8assert_cmd%E6%B5%8B%E8%AF%95%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text"> 使用assert_cmd测试可执行程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="nav-number">3.1.</span> <span class="nav-text"> 控制测试环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8assert%E4%B8%8Epredicate%E5%88%A4%E6%96%AD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-number">3.2.</span> <span class="nav-text"> 使用Assert与Predicate判断测试结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%88%A4%E6%96%AD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text"> 手动判断测试结果</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text"> 准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8tempfile%E5%88%9B%E5%BB%BA%E4%B8%B4%E6%97%B6%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text"> 使用tempfile创建临时目录和文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8assert_cmd%E6%B5%8B%E8%AF%95%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text"> 使用assert_cmd测试可执行程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="nav-number">3.1.</span> <span class="nav-text"> 控制测试环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8assert%E4%B8%8Epredicate%E5%88%A4%E6%96%AD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-number">3.2.</span> <span class="nav-text"> 使用Assert与Predicate判断测试结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%88%A4%E6%96%AD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text"> 手动判断测试结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text"> 基准测试</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -200,9 +200,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-01-26 20:53:26 / 修改时间：21:50:11" itemprop="dateCreated datePublished" datetime="2023-01-26T20:53:26+08:00">2023-01-26</time>
+      <time title="创建时间：2023-01-26 20:53:26" itemprop="dateCreated datePublished" datetime="2023-01-26T20:53:26+08:00">2023-01-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-28 22:21:26" itemprop="dateModified" datetime="2023-01-28T22:21:26+08:00">2023-01-28</time>
     </span>
 
   
@@ -217,9 +223,11 @@
     <div class="post-body" itemprop="articleBody">
         <p>集成测试是一种独立于代码的测试方式，进行集成测试时，相当于从外部调用库或运行程序，它常用于测试项目整体，而非独立的单元。</p>
 <p>集成测试的代码放在根目录下的<code>tests</code>目录中，目录下的每个文件都是<strong>独立</strong>的包，这意味着测试项目时，就好像使用外部的包一样，需要独立导入，且每个测试文件之间也是独立的。</p>
+<span id="more"></span>
 <h2 id="准备"><a class="markdownIt-Anchor" href="#准备"></a> 准备</h2>
 <p>一些库经常在集成测试中使用，在cargo.toml中加入这些开发依赖：</p>
-<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[dev-dependencies]</span></span><br><span class="line"><span class="attr">assert_cmd</span> = <span class="string">&quot;2.0.7&quot;</span></span><br><span class="line"><span class="attr">predicates</span> = <span class="string">&quot;2.1.3&quot;</span></span><br><span class="line"><span class="attr">tempfile</span> = <span class="string">&quot;3.3.0&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[dev-dependencies]</span></span><br><span class="line"><span class="attr">assert_cmd</span> = <span class="string">&quot;2.0.7&quot;</span></span><br><span class="line"><span class="attr">predicates</span> = <span class="string">&quot;2.1.3&quot;</span></span><br><span class="line"><span class="attr">tempfile</span> = <span class="string">&quot;3.3.0&quot;</span></span><br><span class="line"><span class="attr">criterion</span> = <span class="string">&quot;0.4.0&quot;</span></span><br></pre></td></tr></table></figure>
+<p>截至文章更新时间，这里列出的版本号以及下文的用法均对应最新版本。</p>
 <h2 id="使用tempfile创建临时目录和文件"><a class="markdownIt-Anchor" href="#使用tempfile创建临时目录和文件"></a> 使用<code>tempfile</code>创建临时目录和文件</h2>
 <p>我们在测试时常常需要使用一些文件与目录，使用临时文件会比使用根目录下指定的文件更好。<code>tempfile</code>包提供了生成临时文件的功能。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> tempfile::&#123;tempfile, tempdir&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// tempfile返回一个标准库中的File对象</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">file1</span> = <span class="title function_ invoke__">tempfile</span>()?;</span><br><span class="line"><span class="comment">// tempdir返回一个TempDir对象，它不是Rust标准库的部分</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">dir</span> = <span class="title function_ invoke__">tempdir</span>()?;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 常使用path()方法获取路径，进行其他操作</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">file2</span> = File::<span class="title function_ invoke__">create</span>(dir.<span class="title function_ invoke__">path</span>().<span class="title function_ invoke__">join</span>(<span class="string">&quot;hello.txt&quot;</span>))?;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Builder提供了更多生成文件的方法，例如生成随机文件名</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">rand_file</span> = Builder::<span class="title function_ invoke__">new</span>()</span><br><span class="line">    .<span class="title function_ invoke__">suffix</span>(<span class="string">&quot;.txt&quot;</span>)</span><br><span class="line">    .<span class="title function_ invoke__">rand_bytes</span>(<span class="number">5</span>)</span><br><span class="line">    .<span class="title function_ invoke__">tempfile</span>()?;</span><br></pre></td></tr></table></figure>
@@ -242,8 +250,11 @@
 <p>除此之外，还常用<code>Assert</code>判断程序是否正确退出。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Command::<span class="title function_ invoke__">cargo_bin</span>(<span class="string">&quot;bin_fixture&quot;</span>)</span><br><span class="line">    .<span class="title function_ invoke__">unwrap</span>()</span><br><span class="line">    .<span class="title function_ invoke__">env</span>(<span class="string">&quot;exit&quot;</span>, <span class="string">&quot;42&quot;</span>)</span><br><span class="line">    .<span class="title function_ invoke__">assert</span>()</span><br><span class="line">    .<span class="title function_ invoke__">sucess</span>();      <span class="comment">// 成功运行</span></span><br><span class="line">    <span class="comment">// .failure()   // 运行出错</span></span><br><span class="line">    <span class="comment">// .code(1)     // 错误码为1</span></span><br></pre></td></tr></table></figure>
 <h3 id="手动判断测试结果"><a class="markdownIt-Anchor" href="#手动判断测试结果"></a> 手动判断测试结果</h3>
-<p>当我们需要对输出进行复杂的判断时，<code>Assert</code>与<code>Predicate</code>可能无法满足我们的需求。我们可以在<code>Command</code>上调用<code>output</code>方法获取程序的输出，手动编写测试语句。</p>
+<p>当我们需要对输出进行复杂的判断时，<code>Assert</code>与<code>Predicate</code>可能无法满足我们的需求。我们可以在<code>Command</code>上调用<code>output</code>方法获取<code>Ouput</code>对象，这个对象保存了程序的<code>stdout</code>和<code>stderr</code>输出，获取输出后可以手动编写判断语句。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">output</span> = Command::<span class="title function_ invoke__">cargo_bin</span>(<span class="built_in">env!</span>(<span class="string">&quot;CARGO_PKG_NAME&quot;</span>))</span><br><span class="line">    .<span class="title function_ invoke__">unwrap</span>()</span><br><span class="line">    .<span class="title function_ invoke__">output</span>();</span><br><span class="line"><span class="built_in">assert!</span>(<span class="type">String</span>::<span class="title function_ invoke__">from_utf8</span>(output.stdout)?.<span class="title function_ invoke__">contains</span>(<span class="string">&quot;114514&quot;</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="基准测试"><a class="markdownIt-Anchor" href="#基准测试"></a> 基准测试</h2>
+<p>nightly的Rust自带<code>cargo bench</code>基准测试功能，但自带的基准测试事实上已经被deprecated了，不会出现在stable中。更推荐使用<code>criterion</code>库进行基准测试。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
     </div>
 
     
