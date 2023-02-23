@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://www.minitool.com/images/uploads/lib/2020/04/ethernet-frame/ethernet-frame-1.jpg">
 <meta property="og:image" content="https://adamska1008.github.io/2022/12/28/study-notes-Computer-Network-6/Snipaste_2023-01-29_15-59-48.png">
 <meta property="article:published_time" content="2022-12-28T06:45:13.000Z">
-<meta property="article:modified_time" content="2023-01-29T08:02:33.214Z">
+<meta property="article:modified_time" content="2023-02-23T09:15:49.502Z">
 <meta property="article:author" content="Adamska">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
@@ -147,7 +147,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -218,7 +218,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-29 16:02:33" itemprop="dateModified" datetime="2023-01-29T16:02:33+08:00">2023-01-29</time>
+      <time title="修改时间：2023-02-23 17:15:49" itemprop="dateModified" datetime="2023-02-23T17:15:49+08:00">2023-02-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -243,7 +243,7 @@
         <p>计算机网络-链路层知识点。</p>
 <span id="more"></span>
 <h2 id="概述"><a class="markdownIt-Anchor" href="#概述"></a> 概述</h2>
-<p>链路层和网络层的关系：</p>
+<p><em>链路层和网络层的关系</em>：</p>
 <ul>
 <li>网络层：将传输层报文从源<strong>主机</strong>传递到目的主机
 <ul>
@@ -256,9 +256,9 @@
 </ul>
 </li>
 </ul>
-<p>节点：主机和路由器<br>
-链路：连接沿通信路径的相邻节点的路径是链路，分为有线和无线<br>
-帧：第二层分组的命名，封装数据报</p>
+<p><em>节点</em>：主机和路由器<br>
+<em>链路</em>：连接沿通信路径的相邻节点的路径是链路，分为有线和无线<br>
+<em>帧</em>：第二层分组的命名，封装数据报</p>
 <h3 id="链路层信道类型"><a class="markdownIt-Anchor" href="#链路层信道类型"></a> 链路层信道类型</h3>
 <p>分为<strong>广播</strong>链路和<strong>点对点</strong>通信链路两种。</p>
 <p>广播链路：许多主机被连接到相同的通信信道，需要<strong>媒体访问协议（MAC）</strong> 来协调传输和避免“碰撞”（冲突）。</p>
@@ -270,7 +270,7 @@
 <p>点对点通信链路：直线链接两个节点的链路，每一端有一个节点。访问控制简单，主要解决问题：成帧，可靠数据传输、差错检测和流量控制。</p>
 <h3 id="链路层服务"><a class="markdownIt-Anchor" href="#链路层服务"></a> 链路层服务</h3>
 <ul>
-<li>成帧，链路访问;
+<li>成帧，链路访问
 <ul>
 <li>将数据报封装进<strong>帧</strong>，加上<strong>首部</strong>和<strong>尾部</strong>。</li>
 <li>如果共享媒体，<strong>媒体访问控制（MAC）协议</strong>协调多路访问</li>
@@ -304,6 +304,21 @@
 </ul>
 </li>
 <li>半/全双工</li>
+</ul>
+<p><em>链路层服务和运输层服务比较</em>：</p>
+<ul>
+<li>运输层协议：
+<ul>
+<li>在端到端的基础上为两个进程之间提供可靠传输；</li>
+<li>流量控制是在端到端的基础上提供。</li>
+</ul>
+</li>
+<li>链路层协议：
+<ul>
+<li>在一条链路相连的两个节点之间提供可靠传输。</li>
+<li>流量控制是在相邻节点之间的基础上提供。</li>
+</ul>
+</li>
 </ul>
 <h2 id="差错检测与纠错"><a class="markdownIt-Anchor" href="#差错检测与纠错"></a> 差错检测与纠错</h2>
 <p>发送方发送数据帧+<strong>冗余数据</strong>（EDC，差错检测和纠正比特），接收方检查信息数据和冗余数据的关系，发现差错。</p>
@@ -354,7 +369,7 @@ D\times 2^r  = nG\ XOR\ R
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.7143919999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mspace allowbreak"></span><span class="mspace" style="margin-right:1em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">m</span><span class="mord mathrm">o</span><span class="mord mathrm">d</span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span></span></p>
 <p>所以计算R的方式就是求<code>(D &lt;&lt; r) % G</code>。</p>
 <p><img src="https://download.huawei.com/mdl/image/download?uuid=e0ffb1aa886f489e8b0c8d33f60594b7" alt></p>
-<p>使用DR除G(x)，应该得到0。</p>
+<p>使用DR除G(x)，应该得到余数0。</p>
 <p><img src="https://download.huawei.com/mdl/image/download?uuid=7a26a1a18fcf4b9da540df869b56a15c" alt></p>
 <h2 id="多路访问协议mac"><a class="markdownIt-Anchor" href="#多路访问协议mac"></a> 多路访问协议（MAC）</h2>
 <p>在<strong>广播</strong>链路中，两个或更多节点并行传输可能造成干扰。如果节点<strong>同时接收两个或更多帧</strong>会引起<strong>碰撞</strong>。</p>
@@ -419,15 +434,26 @@ D\times 2^r  = nG\ XOR\ R
 <ul>
 <li>以信道全部速率R发送</li>
 <li>没有事先的节点间协调</li>
-<li>两个或更多传输节点可能碰撞，协议定义了：
+<li>两个或更多传输节点可能<strong>碰撞</strong>，协议定义了：
 <ul>
 <li>如何<strong>检测</strong>碰撞</li>
 <li>如何从碰撞中<strong>恢复</strong></li>
 </ul>
 </li>
+<li>随机访问MAC协议的例子:
+<ul>
+<li>时隙ALOHA</li>
+<li>纯ALOHA</li>
+<li>CSMA, CSMA/CD</li>
+</ul>
+</li>
 </ul>
 <h4 id="aloha"><a class="markdownIt-Anchor" href="#aloha"></a> ALOHA</h4>
-<p>ALOHA采用星型拓补结构，中心主机通过下行通道向二级主机广播分组，二级主机通过上行信道向中心主机发送分组。通过无线电传输数据，可能冲突。</p>
+<p>ALOHA采用<strong>星型拓补</strong>结构：</p>
+<ul>
+<li>中心主机通过下行通道向二级主机广播分组</li>
+<li>二级主机通过上行信道向中心主机发送分组。通过无线电传输数据，可能冲突。</li>
+</ul>
 <p><img src="https://electronicsdesk.com/wp-content/uploads/2021/05/illustration-of-simplified-ALOHA.jpg" alt></p>
 <p>两种形式：时隙ALOHA，纯ALOHA。</p>
 <h5 id="时隙aloha"><a class="markdownIt-Anchor" href="#时隙aloha"></a> 时隙ALOHA</h5>
@@ -482,18 +508,18 @@ D\times 2^r  = nG\ XOR\ R
 <li>如果侦听到信道忙：推迟传输</li>
 </ul>
 <h5 id="csma碰撞"><a class="markdownIt-Anchor" href="#csma碰撞"></a> CSMA碰撞</h5>
-<p><strong>传播延迟</strong>意味着两个节点也许不能听到其他节点传输。发送碰撞意味着整个分组传输时间被浪费（<strong>发生碰撞后不会立即停止传输</strong>）。</p>
-<p>距离与传播时延决定碰撞概率。传播时延<strong>越大</strong>，载波侦听<strong>不能检测</strong>到另一个节点已经开始传播的概率越大。</p>
+<p><strong>传播延迟</strong>意味着两个节点也许不能听到其他节点传输。碰撞意味着整个分组传输时间被浪费（<strong>发生碰撞后不会立即停止传输</strong>）。</p>
+<p>距离与传播时延决定碰撞概率。<strong>传播时延越大，载波侦听不能检测到另一个节点已经开始传播的概率越大</strong>。</p>
 <h4 id="csmacd-带碰撞检测的载波侦听多帧访问"><a class="markdownIt-Anchor" href="#csmacd-带碰撞检测的载波侦听多帧访问"></a> CSMA/CD 带碰撞检测的载波侦听多帧访问</h4>
 <p>CD: Collision Detection</p>
-<p>CSMA/CD同样有载波侦听。与CSMA不同的是，它具有碰撞检测功能：</p>
+<p>CSMA/CD同样有载波侦听。与CSMA不同的是，它具有<strong>碰撞检测</strong>功能：</p>
 <ul>
 <li>一旦检测到碰撞，立即停止传输，减小信道浪费</li>
 <li>等待一段<strong>随机时间</strong>后，继续侦听</li>
 </ul>
 <h5 id="二进制指数后退算法"><a class="markdownIt-Anchor" href="#二进制指数后退算法"></a> 二进制指数后退算法</h5>
 <ul>
-<li>当传输一个给定帧时，在经历n个碰撞后，节点从{0,1,…,2<sup>n</sup>-1}中选择一个值K，并等待K个周期（<strong>512比特时间</strong>）</li>
+<li>当传输一个给定帧时，在经历n次碰撞后，节点从{0,1,…,2<sup>n</sup>-1}中选择一个值K，并等待K个<strong>周期（512比特时间）</strong></li>
 </ul>
 <h5 id="传播时延对csmacd的影响"><a class="markdownIt-Anchor" href="#传播时延对csmacd的影响"></a> 传播时延对CSMA/CD的影响</h5>
 <p>如果发送方在检测到碰撞（2τ时间）之前，已经把帧发送完，发送方就会认为这一帧成功发送；因此，需要限制最小帧：<strong>L/R≥2τ (τ=d<sub>max</sub>/V)</strong>。</p>
@@ -529,7 +555,7 @@ D\times 2^r  = nG\ XOR\ R
 <li>共享式以太网：
 <ul>
 <li>网络中所有主机的收发都依赖于同一套物理介质，即共享介质。</li>
-<li>同一时刻只能有一台主机在发送，各主机通过遵循CSMA/CD规则来保证网络的正常通讯</li>
+<li>同一时刻只能有一台主机在发送，各主机通过遵循<strong>CSMA/CD</strong>规则来保证网络的正常通讯</li>
 </ul>
 </li>
 <li>交换式以太网：
@@ -551,7 +577,7 @@ D\times 2^r  = nG\ XOR\ R
 <li>用于同步接收方，发送方时钟速率</li>
 </ul>
 </li>
-<li>MAC地址字节：6字节
+<li>MAC地址字节：目标地址（6字节）+源地址（6字节）
 <ul>
 <li>如果适配器接收具有匹配地址的帧，则交付给网络层协议，否则丢弃</li>
 </ul>
@@ -568,7 +594,7 @@ D\times 2^r  = nG\ XOR\ R
 </li>
 </ul>
 <h3 id="链路层编址arp"><a class="markdownIt-Anchor" href="#链路层编址arp"></a> 链路层编址，ARP</h3>
-<p>每个节点接口有网络层地址和链路层地址。网络层地址即IP地址，用于把分组送到目的网络。链路层地址为<strong>MAC地址</strong>，用于把数据帧从一个节点传送到另一个节点（同一网络中）。</p>
+<p>链路层地址为<strong>MAC地址</strong>，用于把数据帧从一个节点传送到<strong>另一个节点（同一网络中）</strong>。MAC地址为扁平结构，不随主机移动而改变，类似身份证号。</p>
 <h4 id="mac地址lan地址-物理地址"><a class="markdownIt-Anchor" href="#mac地址lan地址-物理地址"></a> MAC地址（LAN地址、物理地址）</h4>
 <ul>
 <li>节点“网卡”本身所带的地址（唯一）</li>
@@ -578,7 +604,7 @@ D\times 2^r  = nG\ XOR\ R
 </ul>
 <h4 id="arp地址解析协议"><a class="markdownIt-Anchor" href="#arp地址解析协议"></a> ARP：地址解析协议</h4>
 <p>高层程序希望与IP地址交往，而实际通信必须使用物理地址，因此需要解决转换问题。</p>
-<p>地址转换由ARP协议实现。LAN上的每一个节点（主机/路由器）都有<strong>ARP表</strong>。ARP表存放对某些LAN节点的IP/MAC地址映射：<code>&lt;IP地址;MAC地址;TTL&gt;</code>，其中TTL表示地址映射将被删除的时间（通常是20分钟）。</p>
+<p>地址转换由ARP协议实现。LAN上的每一个节点 <em>（主机/路由器）</em> 都有<strong>ARP表</strong>。ARP表存放对某些LAN节点的IP/MAC地址映射：<code>&lt;IP地址;MAC地址;TTL&gt;</code>，其中TTL表示地址映射将被删除的时间（通常是20分钟）。</p>
 <p>ARP的特点是<strong>即插即用</strong>，节点创建它们的ARP表无需网络管理员的干涉。</p>
 <p>ARP协议只为同一个子网上的节点解析IP地址。</p>
 <p><strong>情况一：两主机（A和B）在同一子网中</strong></p>
@@ -587,7 +613,7 @@ D\times 2^r  = nG\ XOR\ R
 <ul>
 <li>A广播<strong>ARP查询</strong>分组，包含B的IP地址
 <ul>
-<li>目的地址=<code>FF-FF-FF-FF</code></li>
+<li>目的地址=<code>FF-FF-FF-FF-FF-FF</code></li>
 <li>在LAN上的所有机器接收ARP请求</li>
 </ul>
 </li>
@@ -609,14 +635,21 @@ D\times 2^r  = nG\ XOR\ R
 <li>路由器获取目的IP地址，查询转发表确定输出端口</li>
 <li>路由器R发送帧到主机B（直接交付）</li>
 </ul>
-<h4 id="交换机"><a class="markdownIt-Anchor" href="#交换机"></a> 交换机</h4>
-<p>交换机的任务是接收<strong>入链路层</strong>的帧，并将其转发到<strong>出链路</strong>。交换机对于主机和路由器来说是透明的。它的功能有两点：</p>
+<p><em>ARP协议应当注意的问题</em>：</p>
 <ul>
-<li><strong>过滤</strong>：决定一个帧应该被转发还是丢弃</li>
-<li><strong>转发</strong>：决定一个帧应该被导向哪个接口</li>
+<li>ARP将保存在高速缓存中的每一映射地址项目都设置生存时间，凡是超过生存时间的项目就从高速缓存中删掉。</li>
+<li>从IP地址到硬件地址的解析是自动进行的，主机的用户对这种地址解析过程是不知道的。</li>
+<li>ARP 是解决同一个子网中的主机或路由器的 IP 地址和硬件地址的映射问题。</li>
+</ul>
+<p><em>存在风险：ARP欺骗，ARP泛洪攻击</em></p>
+<h4 id="交换机"><a class="markdownIt-Anchor" href="#交换机"></a> 交换机</h4>
+<p>交换机的任务是接收<strong>入链路层</strong>的帧，并将其转发到<strong>出链路</strong>。交换机对于主机和路由器来说是<strong>透明</strong>的。它的功能有两点：</p>
+<ul>
+<li><em>过滤</em>：决定一个帧应该被转发还是丢弃</li>
+<li><em>转发</em>：决定一个帧应该被导向哪个接口</li>
 </ul>
 <h5 id="交换机表"><a class="markdownIt-Anchor" href="#交换机表"></a> 交换机表</h5>
-<p>交换机的功能借助于交换机表实现，它的内容有：</p>
+<p>交换机的功能借助于<strong>交换机表</strong>实现，它的内容有：</p>
 <ul>
 <li>一个MAC地址</li>
 <li>通向该MAC地址的交换机接口</li>
@@ -626,11 +659,11 @@ D\times 2^r  = nG\ XOR\ R
 <h5 id="转发过滤工作流程"><a class="markdownIt-Anchor" href="#转发过滤工作流程"></a> 转发/过滤工作流程</h5>
 <p>假定目的地址为A的帧从接口x到达</p>
 <ul>
-<li>交换机表中没有A表项，交换机向除了x以外的所有接口广播该帧</li>
-<li>交换机表中有该表项，转发接口为x，则过滤该帧</li>
-<li>交换机表中有该表项，转发接口为y，则向接口y转发该帧</li>
+<li>交换机表中<strong>没有</strong>A表项，交换机向除了x以外的所有接口<strong>广播该帧</strong></li>
+<li>交换机表中有该表项，转发接口为<strong>x</strong>，则<strong>过滤该帧</strong></li>
+<li>交换机表中有该表项，转发接口为<strong>y</strong>，则<strong>向接口y转发该帧</strong></li>
 </ul>
-<p>交换机表是自动、动态和自治建立的，具有自学习能力。对于在每个接口接收到的帧，交换机存储：</p>
+<p>交换机表是自动、动态和自治建立的，具有<strong>自学习能力</strong>。对于在每个接口接收到的帧，交换机存储：</p>
 <ul>
 <li>该帧源地址字段中的MAC地址</li>
 <li>该帧到达的接口</li>
