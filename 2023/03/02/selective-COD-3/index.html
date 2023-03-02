@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="包括以下的内容：  指令系统 CPU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《计算机组成与设计》选读（三）">
+<meta property="og:url" content="https://adamska1008.github.io/2023/03/02/selective-COD-3/index.html">
+<meta property="og:site_name" content="Adamska&#39;s Blog">
+<meta property="og:description" content="包括以下的内容：  指令系统 CPU">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.researchgate.net/publication/228942202/figure/fig2/AS:669511661412368@1536635427816/Instruction-formats-for-MIPS-architecture-1.png">
+<meta property="article:published_time" content="2023-03-02T06:23:24.000Z">
+<meta property="article:modified_time" content="2023-03-02T12:14:53.455Z">
+<meta property="article:author" content="Adamska">
+<meta property="article:tag" content="算法竞赛, Modern C++, JVM, Kotlin, GoLang, Rust, Basic CS knowledge">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.researchgate.net/publication/228942202/figure/fig2/AS:669511661412368@1536635427816/Instruction-formats-for-MIPS-architecture-1.png">
+
+
+<link rel="canonical" href="https://adamska1008.github.io/2023/03/02/selective-COD-3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2023/03/02/selective-COD-3/","path":"2023/03/02/selective-COD-3/","title":"《计算机组成与设计》选读（三）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>《计算机组成与设计》选读（三） | Adamska's Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Adamska's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text"> 指令系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E6%A6%82%E8%BF%B0%E5%8F%8A%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text"> 指令概述及格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text"> 寻址方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.3.</span> <span class="nav-text"> 指令格式设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mips%E6%8C%87%E4%BB%A4%E9%9B%86"><span class="nav-number">1.4.</span> <span class="nav-text"> MIPS指令集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.4.1.</span> <span class="nav-text"> 指令格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mips%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">1.4.2.</span> <span class="nav-text"> MIPS寄存器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mips%E5%AF%BB%E5%9D%80"><span class="nav-number">1.4.3.</span> <span class="nav-text"> MIPS寻址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%A6%E7%BB%86%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.4.</span> <span class="nav-text"> 详细指令</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Adamska</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/03/02/selective-COD-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="《计算机组成与设计》选读（三） | Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《计算机组成与设计》选读（三）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-02 14:23:24 / 修改时间：20:14:53" itemprop="dateCreated datePublished" datetime="2023-03-02T14:23:24+08:00">2023-03-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E8%AE%BE%E8%AE%A1%E3%80%8B%E9%80%89%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">《计算机组成与设计》选读</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>包括以下的内容：</p>
+<ul>
+<li>指令系统</li>
+<li>CPU</li>
+</ul>
+<span id="more"></span>
+<h2 id="指令系统"><a class="markdownIt-Anchor" href="#指令系统"></a> 指令系统</h2>
+<h3 id="指令概述及格式"><a class="markdownIt-Anchor" href="#指令概述及格式"></a> 指令概述及格式</h3>
+<p><strong>基本概念</strong>：</p>
+<ul>
+<li>计算机语言中的基本单词称为指令，一台计算机的全部指令称为<strong>指令集（instruction set）</strong>。</li>
+<li><strong>指令字长</strong>：指令中包含的二进制位数
+<ul>
+<li>多字长指令：解决寻址较大存储空间的问题，多次取指影响速度</li>
+<li>等长指令：指令长度固定</li>
+</ul>
+</li>
+</ul>
+<p><strong>指令分类</strong>：</p>
+<ul>
+<li>根据计算机层次结构：
+<ul>
+<li>高级语言指令</li>
+<li>汇编语言指令</li>
+<li>机器语言指令</li>
+</ul>
+</li>
+<li>根据指令中地址码字段个数分类
+<ul>
+<li>三地址指令：[OP|A1|A2|A3] →(A1)OP(A2)=(A3)</li>
+<li>二地址指令：[OP|A1|A2] →(A1)OP(A2)=(A1)</li>
+<li>一地址指令：[OP|A1] →(AC)OP(A1)=(A1)</li>
+<li>零地址指令：[OP]，如停机、空操作、堆栈指令</li>
+</ul>
+</li>
+<li>根据指令中操作数的物理位置分类：[OP|A1|A2]
+<ul>
+<li>存储器-存储器（SS）型</li>
+<li>寄存器-寄存器（RR）型</li>
+<li>寄存器-存储器（RS）型</li>
+</ul>
+</li>
+<li>根据指令的功能分类：
+<ul>
+<li>传送指令：MOV、PUSH/POP、IN/OUT等</li>
+<li>定点算术运算指令：ADD、SUB、INC、CMP、MUL等</li>
+<li>位运算指令：NOT、AND、OR、SHL、SAL等</li>
+<li>控制转移指令：JMP、JNE、CALL、RET</li>
+</ul>
+</li>
+</ul>
+<p><strong>指令格式</strong>：</p>
+<ul>
+<li>操作码字段：指令完成的功能
+<ul>
+<li>定长操作码位数与最大指令数量有关：L<sub>op</sub>=⌈ log<sub>2</sub><sup>n</sup> ⌉</li>
+<li>变长操作码向不用的地址码字段扩展</li>
+</ul>
+</li>
+<li>地址码字段：
+<ul>
+<li>作用和影响与寻址方式和位数有关</li>
+</ul>
+</li>
+</ul>
+<h3 id="寻址方式"><a class="markdownIt-Anchor" href="#寻址方式"></a> 寻址方式</h3>
+<p><strong>指令寻址</strong>：<br>
+使用<strong>程序计数器（program counter）</strong> 保存当前运行的指令地址。每执行一条指令，PC加1。控制转移指令可能修改PC实现跳跃寻址。</p>
+<p><strong>数据寻址</strong>：<br>
+记地址E处的数据为S=(E)，操作数为D。</p>
+<ul>
+<li>立即数寻址：地址码字段是数据本身
+<ul>
+<li>例：MOV AX, 200H</li>
+<li>特点：
+<ul>
+<li>数据与指令一并读入寄存器，速度快</li>
+<li>便于程序设计</li>
+<li>数据大小受字段位控制</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>寄存器寻址：操作数在寄存器内部
+<ul>
+<li>例：MOV AX, BX</li>
+<li>特点：
+<ul>
+<li>操作数在寄存器中，速度快</li>
+<li>能访问的数据大小与计算机字长有关</li>
+<li>地址字段位数与计算机通用寄存器数量相关：⌈ log2n ⌉</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>直接寻址：地址码字段为操作数在内存中的地址
+<ul>
+<li>E=D, S=(D)</li>
+<li>例：MOV AX, [200H]</li>
+<li>特点：
+<ul>
+<li>需要访问主存，速度慢</li>
+<li>地址字段位数决定了访问空间大小</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>间接寻址：地址码是操作数主存地址的地址
+<ul>
+<li>E=D, S=((D))</li>
+<li>例：MOV AX, I[200H]</li>
+<li>特点：
+<ul>
+<li>解决了直接寻址下地址字段位数限制访问范围大小的问题</li>
+<li>访问主存两次，太慢</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>寄存器间接寻址：地址码是寄存器编号
+<ul>
+<li>E=®，S=(®)</li>
+<li>例：MOV AX, [BX]</li>
+<li>特点：
+<ul>
+<li>解决了直接寻址下地址字段位数限制访问范围大小的问题</li>
+<li>访问主存一次</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>相对寻址：以PC为基地址，地址码为偏移量，相加得到地址
+<ul>
+<li>E=D+(PC)</li>
+<li>例：JMP 200</li>
+<li>特点：
+<ul>
+<li>节省地址位数</li>
+<li>由于PC的值在取指阶段完成修改，E需要额外增加</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>基址寻址：指定一个基址寄存器B
+<ul>
+<li>E=D+(B), S=(E)</li>
+<li>例：MOV AX 32[B]</li>
+<li>特点：
+<ul>
+<li>使用基址寻址可以访问更大空间</li>
+<li>对某一程序，基址设定后不变，通过修改D访问数据</li>
+<li>访问一次内存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>变址寻址：指定一个变址寄存器X，内容可以改变
+<ul>
+<li>E=D+(X)，S=(E)</li>
+<li>例：MOV AX, 32[SI]</li>
+<li>特点：
+<ul>
+<li>不改变指令即可改变数据的有效地址，常在循环中使用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>某计算机采用双字节长指令，内存基于字节寻址，指令数据用补码表示，PC的值在取指阶段完成修改</p>
+<ol>
+<li>若采用相对寻址，当前地址为2003H，要求转移后目标地址为200AH，则该指令地址码为多少。</li>
+<li>若采用相对寻址，当前地址为2003H，要求转移后目标地址为200AH，则该指令地址码为多少。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol>
+<li>200AH-(2003H+2)=5H</li>
+<li>2001H-(2008H+2)=-9=F7H</li>
+</ol>
+</blockquote>
+<h3 id="指令格式设计"><a class="markdownIt-Anchor" href="#指令格式设计"></a> 指令格式设计</h3>
+<p><em>主要内容</em>：</p>
+<ul>
+<li>根据指令数量以及是否支持操作码扩展，确定操作码字段的位数</li>
+<li>根据对操作数的要求确定地址码字段的个数</li>
+<li>根据寻址方式，确定寻址方式字段</li>
+<li>确定采用定长还是变长指令</li>
+</ul>
+<blockquote>
+<p>字长16位，主存64K，指令单字长单地址，80条指令，寻址方式有直接、间接、相对、变址</p>
+</blockquote>
+<blockquote>
+<p>80条指令 → OP字段需要7位<br>
+4种寻址方式 → 寻址方式特征位2位<br>
+单地址位长度：16-7-2=7位<br>
+指令格式：[OP|X|A]</p>
+</blockquote>
+<h3 id="mips指令集"><a class="markdownIt-Anchor" href="#mips指令集"></a> MIPS指令集</h3>
+<p>MIPS是精简指令集RISC（Reduced Instruction Set Computer），有以下特点：</p>
+<ul>
+<li>简单的Load/Store结构</li>
+<li>易于流水线CPU设计</li>
+<li>易于编译器开发</li>
+<li>寻址方式、指令操作简单</li>
+</ul>
+<h4 id="指令格式"><a class="markdownIt-Anchor" href="#指令格式"></a> 指令格式</h4>
+<p><img src="https://www.researchgate.net/publication/228942202/figure/fig2/AS:669511661412368@1536635427816/Instruction-formats-for-MIPS-architecture-1.png" alt></p>
+<ul>
+<li>R型指令：Rs、Rt为源操作数，Rd为目标操作数</li>
+<li>I型指令：
+<ul>
+<li>Load/Store：Rs和立即数为源操作数，Rt为目标操作数</li>
+<li>条件转移：Rs、Rt均为源操作数</li>
+</ul>
+</li>
+<li>J型指令：26位立即数作为跳转目标地址的部分地址</li>
+</ul>
+<h4 id="mips寄存器"><a class="markdownIt-Anchor" href="#mips寄存器"></a> MIPS寄存器</h4>
+<table>
+<thead>
+<tr>
+<th>寄存器名</th>
+<th>寄存器编号</th>
+<th>用途说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$s0</td>
+<td>0</td>
+<td>保存固定常数0</td>
+</tr>
+<tr>
+<td>$at</td>
+<td>1</td>
+<td>汇编器临时变量</td>
+</tr>
+<tr>
+<td>$v0~$v1</td>
+<td>2~3</td>
+<td>子函数调用返回结果</td>
+</tr>
+<tr>
+<td>$a0~$a3</td>
+<td>4~7</td>
+<td>函数调用参数1~3</td>
+</tr>
+<tr>
+<td>$t0~$t7</td>
+<td>8~15</td>
+<td>临时变量，函数调用时不需要保存和恢复</td>
+</tr>
+<tr>
+<td>$s0~$s7</td>
+<td>16~23</td>
+<td>函数调用时需要保存和恢复的寄存器变量</td>
+</tr>
+<tr>
+<td>$t8~$t9</td>
+<td>24~25</td>
+<td>临时变量，函数调用时不需要保存和恢复</td>
+</tr>
+<tr>
+<td>$k0~$k1</td>
+<td>26~27</td>
+<td>中断、异常处理程序使用</td>
+</tr>
+<tr>
+<td>$gp</td>
+<td>28</td>
+<td>全局指针变量（Global Pointer）</td>
+</tr>
+<tr>
+<td>$sp</td>
+<td>29</td>
+<td>栈指针变量（Stack Pointer）</td>
+</tr>
+<tr>
+<td>$fp</td>
+<td>30</td>
+<td>帧指针变量（Frame Pointer）</td>
+</tr>
+<tr>
+<td>$ra</td>
+<td>31</td>
+<td>返回地址（Return Address）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="mips寻址"><a class="markdownIt-Anchor" href="#mips寻址"></a> MIPS寻址</h4>
+<p>MIPS指令集不单设置寻址方式字段。</p>
+<ul>
+<li>
+<p>R型指令：由op和func字段共同隐含说明当前的寻址方式</p>
+</li>
+<li>
+<p>I型和J型指令：由op字段隐含说明当前的寻址方式</p>
+</li>
+<li>
+<p>立即数寻址：</p>
+<ul>
+<li>I型指令：[OP|Rs|Rt|立即数]</li>
+<li>举例：addi s1, s2, 10 → $s1=$s2+10</li>
+</ul>
+</li>
+<li>
+<p>寄存器直接寻址：</p>
+<ul>
+<li>R型指令：[OP|Rs|Rt|Rd|shamt|funct]</li>
+<li>举例：add $t0, $s1, $s2 → $t0=$s1+$s2</li>
+</ul>
+</li>
+<li>
+<p>基址寻址：</p>
+<ul>
+<li>I型指令：[OP|Rs|Rt|立即数]</li>
+<li>立即数带符号扩展为32位</li>
+<li>$Rs为基址寄存器，($Rs)+立即数=E, S=(E)</li>
+<li>使用基址寻址的指令：lw，sw，lh，sh，lb，lbu等</li>
+</ul>
+</li>
+<li>
+<p>相对寻址</p>
+<ul>
+<li>I型指令（Rs、Rt用于条件判断）</li>
+<li>立即数带符号扩展成32位后左移2位</li>
+<li>E=(PC)+立即数</li>
+</ul>
+</li>
+<li>
+<p>伪直接寻址（页面寻址）：</p>
+<ul>
+<li>J型指令</li>
+<li>立即数左移2位</li>
+<li>E=PC作为高四位+立即数</li>
+</ul>
+</li>
+</ul>
+<h4 id="详细指令"><a class="markdownIt-Anchor" href="#详细指令"></a> 详细指令</h4>
+<p><strong>R型指令</strong><br>
+[OP|Rs|Rt|Rd|shamt|funct]</p>
+<ul>
+<li>OP：操作码，所有R型指令OP全为零</li>
+<li>Rs：寄存器编号，对应第一个操作数</li>
+<li>Rt：寄存器编号，对应第二个操作数</li>
+<li>Rd：寄存器编号，对应保存结果</li>
+<li>shamt：常数，在移位指令中使用</li>
+<li>funct：功能码，指定指令具体功能</li>
+</ul>
+<p>三类指令：</p>
+<ul>
+<li>三寄存器R型指令：
+<ul>
+<li>add、sub、and、or、xor</li>
+<li>指令功能：$Rd ← $Rs op $Rt</li>
+</ul>
+</li>
+<li>二寄存器R型指令
+<ul>
+<li>sll、srl、sra</li>
+<li>$Rs=0、shamt=sa</li>
+<li>指令功能：$Rd ← &amp;Rt shift sa</li>
+</ul>
+</li>
+<li>一寄存器R型指令
+<ul>
+<li>jr</li>
+<li>只有$Rs非0</li>
+<li>PC ← $Rs</li>
+</ul>
+</li>
+</ul>
+<p><strong>I型指令</strong><br>
+[OP|Rs|Rt|立即数]</p>
+<ul>
+<li>OP：操作码</li>
+<li>Rs：源寄存器</li>
+<li>Rt：目的寄存器</li>
+<li>Imm：立即数，第二个源操作数</li>
+</ul>
+<p>四类指令：</p>
+<ul>
+<li>面向运算：
+<ul>
+<li>addi、andi、ori、xori</li>
+<li>$Rt ← $Rs OP E(Imm)</li>
+<li>addi使用符号扩展，其他指令使用0扩展</li>
+</ul>
+</li>
+<li>面向访存
+<ul>
+<li>lw
+<ul>
+<li>lw Rt, Imm(Rs)</li>
+<li>$Rt ← mem[$Rs+E(Imm)]</li>
+</ul>
+</li>
+<li>sw
+<ul>
+<li>sw Rt, Imm(Rs)</li>
+<li>mem[$Rs+E(Imm)] ← $Rt</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>面向数位设置
+<ul>
+<li>lui
+<ul>
+<li>lui Rt, Imm</li>
+<li>$Rt ← Imm &lt;&lt; 16 （空位补零）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>面向条件转移分支
+<ul>
+<li>beq（$Rs == $Rt）、bne（$Rs != $Rt）</li>
+<li>if (cond) PC ← PC+E(Imm)&lt;&lt;2</li>
+<li>标准的PC相对寻址</li>
+<li>Imm先符号扩展成32位，再左移两位</li>
+</ul>
+</li>
+</ul>
+<p><strong>J型指令</strong></p>
+<ul>
+<li>无条件跳转
+<ul>
+<li>j address;</li>
+<li>PC ← (PC+4) ∨ (address&lt;&lt;2)</li>
+</ul>
+</li>
+<li>调用与联接
+<ul>
+<li>jal address;</li>
+<li>$Ra ← PC + 4 （保存地址）</li>
+<li>PC ← (PC+4) ∨ (address&lt;&lt;2)</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Adamska
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://adamska1008.github.io/2023/03/02/selective-COD-3/" title="《计算机组成与设计》选读（三）">https://adamska1008.github.io/2023/03/02/selective-COD-3/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/01/selective-COD-2/" rel="prev" title="《计算机组成与设计》选读（二）">
+                  <i class="fa fa-chevron-left"></i> 《计算机组成与设计》选读（二）
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adamska</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@9.3.0/dist/mermaid.min.js","integrity":"sha256-QdTG1YTLLTwD3b95jLqFxpQX9uYuJMNAtVZgwKX4oYU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

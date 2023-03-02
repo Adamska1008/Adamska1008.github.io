@@ -19,28 +19,24 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"adamska1008.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="此文提供解决日期问题的模板。  简介 日期问题是一类难度不大，但极为烦人的模拟题，一般要求如下：  已知xxxx年yy月zz日为星期k，则aaaa年bb月cc日为星期几？  解决这类题，一般使用如下模板 1234567891011121314151617181920212223242526272829303132333435int months[13] &#x3D; &amp;#123;0, 31, 28, 31,">
-<meta property="og:type" content="article">
-<meta property="og:title" content="模板-日期问题">
-<meta property="og:url" content="https://adamska1008.github.io/2021/08/14/templates-date/index.html">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Adamska&#39;s Blog">
+<meta property="og:url" content="https://adamska1008.github.io/page/6/index.html">
 <meta property="og:site_name" content="Adamska&#39;s Blog">
-<meta property="og:description" content="此文提供解决日期问题的模板。  简介 日期问题是一类难度不大，但极为烦人的模拟题，一般要求如下：  已知xxxx年yy月zz日为星期k，则aaaa年bb月cc日为星期几？  解决这类题，一般使用如下模板 1234567891011121314151617181920212223242526272829303132333435int months[13] &#x3D; &amp;#123;0, 31, 28, 31,">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-08-13T16:06:57.000Z">
-<meta property="article:modified_time" content="2023-03-01T07:10:28.574Z">
 <meta property="article:author" content="Adamska">
-<meta property="article:tag" content="模拟">
+<meta property="article:tag" content="算法竞赛, Modern C++, JVM, Kotlin, GoLang, Rust, Basic CS knowledge">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://adamska1008.github.io/2021/08/14/templates-date/">
+<link rel="canonical" href="https://adamska1008.github.io/page/6/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://adamska1008.github.io/2021/08/14/templates-date/","path":"2021/08/14/templates-date/","title":"模板-日期问题"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/6/index.html","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>模板-日期问题 | Adamska's Blog</title>
+<title>Adamska's Blog</title>
   
 
 
@@ -79,7 +75,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">Adamska's Blog</p>
+      <h1 class="site-title">Adamska's Blog</h1>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -105,7 +101,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -118,7 +114,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#201503-3-%E8%8A%82%E6%97%A5"><span class="nav-number">2.</span> <span class="nav-text"> 201503-3 节日</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text"> 问题描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text"> 输入格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.3.</span> <span class="nav-text"> 输出格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%8C%83%E5%9B%B4"><span class="nav-number">2.4.</span> <span class="nav-text"> 数据范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A0%B7%E4%BE%8B"><span class="nav-number">2.5.</span> <span class="nav-text"> 输入样例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%A0%B7%E4%BE%8B"><span class="nav-number">2.6.</span> <span class="nav-text"> 输出样例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E8%A7%A3"><span class="nav-number">2.7.</span> <span class="nav-text"> 题解</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -161,17 +156,16 @@
 
     </div>
 
-    <div class="main-inner post posts-expand">
+    <div class="main-inner index posts-expand">
 
-
-  
+    
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2021/08/14/templates-date/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -185,13 +179,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="模板-日期问题 | Adamska's Blog">
+      <meta itemprop="name" content="undefined | Adamska's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          模板-日期问题
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/14/templates-date/" class="post-title-link" itemprop="url">模板-日期问题</a>
+        </h2>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -230,7 +224,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>此文提供解决日期问题的模板。</p>
+          <p>此文提供解决日期问题的模板。</p>
 <h3 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h3>
 <p>日期问题是一类难度不大，但极为烦人的模拟题，一般要求如下：</p>
 <blockquote>
@@ -262,6 +256,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2014/05/11</span><br><span class="line">2015/05/10</span><br></pre></td></tr></table></figure>
 <h4 id="题解"><a class="markdownIt-Anchor" href="#题解"></a> 题解</h4>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> months[<span class="number">13</span>] = &#123;<span class="number">0</span>, <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">is_leap</span><span class="params">(<span class="type">int</span> year)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> year % <span class="number">400</span> == <span class="number">0</span> || (year % <span class="number">4</span> == <span class="number">0</span> &amp;&amp; year % <span class="number">100</span> != <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">get_days</span><span class="params">(<span class="type">int</span> month, <span class="type">int</span> year)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (month == <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> months[<span class="number">2</span>] + <span class="built_in">is_leap</span>(year);</span><br><span class="line">    <span class="keyword">return</span> months[month];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a, b, c, y1, y2;</span><br><span class="line">    cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; y1 &gt;&gt; y2;</span><br><span class="line">    <span class="type">int</span> days = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> year = <span class="number">1850</span>; year &lt;= y2; year++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> month = <span class="number">1</span>; month &lt;= <span class="number">12</span>; month++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (year &gt;= y1 &amp;&amp; month == a)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="type">int</span> w = (<span class="number">1</span> + days) % <span class="number">7</span>, cnt = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> d = <span class="number">1</span>; d &lt;= <span class="built_in">get_days</span>(month, year); d++)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span> (w == c - <span class="number">1</span>)</span><br><span class="line">                    &#123;</span><br><span class="line">                        cnt++;</span><br><span class="line">                        <span class="keyword">if</span> (cnt == b)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="built_in">printf</span>(<span class="string">&quot;%04d/%02d/%02d\n&quot;</span>, year, month, d);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    w = (w + <span class="number">1</span>) % <span class="number">7</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (cnt &lt; b)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">puts</span>(<span class="string">&quot;none&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            days += <span class="built_in">get_days</span>(month, year);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
     </div>
 
     
@@ -269,38 +264,8 @@
     
 
     <footer class="post-footer">
-          
-
-<div class="post-copyright">
-<ul>
-  <li class="post-copyright-author">
-      <strong>本文作者： </strong>Adamska
-  </li>
-  <li class="post-copyright-link">
-      <strong>本文链接：</strong>
-      <a href="https://adamska1008.github.io/2021/08/14/templates-date/" title="模板-日期问题">https://adamska1008.github.io/2021/08/14/templates-date/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-          <div class="post-tags">
-              <a href="/tags/%E6%A8%A1%E6%8B%9F/" rel="tag"># 模拟</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-            </div>
-            <div class="post-nav-item">
-                <a href="/2021/08/14/impl-range-in-C/" rel="next" title="在C++中实现for range">
-                  在C++中实现for range <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
+        <div class="post-eof"></div>
+      
     </footer>
   </article>
 </div>
@@ -308,7 +273,9 @@
 
 
 
-
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+  </nav>
 
 </div>
   </main>
