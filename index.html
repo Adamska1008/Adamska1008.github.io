@@ -127,18 +127,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -230,495 +230,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/03/21/async-in-rust/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/03/04/selective-COD-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/03/04/selective-COD-4/" class="post-title-link" itemprop="url">《计算机组成与设计》选读（四）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-03-04 18:52:50" itemprop="dateCreated datePublished" datetime="2023-03-04T18:52:50+08:00">2023-03-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-03-05 20:58:19" itemprop="dateModified" datetime="2023-03-05T20:58:19+08:00">2023-03-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E8%AE%BE%E8%AE%A1%E3%80%8B%E9%80%89%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">《计算机组成与设计》选读</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>包括以下内容：</p>
-<ul>
-<li><a href="#%E6%80%BB%E7%BA%BF">总线</a>
-<ul>
-<li><a href="#%E6%80%BB%E7%BA%BF%E6%80%A7%E8%83%BD%E5%92%8C%E4%BA%8B%E5%8A%A1">总线性能和事务</a></li>
-<li><a href="#%E6%80%BB%E7%BA%BF%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F">总线连接方式</a></li>
-<li><a href="#%E6%80%BB%E7%BA%BF%E4%BB%B2%E8%A3%81">总线仲裁</a></li>
-<li><a href="#%E6%80%BB%E7%BA%BF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F">总线数据传输方式</a></li>
-</ul>
-</li>
-<li><a href="#io">I/O</a>
-<ul>
-<li><a href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%96%B9%E5%BC%8F">输入输出方式</a></li>
-<li><a href="#%E4%B8%AD%E6%96%AD%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94">中断请求与响应</a></li>
-<li><a href="#dma">DMA</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/03/04/selective-COD-4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/03/02/selective-COD-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/03/02/selective-COD-3/" class="post-title-link" itemprop="url">《计算机组成与设计》选读（三）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-03-02 14:23:24" itemprop="dateCreated datePublished" datetime="2023-03-02T14:23:24+08:00">2023-03-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-03-04 18:51:43" itemprop="dateModified" datetime="2023-03-04T18:51:43+08:00">2023-03-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E8%AE%BE%E8%AE%A1%E3%80%8B%E9%80%89%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">《计算机组成与设计》选读</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>包括以下的内容：</p>
-<ul>
-<li><a href="#%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F">指令系统</a>
-<ul>
-<li><a href="#%E6%8C%87%E4%BB%A4%E6%A6%82%E8%BF%B0%E5%8F%8A%E6%A0%BC%E5%BC%8F">指令概述及格式</a></li>
-<li><a href="#%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F">寻址方式</a></li>
-<li><a href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F%E8%AE%BE%E8%AE%A1">指令格式设计</a></li>
-<li><a href="#mips%E6%8C%87%E4%BB%A4%E9%9B%86">MIPS指令集</a>
-<ul>
-<li><a href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">指令格式</a></li>
-<li><a href="#mips%E5%AF%84%E5%AD%98%E5%99%A8">MIPS寄存器</a></li>
-<li><a href="#mips%E5%AF%BB%E5%9D%80">MIPS寻址</a></li>
-<li><a href="#%E8%AF%A6%E7%BB%86%E6%8C%87%E4%BB%A4">详细指令</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#cpu">CPU</a>
-<ul>
-<li><a href="#cpu%E7%9A%84%E7%BB%84%E6%88%90%E4%B8%8E%E5%8A%9F%E8%83%BD">CPU的组成与功能</a></li>
-<li><a href="#%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF">数据通路</a></li>
-<li><a href="#%E6%8E%A7%E5%88%B6%E5%99%A8%E8%AE%BE%E8%AE%A1">控制器设计</a>
-<ul>
-<li><a href="#%E7%A1%AC%E4%BB%B6%E5%B8%83%E7%BA%BF%E6%8E%A7%E5%88%B6%E5%99%A8">硬件布线控制器</a></li>
-<li><a href="#%E5%BE%AE%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6%E5%99%A8">微程序控制器</a>
-<ul>
-<li><a href="#%E5%BE%AE%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1">微程序设计</a></li>
-<li><a href="#%E5%BE%AE%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">微指令格式</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#%E6%B5%81%E6%B0%B4%E7%BA%BF">流水线</a>
-<ul>
-<li><a href="#%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%86%92%E9%99%A9">流水线冒险</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/03/02/selective-COD-3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/03/01/selective-COD-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/03/01/selective-COD-2/" class="post-title-link" itemprop="url">《计算机组成与设计》选读（二）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-03-01 12:10:55" itemprop="dateCreated datePublished" datetime="2023-03-01T12:10:55+08:00">2023-03-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-03-04 15:07:26" itemprop="dateModified" datetime="2023-03-04T15:07:26+08:00">2023-03-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E8%AE%BE%E8%AE%A1%E3%80%8B%E9%80%89%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">《计算机组成与设计》选读</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>包括以下内容：</p>
-<ul>
-<li><a href="#%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84">存储器层次结构</a></li>
-<li><a href="#%E5%AD%98%E5%82%A8%E5%99%A8%E6%8A%80%E6%9C%AF">存储器技术</a>
-<ul>
-<li><a href="#ram">RAM</a></li>
-<li><a href="#dram%E7%BB%93%E6%9E%84">DRAM结构</a></li>
-<li><a href="#%E5%AD%98%E5%82%A8%E6%89%A9%E5%B1%95">存储扩展</a></li>
-</ul>
-</li>
-<li><a href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98cache">高速缓存Cache</a>
-<ul>
-<li><a href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86">基本原理</a></li>
-<li><a href="#%E7%9B%B8%E8%81%94%E5%AD%98%E5%82%A8%E5%99%A8">相联存储器</a></li>
-<li><a href="#%E6%9B%BF%E6%8D%A2%E7%AE%97%E6%B3%95">替换算法</a></li>
-</ul>
-</li>
-<li><a href="#%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8">虚拟存储</a>
-<ul>
-<li><a href="#tlb">TLB</a></li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/03/01/selective-COD-2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/02/26/selective-COD-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/26/selective-COD-1/" class="post-title-link" itemprop="url">《计算机组成与设计》选读（一）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-02-26 17:16:20" itemprop="dateCreated datePublished" datetime="2023-02-26T17:16:20+08:00">2023-02-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-03-05 21:28:49" itemprop="dateModified" datetime="2023-03-05T21:28:49+08:00">2023-03-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E8%AE%BE%E8%AE%A1%E3%80%8B%E9%80%89%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">《计算机组成与设计》选读</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>包括以下内容：</p>
-<ul>
-<li><a href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0">计算机系统概述</a>
-<ul>
-<li><a href="#%E5%86%AF%E8%AF%BA%E4%BC%8A%E6%9B%BC%E8%AE%A1%E7%AE%97%E6%9C%BA">冯·诺伊曼计算机</a></li>
-<li><a href="#%E6%80%A7%E8%83%BD">性能</a></li>
-<li><a href="#%E6%80%A7%E8%83%BD%E7%9A%84%E5%AE%9A%E4%B9%89">性能的定义</a></li>
-<li><a href="#%E6%80%A7%E8%83%BD%E7%9A%84%E5%BA%A6%E9%87%8F">性能的度量</a></li>
-<li><a href="#cpu%E7%9A%84%E6%80%A7%E8%83%BD%E5%8F%8A%E5%85%B6%E5%BA%A6%E9%87%8F%E5%9B%A0%E7%B4%A0">CPU的性能及其度量因素</a></li>
-<li><a href="#%E6%8C%87%E4%BB%A4%E7%9A%84%E6%80%A7%E8%83%BD">指令的性能</a></li>
-<li><a href="#%E7%BB%8F%E5%85%B8cpu%E6%80%A7%E8%83%BD%E5%85%AC%E5%BC%8F">经典CPU性能公式</a></li>
-<li><a href="#mips">MIPS</a></li>
-</ul>
-</li>
-<li><a href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97">计算机的算数运算</a>
-<ul>
-<li><a href="#%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA">信息的表示</a>
-<ul>
-<li><a href="#%E6%95%B4%E6%95%B0%E8%A1%A8%E7%A4%BA">整数表示</a></li>
-<li><a href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E8%A1%A8%E7%A4%BA">浮点数表示</a></li>
-</ul>
-</li>
-<li><a href="#%E6%95%B0%E6%8D%AE%E6%A0%A1%E9%AA%8C">数据校验</a>
-<ul>
-<li><a href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C">奇偶校验</a></li>
-<li><a href="#crc%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E7%A0%81%E6%A0%A1%E9%AA%8C">CRC（循环冗余码）校验</a></li>
-<li><a href="#%E6%B5%B7%E6%98%8E%E6%A0%A1%E9%AA%8C">海明校验</a></li>
-</ul>
-</li>
-<li><a href="#%E8%BF%90%E7%AE%97%E6%96%B9%E6%B3%95%E4%B8%8E%E8%BF%90%E7%AE%97%E5%99%A8">运算方法与运算器</a>
-<ul>
-<li><a href="#%E5%AE%9A%E7%82%B9%E6%95%B0%E8%BF%90%E7%AE%97%E5%8F%8A%E6%BA%A2%E5%87%BA">定点数运算及溢出</a></li>
-<li><a href="#%E5%AE%9A%E7%82%B9%E6%95%B0%E5%8A%A0%E5%87%8F%E8%BF%90%E7%AE%97%E5%99%A8">定点数加减运算器</a></li>
-<li><a href="#%E5%8E%9F%E7%A0%81%E4%B8%80%E4%BD%8D%E4%B9%98%E6%B3%95">原码一位乘法</a></li>
-<li><a href="#%E8%A1%A5%E7%A0%81%E4%B8%80%E4%BD%8D%E4%B9%98%E6%B3%95">补码一位乘法</a></li>
-<li><a href="#%E4%B9%98%E6%B3%95%E8%BF%90%E7%AE%97%E5%99%A8">乘法运算器</a></li>
-<li><a href="#%E5%AE%9A%E7%82%B9%E6%95%B0%E9%99%A4%E6%B3%95">定点数除法</a></li>
-<li><a href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E5%8A%A0%E5%87%8F%E8%BF%90%E7%AE%97">浮点数加减运算</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>相对于书本原文，扩展了数据校验以及部分内容。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/02/26/selective-COD-1/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1009,89 +520,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/01/29/study-notes-software-engineering/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Adamska">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Adamska's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/29/study-notes-software-engineering/" class="post-title-link" itemprop="url">软件工程导论笔记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-01-29 16:44:36" itemprop="dateCreated datePublished" datetime="2023-01-29T16:44:36+08:00">2023-01-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-02-18 17:32:08" itemprop="dateModified" datetime="2023-02-18T17:32:08+08:00">2023-02-18</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>软件工程导论课程笔记。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/01/29/study-notes-software-engineering/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/01/26/integration-test-in-rust/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1168,8 +596,432 @@
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/01/14/RESP-serialize-base-on-serde/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/01/14/RESP-serialize-base-on-serde/" class="post-title-link" itemprop="url">基于serde实现一个RESP序列化库</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-14 17:19:10" itemprop="dateCreated datePublished" datetime="2023-01-14T17:19:10+08:00">2023-01-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-23 17:32:34" itemprop="dateModified" datetime="2023-01-23T17:32:34+08:00">2023-01-23</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <a href="/2023/01/13/Introduction-to-RESP/" title="此前的文章">此前的文章</a>介绍了RESP协议的基本内容，现在我们基于serde库在rust中编写序列化RESP的库。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/01/14/RESP-serialize-base-on-serde/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/01/13/Introduction-to-RESP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/01/13/Introduction-to-RESP/" class="post-title-link" itemprop="url">Redis通信机制：简介RESP协议</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-13 00:31:28" itemprop="dateCreated datePublished" datetime="2023-01-13T00:31:28+08:00">2023-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-21 16:19:34" itemprop="dateModified" datetime="2023-01-21T16:19:34+08:00">2023-01-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>RESP（Redis serialization protocol）是Redis客户端与服务端通信的协议。本文简单介绍了RESP协议的内容。<a target="_blank" rel="noopener" href="https://redis.io/docs/reference/protocol-spec/">官方文档</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/01/13/Introduction-to-RESP/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/01/09/write-a-kv-database-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/01/09/write-a-kv-database-1/" class="post-title-link" itemprop="url">使用Rust编写一个KV数据库-一</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-09 00:44:28" itemprop="dateCreated datePublished" datetime="2023-01-09T00:44:28+08:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-19 23:50:48" itemprop="dateModified" datetime="2023-02-19T23:50:48+08:00">2023-02-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BD%BF%E7%94%A8Rust%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AAKV%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">使用Rust编写一个KV数据库</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本项目内容来自于PingCAP的talent-plan中Rust部分内容。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/01/09/write-a-kv-database-1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2023/01/08/use-mysy2-to-manage-cpp-toolchain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/01/08/use-mysy2-to-manage-cpp-toolchain/" class="post-title-link" itemprop="url">使用MYSY2管理C++工具链（以vscode为例）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-08 16:38:13" itemprop="dateCreated datePublished" datetime="2023-01-08T16:38:13+08:00">2023-01-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-14 20:04:27" itemprop="dateModified" datetime="2023-01-14T20:04:27+08:00">2023-01-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在Windows上开发C++必须解决环境配置的问题。要么选择MS体系下的C++开发环境，要么使用诸如Cygwin，MinGW等环境。MSYS2是一个基于Cygwin与Mingw-w64的开发平台。除了直接使用MSYS2提供的终端进行开发，MSYS2还主要用于管理开发工具。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/01/08/use-mysy2-to-manage-cpp-toolchain/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://adamska1008.github.io/2022/12/23/solution-rust-quizes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Adamska">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Adamska's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/23/solution-rust-quizes/" class="post-title-link" itemprop="url">Rust Quizes解答</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-23 16:43:15" itemprop="dateCreated datePublished" datetime="2022-12-23T16:43:15+08:00">2022-12-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-14 17:23:33" itemprop="dateModified" datetime="2023-01-14T17:23:33+08:00">2023-01-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>关于Rust语法的测试题，题目来源<a target="_blank" rel="noopener" href="https://dtolnay.github.io/rust-quiz/1">Rust Quiz</a>。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/23/solution-rust-quizes/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
